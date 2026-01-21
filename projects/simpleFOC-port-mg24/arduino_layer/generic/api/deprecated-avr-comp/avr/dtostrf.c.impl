@@ -37,4 +37,3 @@ char *dtostrf (double val, signed char width, unsigned char prec, char *sout) {
   return sout;
 #pragma GCC diagnostic pop
 }
-

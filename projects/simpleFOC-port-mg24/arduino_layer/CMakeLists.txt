@@ -7,12 +7,12 @@ add_library(arduino_layer STATIC
     generic/wiring.cpp
     generic/wiring_analog.cpp
     generic/wiring_digital.cpp
-    
+
     # API
     generic/api/Print.cpp
     generic/api/Stream.cpp
     generic/api/String_ex.cpp
-    
+
     # Specific configuration
     specific/arduino_serial_config.cpp
     specific/arduino_variant.cpp

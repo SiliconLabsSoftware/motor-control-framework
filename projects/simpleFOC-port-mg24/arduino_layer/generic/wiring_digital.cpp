@@ -55,7 +55,7 @@ void pinMode(PinName pinNumber, PinMode pinMode)
       break;
 
     case PinMode::INPUT_PULLUP:
-      sl_gpio_set_pin_mode(&hw_gpio,  SL_GPIO_MODE_INPUT_PULL, 1);
+      sl_gpio_set_pin_mode(&hw_gpio, SL_GPIO_MODE_INPUT_PULL, 1);
       break;
 
     default:

@@ -40,51 +40,51 @@
 #include "arduino_serial_config.h"
 
 namespace arduino {
-class UARTClass : public HardwareSerial
-{
+  class UARTClass: public HardwareSerial
+  {
 public:
-  UARTClass(sl_iostream_t* stream,
-            sl_iostream_t* instance,
-            void(*baud_rate_set_fn)(uint32_t baudrate),
-            void(*init_fn)(void),
-            void(*deinit_fn)(void),
-            void(*serial_event_fn)(void));
-  void begin(unsigned long);
-  void begin(unsigned long baudrate, uint16_t config);
-  void end();
-  int available(void);
-  int peek(void);
-  int read(void);
-  void flush(void);
-  size_t write(uint8_t data);
-  size_t write(const uint8_t* data, size_t size);
-  using Print::write;   // pull in write(str) from Print
-  operator bool();
-  void task();
-  void handleSerialEvent();
-  void printf(const char* fmt, ...);
-  void suspend();
-  void resume();
+    UARTClass(sl_iostream_t * stream,
+              sl_iostream_t * instance,
+              void(*baud_rate_set_fn)(uint32_t baudrate),
+              void(*init_fn)(void),
+              void(*deinit_fn)(void),
+              void(*serial_event_fn)(void));
+    void begin(unsigned long);
+    void begin(unsigned long baudrate, uint16_t config);
+    void end();
+    int available(void);
+    int peek(void);
+    int read(void);
+    void flush(void);
+    size_t write(uint8_t data);
+    size_t write(const uint8_t* data, size_t size);
+    using Print::write; // pull in write(str) from Print
+    operator bool();
+    void task();
+    void handleSerialEvent();
+    void printf(const char* fmt, ...);
+    void suspend();
+    void resume();
 private:
-  static const uint8_t printf_buffer_size = 128u;
+    static const uint8_t printf_buffer_size = 128u;
 
-  RingBufferN<128> rx_buf;
+    RingBufferN < 128 > rx_buf;
 
-  SemaphoreHandle_t serial_mutex;
-  StaticSemaphore_t serial_mutex_buf;
+    SemaphoreHandle_t serial_mutex;
+    StaticSemaphore_t serial_mutex_buf;
 
-  void (*baud_rate_set_fn)(uint32_t baudrate);
-  void (*init_fn)(void);
-  void (*deinit_fn)(void);
-  void (*serial_event_fn)(void);
+    void (*baud_rate_set_fn)(uint32_t baudrate);
+    void (*init_fn)(void);
+    void (*deinit_fn)(void);
+    void (*serial_event_fn)(void);
 
-  sl_iostream_t* stream_handle;
-  sl_iostream_t* instance_handle;
+    sl_iostream_t* stream_handle;
+    sl_iostream_t* instance_handle;
 
-  bool initialized;
-  unsigned long baudrate;
-  bool suspended;
-};
+    bool initialized;
+    unsigned long baudrate;
+    bool suspended;
+  };
 } // namespace arduino
 
 void serialEvent(void);

@@ -1,21 +1,21 @@
 /*
-  HardwareSerial.h - Hardware serial interface for Arduino
-  Copyright (c) 2016 Arduino LLC.  All right reserved.
+   HardwareSerial.h - Hardware serial interface for Arduino
+   Copyright (c) 2016 Arduino LLC.  All right reserved.
 
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
 
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 #pragma once
 
@@ -23,7 +23,6 @@
 #include "Stream.h"
 
 namespace arduino {
-
 // XXX: Those constants should be defined as const int / enums?
 // XXX: shall we use namespaces too?
 #define SERIAL_PARITY_EVEN   (0x1ul)
@@ -85,9 +84,9 @@ namespace arduino {
 #define SERIAL_7S2           (SERIAL_STOP_BIT_2 | SERIAL_PARITY_SPACE | SERIAL_DATA_7)
 #define SERIAL_8S2           (SERIAL_STOP_BIT_2 | SERIAL_PARITY_SPACE | SERIAL_DATA_8)
 
-class HardwareSerial : public Stream
-{
-  public:
+  class HardwareSerial: public Stream
+  {
+public:
     virtual void begin(unsigned long) = 0;
     virtual void begin(unsigned long baudrate, uint16_t config) = 0;
     virtual void end() = 0;
@@ -98,9 +97,8 @@ class HardwareSerial : public Stream
     virtual size_t write(uint8_t) = 0;
     using Print::write; // pull in write(str) and write(buf, size) from Print
     virtual operator bool() = 0;
-};
+  };
 
 // XXX: Are we keeping the serialEvent API?
-extern void serialEventRun(void) __attribute__((weak));
-
+  extern void serialEventRun(void) __attribute__((weak));
 }

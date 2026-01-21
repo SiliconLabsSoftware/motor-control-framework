@@ -55,12 +55,15 @@ static void motor_control_task(void *arg);
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
-void doMotor(char* cmd) {
-  if (!command_p) return;
+void doMotor(char* cmd)
+{
+  if (!command_p) {
+    return;
+  }
   command_p->motor(motor_p, cmd);
 }
 
- void doA()
+void doA()
 {
   sensor_p->handleA();
 }
@@ -133,7 +136,7 @@ static void motor_control_task(void *arg)
   #if ENABLE_MONITOR
     // TODO: motor.monitor(); for monitoring
   #endif
-  
+
     // user communication
     command.run();
 

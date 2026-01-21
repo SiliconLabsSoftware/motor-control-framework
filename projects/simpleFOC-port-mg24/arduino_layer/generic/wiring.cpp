@@ -29,7 +29,6 @@
 #include "sl_hal_timer.h"
 #include "sl_device_peripheral.h"
 
-
 // The sleeptimer is running on a 32.768 kHz oscillator with a tick resolution of 30.52 us
 static const double sleeptimer_tick_period_us = 30.52f;
 static const uint64_t sleeptimer_tick_period_us_x100 = 3052;
@@ -38,7 +37,7 @@ uint32_t millis()
 {
   uint64_t millis = 0u;
   (void)sl_sleeptimer_tick64_to_ms(sl_sleeptimer_get_tick_count64(), &millis);
-  return static_cast<uint32_t>(millis);
+  return static_cast < uint32_t > (millis);
 }
 
 uint32_t micros()
@@ -49,8 +48,8 @@ uint32_t micros()
   return (uint32_t)((sl_hal_timer_get_counter(micros_timer) * 32u) / 39u);
 #else
   // Fallback: sleeptimer-based microseconds (30.52us resolution)
-  uint64_t us = static_cast<uint64_t>(sl_sleeptimer_get_tick_count()) * sleeptimer_tick_period_us_x100 / 100u;
-  return static_cast<uint32_t>(us);
+  uint64_t us = static_cast < uint64_t > (sl_sleeptimer_get_tick_count()) * sleeptimer_tick_period_us_x100 / 100u;
+  return static_cast < uint32_t > (us);
 #endif
 }
 

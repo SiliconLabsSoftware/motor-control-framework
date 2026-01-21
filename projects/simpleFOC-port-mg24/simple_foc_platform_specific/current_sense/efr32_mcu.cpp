@@ -49,7 +49,8 @@ static uint8_t current_sense_params_index = 0;
 static void _adcBusAllocate(
   uint8_t port,
   uint8_t pin
-) {
+  )
+{
   switch (port) {
 #if (GPIO_PA_COUNT > 0)
     case gpioPortA:
@@ -58,7 +59,8 @@ static void _adcBusAllocate(
           GPIO->ABUSALLOC |= GPIO_ABUSALLOC_AEVEN0_ADC0;
         } else if ((GPIO->ABUSALLOC & _GPIO_ABUSALLOC_AEVEN1_MASK) == GPIO_ABUSALLOC_AEVEN1_TRISTATE) {
           GPIO->ABUSALLOC |= GPIO_ABUSALLOC_AEVEN1_ADC0;
-        } else {}
+        } else {
+        }
       } else {
         if ((GPIO->ABUSALLOC & _GPIO_ABUSALLOC_AODD0_MASK) == GPIO_ABUSALLOC_AODD0_TRISTATE) {
           GPIO->ABUSALLOC |= GPIO_ABUSALLOC_AODD0_ADC0;
@@ -121,8 +123,11 @@ static void _adcBusAllocate(
 static void _adcConfig(
   EFR32AdcInstance *inst,
   const int pin
-) {
-  if (!inst) return;
+  )
+{
+  if (!inst) {
+    return;
+  }
   inst->port = getSilabsPortFromArduinoPin(pinToPinName(pin));
   inst->pin = getSilabsPinFromArduinoPin(pinToPinName(pin));
 }
@@ -130,11 +135,16 @@ static void _adcConfig(
 static float _readAdc(
   EFR32CurrentSenseParams *params,
   const int pin
-) {
-  if (!params) return 0.0f;
+  )
+{
+  if (!params) {
+    return 0.0f;
+  }
 
   for (uint8_t i = 0; i < SILABS_MAX_ANALOG; ++i) {
-    if (!_isset(params->pins[i])) continue;
+    if (!_isset(params->pins[i])) {
+      continue;
+    }
     if (pin == params->pins[i]) {
       return params->buffer[i] * params->adc_voltage_conv;
     }
@@ -146,12 +156,14 @@ static bool _dmaTransferFinishedCb(
   unsigned int channel,
   unsigned int sequenceNo,
   void *data
-) {
+  )
+{
   _UNUSED(sequenceNo);
 
   EFR32CurrentSenseParams *params = (EFR32CurrentSenseParams *) data;
-  if (!params || !params->adc || (params->dmaChannel != channel))
+  if (!params || !params->adc || (params->dmaChannel != channel)) {
     return false;
+  }
 
   CORE_DECLARE_IRQ_STATE;
   CORE_ENTER_ATOMIC();
@@ -165,9 +177,12 @@ static void _currentSenseInitDMA(
   EFR32CurrentSenseParams *params,
   DMADRV_Callback_t fn,
   void *data
-) {
+  )
+{
   (void)data;
-  if (!params) return;
+  if (!params) {
+    return;
+  }
 
   // Initialize DMA with default parameters
   DMADRV_Init();
@@ -184,7 +199,6 @@ static void _currentSenseInitDMA(
                                                         params->noAdcChannels,
                                                         0);
 
-
   DMADRV_LdmaStartTransfer(params->dmaChannel,
                            &transferCfg,
                            &params->descriptor,
@@ -194,8 +208,11 @@ static void _currentSenseInitDMA(
 
 static void _currentSenseInitScan(
   EFR32CurrentSenseParams *params
-) {
-  if (!params || !params->adc) return;
+  )
+{
+  if (!params || !params->adc) {
+    return;
+  }
 
   // Enable Clock
   sl_clock_manager_enable_bus_clock(SL_BUS_CLOCK_IADC0);
@@ -291,13 +308,20 @@ static void _currentSenseInitScan(
 static void _currentSenseConfig(
   EFR32CurrentSenseParams *params,
   int adcPins[SILABS_MAX_ANALOG]
-) {
-  if (!params) return;
+  )
+{
+  if (!params) {
+    return;
+  }
 
   uint8_t noAdcChannels = 0;
   for (int i = 0; i < SILABS_MAX_ANALOG; ++i) {
-    if (!_isset(adcPins[i])) continue;
-    if (params->firstIndex == 0xFF) params->firstIndex = i;
+    if (!_isset(adcPins[i])) {
+      continue;
+    }
+    if (params->firstIndex == 0xFF) {
+      params->firstIndex = i;
+    }
     _adcConfig(&params->inst[noAdcChannels], adcPins[i]);
     params->pins[noAdcChannels] = adcPins[i];
     ++noAdcChannels;
@@ -308,8 +332,11 @@ static void _currentSenseConfig(
 
 static void _currentSenseDeinit(
   EFR32CurrentSenseParams *params
-) {
-  if (!params) return;
+  )
+{
+  if (!params) {
+    return;
+  }
 
   DMADRV_StopTransfer(params->dmaChannel);
   DMADRV_FreeChannel(params->dmaChannel);
@@ -319,8 +346,11 @@ static void _currentSenseDeinit(
 
 static void _currentSenseStartScan(
   EFR32CurrentSenseParams *params
-) {
-  if (!params || !params->adc) return;
+  )
+{
+  if (!params || !params->adc) {
+    return;
+  }
 
   // Ensure IADC is enabled before issuing a command (avoid bus fault/assert)
   if ((params->adc->EN & _IADC_EN_EN_MASK) == 0) {
@@ -333,24 +363,33 @@ static void _currentSenseStartScan(
 
 static void _currentSenseStopScan(
   EFR32CurrentSenseParams *params
-) {
-  if (!params) return;
+  )
+{
+  if (!params) {
+    return;
+  }
 
   sl_hal_iadc_stop_scan(params->adc);
 }
 
 static void _currentSenseStopTranfer(
   EFR32CurrentSenseParams *params
-) {
-  if (!params || !params->adc) return;
+  )
+{
+  if (!params || !params->adc) {
+    return;
+  }
 
   DMADRV_PauseTransfer(params->dmaChannel);
 }
 
 static void _currentSenseStartTranfer(
   EFR32CurrentSenseParams *params
-) {
-  if (!params || !params->adc) return;
+  )
+{
+  if (!params || !params->adc) {
+    return;
+  }
 
   DMADRV_ResumeTransfer(params->dmaChannel);
 }
@@ -362,9 +401,12 @@ static void _currentSenseStartTranfer(
 float _readADCVoltageLowSide(
   const int pin,
   const void *cs_params
-) {
+  )
+{
   EFR32CurrentSenseParams *params = (EFR32CurrentSenseParams *) cs_params;
-  if (!params) return 0.0f;
+  if (!params) {
+    return 0.0f;
+  }
 
   return _readAdc(params, pin);
 }
@@ -374,10 +416,11 @@ void* _configureADCLowSide(
   const int pinA,
   const int pinB,
   const int pinC
-) {
+  )
+{
   _UNUSED(driver_params);
 
-  if(current_sense_params_index >= SILABS_DEFAULT_MAX_CURRENT_SENSE_COUNT) {
+  if (current_sense_params_index >= SILABS_DEFAULT_MAX_CURRENT_SENSE_COUNT) {
     return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
   }
 
@@ -392,7 +435,9 @@ void* _configureADCLowSide(
     .adc = SILABS_DEFAULT_ADC_PERPHERAL,
   };
 
-  if (!params) return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
+  }
 
   int adcPins[3] = { pinA, pinB, pinC };
 
@@ -407,11 +452,14 @@ void* _configureADCLowSide(
 void* _driverSyncLowSide(
   void *driver_params,
   void *cs_params
-) {
+  )
+{
   EFR32DriverParams *driver = (EFR32DriverParams *) driver_params;
   EFR32CurrentSenseParams *params = (EFR32CurrentSenseParams *) cs_params;
 
-  if (!driver || !params) return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
+  if (!driver || !params) {
+    return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
+  }
 
   uint32_t prsSignal;
 
@@ -431,9 +479,12 @@ void* _driverSyncLowSide(
 float _readADCVoltageInline(
   const int pin,
   const void *cs_params
-) {
+  )
+{
   EFR32CurrentSenseParams *params = (EFR32CurrentSenseParams *) cs_params;
-  if (!params || !_isset(pin) || (params->firstIndex == 0xFF)) return 0.0f;
+  if (!params || !_isset(pin) || (params->firstIndex == 0xFF)) {
+    return 0.0f;
+  }
 
   if (params->pins[params->firstIndex] == pin) {
     CORE_DECLARE_IRQ_STATE;
@@ -443,7 +494,8 @@ float _readADCVoltageInline(
 
     _currentSenseStartScan(params);
 
-    while (!params->dataReady) {}
+    while (!params->dataReady) {
+    }
   }
 
   return _readAdc(params, pin);
@@ -454,10 +506,11 @@ void* _configureADCInline(
   const int pinA,
   const int pinB,
   const int pinC
-) {
+  )
+{
   _UNUSED(driver_params);
 
-  if(current_sense_params_index >= SILABS_DEFAULT_MAX_CURRENT_SENSE_COUNT) {
+  if (current_sense_params_index >= SILABS_DEFAULT_MAX_CURRENT_SENSE_COUNT) {
     return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
   }
 
@@ -472,7 +525,9 @@ void* _configureADCInline(
     .adc = SILABS_DEFAULT_ADC_PERPHERAL,
   };
 
-  if (!params) return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_CURRENT_SENSE_INIT_FAILED;
+  }
 
   int adcPins[3] = { pinA, pinB, pinC };
 

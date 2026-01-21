@@ -1,6 +1,6 @@
 /*
-SPI.h stub file for Arduino compatibility, does not implement actual SPI functionality.
-*/
+   SPI.h stub file for Arduino compatibility, does not implement actual SPI functionality.
+ */
 #ifndef SPI_H
 #define SPI_H
 
@@ -18,27 +18,29 @@ SPI.h stub file for Arduino compatibility, does not implement actual SPI functio
 
 class SPISettings {
 public:
-    SPISettings() : clock_(1000000), bitOrder_(MSBFIRST), dataMode_(SPI_MODE0) {}
-    SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode)
-        : clock_(clock), bitOrder_(bitOrder), dataMode_(dataMode) {}
-    
-    uint32_t clock_;
-    uint8_t bitOrder_;
-    uint8_t dataMode_;
+  SPISettings() : clock_(1000000), bitOrder_(MSBFIRST), dataMode_(SPI_MODE0) {
+  }
+  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode)
+    : clock_(clock), bitOrder_(bitOrder), dataMode_(dataMode) {
+  }
+
+  uint32_t clock_;
+  uint8_t bitOrder_;
+  uint8_t dataMode_;
 };
 
 class SPIClass {
 public:
-    void begin();
-    void end();
-    uint8_t transfer(uint8_t data);
-    uint16_t transfer16(uint16_t data);
-    void beginTransaction(SPISettings settings);
-    void endTransaction();
-    
-    // Transaction support might be needed
-    // void beginTransaction(SPISettings settings);
-    // void endTransaction();
+  void begin();
+  void end();
+  uint8_t transfer(uint8_t data);
+  uint16_t transfer16(uint16_t data);
+  void beginTransaction(SPISettings settings);
+  void endTransaction();
+
+  // Transaction support might be needed
+  // void beginTransaction(SPISettings settings);
+  // void endTransaction();
 };
 
 extern SPIClass SPI;

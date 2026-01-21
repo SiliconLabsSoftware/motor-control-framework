@@ -45,7 +45,7 @@
 #define EXAMPLE_HALL_SENSOR_VELOCITY_6PWM 2
 #define EXAMPLE_TORQUE_VELOCITY_6PWM      3
 
-#define APPLICATION_EXAMPLE  3
+#define APPLICATION_EXAMPLE  EXAMPLE_CUSTOM
 // Add more device configurations as needed
 
 #endif // DEVICE_CONFIG_H

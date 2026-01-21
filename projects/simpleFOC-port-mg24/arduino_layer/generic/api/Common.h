@@ -1,28 +1,28 @@
 /*
-  Common.h - Common definitions for Arduino core
-  Copyright (c) 2017 Arduino LLC. All right reserved.
+   Common.h - Common definitions for Arduino core
+   Copyright (c) 2017 Arduino LLC. All right reserved.
 
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
 
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ */
 
 #pragma once
 #include <stdint.h>
 #include <stdbool.h>
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 void yield(void);
@@ -59,19 +59,19 @@ typedef enum {
 #define DISPLAY     0x1
 
 #ifndef constrain
-#define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 #endif
 
 #ifndef radians
-#define radians(deg) ((deg)*DEG_TO_RAD)
+#define radians(deg) ((deg) * DEG_TO_RAD)
 #endif
 
 #ifndef degrees
-#define degrees(rad) ((rad)*RAD_TO_DEG)
+#define degrees(rad) ((rad) * RAD_TO_DEG)
 #endif
 
 #ifndef sq
-#define sq(x) ((x)*(x))
+#define sq(x) ((x) * (x))
 #endif
 
 typedef void (*voidFuncPtr)(void);
@@ -141,28 +141,28 @@ void loop(void);
 #endif
 
 #ifdef __cplusplus
-  template<class T, class L> 
-  auto min(const T& a, const L& b) -> decltype((b < a) ? b : a)
-  {
-    return (b < a) ? b : a;
-  }
+template < class T, class L
+> auto min(const T& a, const L& b)->decltype((b < a) ? b : a)
+{
+  return (b < a) ? b : a;
+}
 
-  template<class T, class L> 
-  auto max(const T& a, const L& b) -> decltype((b < a) ? b : a)
-  {
-    return (a < b) ? b : a;
-  }
+template < class T, class L
+> auto max(const T& a, const L& b)->decltype((b < a) ? b : a)
+{
+  return (a < b) ? b : a;
+}
 #else
 #ifndef min
-#define min(a,b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
+#define min(a, b)            \
+  ({ __typeof__ (a)_a = (a); \
+     __typeof__ (b)_b = (b); \
      _a < _b ? _a : _b; })
 #endif
 #ifndef max
-#define max(a,b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
+#define max(a, b)            \
+  ({ __typeof__ (a)_a = (a); \
+     __typeof__ (b)_b = (b); \
      _a > _b ? _a : _b; })
 #endif
 #endif

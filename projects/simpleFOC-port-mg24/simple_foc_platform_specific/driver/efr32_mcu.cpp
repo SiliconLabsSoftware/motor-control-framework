@@ -24,7 +24,9 @@ static uint8_t driver_params_index = 0;
 
 void _getPrsUnderflowSignal(TIMER_TypeDef *timer, uint32_t *signal)
 {
-  if (!timer || !signal) return;
+  if (!timer || !signal) {
+    return;
+  }
 
   switch ((uint32_t) timer) {
     case TIMER0_BASE:
@@ -46,27 +48,29 @@ void _getPrsUnderflowSignal(TIMER_TypeDef *timer, uint32_t *signal)
 
 void _getPrsConsumerEvent(TIMER_TypeDef *timer, uint8_t channel, uint32_t *event)
 {
-  if (!timer || !event) return;
+  if (!timer || !event) {
+    return;
+  }
 
   *event = SL_HAL_PRS_CONSUMER_NONE;
   switch ((uint32_t) timer) {
     case TIMER0_BASE:
-      *event = (channel == 0) ? SL_HAL_PRS_CONSUMER_TIMER0_CC0 :
-                (channel == 1) ? SL_HAL_PRS_CONSUMER_TIMER0_CC1 :
-                (channel == 2) ? SL_HAL_PRS_CONSUMER_TIMER0_CC2 :
-                SL_HAL_PRS_CONSUMER_NONE;
+      *event = (channel == 0) ? SL_HAL_PRS_CONSUMER_TIMER0_CC0
+               : (channel == 1) ? SL_HAL_PRS_CONSUMER_TIMER0_CC1
+               : (channel == 2) ? SL_HAL_PRS_CONSUMER_TIMER0_CC2
+               : SL_HAL_PRS_CONSUMER_NONE;
       break;
     case TIMER1_BASE:
-      *event = (channel == 0) ? SL_HAL_PRS_CONSUMER_TIMER1_CC0 :
-                (channel == 1) ? SL_HAL_PRS_CONSUMER_TIMER1_CC1 :
-                (channel == 2) ? SL_HAL_PRS_CONSUMER_TIMER1_CC2 :
-                SL_HAL_PRS_CONSUMER_NONE;
+      *event = (channel == 0) ? SL_HAL_PRS_CONSUMER_TIMER1_CC0
+               : (channel == 1) ? SL_HAL_PRS_CONSUMER_TIMER1_CC1
+               : (channel == 2) ? SL_HAL_PRS_CONSUMER_TIMER1_CC2
+               : SL_HAL_PRS_CONSUMER_NONE;
       break;
     case TIMER2_BASE:
-      *event = (channel == 0) ? SL_HAL_PRS_CONSUMER_TIMER2_CC0 :
-                (channel == 1) ? SL_HAL_PRS_CONSUMER_TIMER2_CC1 :
-                (channel == 2) ? SL_HAL_PRS_CONSUMER_TIMER2_CC2 :
-                SL_HAL_PRS_CONSUMER_NONE;
+      *event = (channel == 0) ? SL_HAL_PRS_CONSUMER_TIMER2_CC0
+               : (channel == 1) ? SL_HAL_PRS_CONSUMER_TIMER2_CC1
+               : (channel == 2) ? SL_HAL_PRS_CONSUMER_TIMER2_CC2
+               : SL_HAL_PRS_CONSUMER_NONE;
       break;
     default:
       break;
@@ -77,20 +81,25 @@ void _getPrsConsumerEvent(TIMER_TypeDef *timer, uint8_t channel, uint32_t *event
 static void _alignPWMTimers(
   sl_hal_timer_channel_init_t *initCC,
   void *params
-) {
+  )
+{
   EFR32PwmInstance *p = (EFR32PwmInstance*)params;
-  if (!p || !initCC) return;
+  if (!p || !initCC) {
+    return;
+  }
 
   sl_clock_manager_enable_bus_clock(SL_BUS_CLOCK_PRS);
 
   uint32_t prsSignal, prsEvent;
 
   initCC->input_type = SL_HAL_TIMER_CHANNEL_INPUT_PRS_ASYNC_PULSE;
-  
+
   _getPrsUnderflowSignal(p->h.timer, &prsSignal);
   _getPrsConsumerEvent(p->h.timer, p->h.channel, &prsEvent);
 
-  if (!prsSignal || (prsEvent == SL_HAL_PRS_CONSUMER_NONE)) return;
+  if (!prsSignal || (prsEvent == SL_HAL_PRS_CONSUMER_NONE)) {
+    return;
+  }
 
   sl_hal_prs_async_connect_channel_producer(SILABS_PWM_PRS_CHANNEL, (sl_hal_prs_async_producer_signal_t)prsSignal);
   sl_hal_prs_connect_channel_consumer(SILABS_PWM_PRS_CHANNEL, SL_HAL_PRS_TYPE_ASYNC, (sl_hal_prs_consumer_event_t)prsEvent);
@@ -99,8 +108,11 @@ static void _alignPWMTimers(
 static void _configPWMMode(
   sl_hal_timer_init_t *init,
   void *params
-) {
-  if (!init) return;
+  )
+{
+  if (!init) {
+    return;
+  }
   _UNUSED(params);
   init->count_mode = SL_HAL_TIMER_MODE_UPDOWN;
 }
@@ -108,15 +120,21 @@ static void _configPWMMode(
 static void _alignPWMStart(
   sl_hal_timer_init_t *init,
   void *params
-) {
-  if (!init) return;
+  )
+{
+  if (!init) {
+    return;
+  }
   _UNUSED(params);
   init->count_mode = SL_HAL_TIMER_MODE_UPDOWN;
   init->input_rise_action = SL_HAL_TIMER_INPUT_ACTION_RELOAD_START;
 }
 
-static void _setSinglePhaseState(EFR32PwmInstance *inst, PhaseState state) {
-  if (!inst) return;
+static void _setSinglePhaseState(EFR32PwmInstance *inst, PhaseState state)
+{
+  if (!inst) {
+    return;
+  }
 
   switch (state) {
     case PhaseState::PHASE_OFF:
@@ -129,16 +147,22 @@ static void _setSinglePhaseState(EFR32PwmInstance *inst, PhaseState state) {
   }
 }
 
-void *_configure1PWM(long pwm_frequency, const int pinA) {
-  if(driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
+void *_configure1PWM(long pwm_frequency, const int pinA)
+{
+  if (driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
     return SIMPLEFOC_DRIVER_INIT_FAILED;
   }
 
   EFR32DriverParams *params = &driver_params[driver_params_index++];
-  if (!params) return SIMPLEFOC_DRIVER_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_DRIVER_INIT_FAILED;
+  }
 
-  if (!pwm_frequency || !_isset(pwm_frequency)) pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
-  else pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  if (!pwm_frequency || !_isset(pwm_frequency)) {
+    pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
+  } else {
+    pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  }
 
   params->pwm_frequency = pwm_frequency;
   params->noPwmChannel = 1;
@@ -163,16 +187,22 @@ void *_configure1PWM(long pwm_frequency, const int pinA) {
   return params;
 }
 
-void* _configure2PWM(long pwm_frequency, const int pinA, const int pinB) {
-  if(driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
+void* _configure2PWM(long pwm_frequency, const int pinA, const int pinB)
+{
+  if (driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
     return SIMPLEFOC_DRIVER_INIT_FAILED;
   }
 
   EFR32DriverParams *params = &driver_params[driver_params_index++];
-  if (!params) return SIMPLEFOC_DRIVER_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_DRIVER_INIT_FAILED;
+  }
 
-  if (!pwm_frequency || !_isset(pwm_frequency)) pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
-  else pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  if (!pwm_frequency || !_isset(pwm_frequency)) {
+    pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
+  } else {
+    pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  }
 
   params->pwm_frequency = pwm_frequency;
   params->noPwmChannel = 2;
@@ -205,16 +235,22 @@ void* _configure3PWM(
   const int pinA,
   const int pinB,
   const int pinC
-) {
-  if(driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
+  )
+{
+  if (driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
     return SIMPLEFOC_DRIVER_INIT_FAILED;
   }
 
   EFR32DriverParams *params = &driver_params[driver_params_index++];
-  if (!params) return SIMPLEFOC_DRIVER_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_DRIVER_INIT_FAILED;
+  }
 
-  if (!pwm_frequency || !_isset(pwm_frequency)) pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
-  else pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  if (!pwm_frequency || !_isset(pwm_frequency)) {
+    pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
+  } else {
+    pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  }
 
   params->pwm_frequency = pwm_frequency;
   params->noPwmChannel = 3;
@@ -251,16 +287,22 @@ void* _configure4PWM(
   const int pin1B,
   const int pin2A,
   const int pin2B
-) {
-  if(driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
+  )
+{
+  if (driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
     return SIMPLEFOC_DRIVER_INIT_FAILED;
   }
 
   EFR32DriverParams *params = &driver_params[driver_params_index++];
-  if (!params) return SIMPLEFOC_DRIVER_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_DRIVER_INIT_FAILED;
+  }
 
-  if (!pwm_frequency || !_isset(pwm_frequency)) pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
-  else pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  if (!pwm_frequency || !_isset(pwm_frequency)) {
+    pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
+  } else {
+    pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  }
 
   params->pwm_frequency = pwm_frequency;
   params->noPwmChannel = 4;
@@ -269,7 +311,7 @@ void* _configure4PWM(
   pwmHiConfig(&params->inst[0], SILABS_DEFAULT_PWM_PERPHERAL, pin1A, 0);
   pwmHiConfig(&params->inst[1], SILABS_DEFAULT_PWM_PERPHERAL, pin1B, 1);
   pwmHiConfig(&params->inst[2], SILABS_DEFAULT_PWM_PERPHERAL, pin2A, 2);
-  pwmHiConfig(&params->inst[3], SILABS_SECOND_PWM_PERPHERAL , pin2B, 0);
+  pwmHiConfig(&params->inst[3], SILABS_SECOND_PWM_PERPHERAL, pin2B, 0);
 
   // Initialize PWM
   EFR32PwmConfig pwmConfig;
@@ -304,16 +346,22 @@ void* _configure6PWM(
   const int pinB_l,
   const int pinC_h,
   const int pinC_l
-) {
-  if(driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
+  )
+{
+  if (driver_params_index >= SILABS_DEFAULT_MAX_MOTOR_COUNT) {
     return SIMPLEFOC_DRIVER_INIT_FAILED;
   }
 
   EFR32DriverParams *params = &driver_params[driver_params_index++];
-  if (!params) return SIMPLEFOC_DRIVER_INIT_FAILED;
+  if (!params) {
+    return SIMPLEFOC_DRIVER_INIT_FAILED;
+  }
 
-  if (!pwm_frequency || !_isset(pwm_frequency)) pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
-  else pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  if (!pwm_frequency || !_isset(pwm_frequency)) {
+    pwm_frequency = SILABS_DEFAULT_PWM_FREQUENCY;
+  } else {
+    pwm_frequency = _constrain(pwm_frequency, 0, SILABS_DEFAULT_PWM_FREQUENCY);
+  }
 
   params->pwm_frequency = pwm_frequency;
   params->dead_zone = (dead_zone == NOT_SET) ? SILABS_DEFAULT_DEAD_ZONE : dead_zone;
@@ -363,24 +411,33 @@ void* _configure6PWM(
   return params;
 }
 
-void _writeDutyCycle1PWM(float dc_a, void* params) {
+void _writeDutyCycle1PWM(float dc_a, void* params)
+{
   EFR32DriverParams *p = (EFR32DriverParams*) params;
-  if (!p) return;
+  if (!p) {
+    return;
+  }
 
   pwmHiSetDutyCycle(&p->inst[0], dc_a * 100.0f);
 }
 
-void _writeDutyCycle2PWM(float dc_a, float dc_b, void* params) {
+void _writeDutyCycle2PWM(float dc_a, float dc_b, void* params)
+{
   EFR32DriverParams *p = (EFR32DriverParams*) params;
-  if (!p) return;
+  if (!p) {
+    return;
+  }
 
   pwmHiSetDutyCycle(&p->inst[0], dc_a * 100.0f);
   pwmHiSetDutyCycle(&p->inst[1], dc_b * 100.0f);
 }
 
-void _writeDutyCycle3PWM(float dc_a, float dc_b, float dc_c, void* params) {
+void _writeDutyCycle3PWM(float dc_a, float dc_b, float dc_c, void* params)
+{
   EFR32DriverParams *p = (EFR32DriverParams*) params;
-  if (!p) return;
+  if (!p) {
+    return;
+  }
 
   pwmHiSetDutyCycle(&p->inst[0], dc_a * 100.0f);
   pwmHiSetDutyCycle(&p->inst[1], dc_b * 100.0f);
@@ -393,9 +450,12 @@ void _writeDutyCycle4PWM(
   float dc_2a,
   float dc_2b,
   void* params
-) {
+  )
+{
   EFR32DriverParams *p = (EFR32DriverParams*) params;
-  if (!p) return;
+  if (!p) {
+    return;
+  }
 
   pwmHiSetDutyCycle(&p->inst[0], dc_1a * 100.0f);
   pwmHiSetDutyCycle(&p->inst[1], dc_1b * 100.0f);
@@ -409,21 +469,32 @@ void _writeDutyCycle6PWM(
   float dc_c,
   PhaseState *phase_state,
   void* params
-) {
+  )
+{
   EFR32DriverParams *p = (EFR32DriverParams*) params;
-  if (!p || !phase_state) return;
+  if (!p || !phase_state) {
+    return;
+  }
 
   _setSinglePhaseState(&p->inst[0], phase_state[0]);
-  if (phase_state[0] == PhaseState::PHASE_OFF) dc_a = 0.0f;
+  if (phase_state[0] == PhaseState::PHASE_OFF) {
+    dc_a = 0.0f;
+  }
   pwmHiSetDutyCycle(&p->inst[0], dc_a * 100);
 
   _setSinglePhaseState(&p->inst[1], phase_state[1]);
-  if (phase_state[1] == PhaseState::PHASE_OFF) dc_b = 0.0f;
+  if (phase_state[1] == PhaseState::PHASE_OFF) {
+    dc_b = 0.0f;
+  }
   pwmHiSetDutyCycle(&p->inst[1], dc_b * 100.0f);
 
   _setSinglePhaseState(&p->inst[2], phase_state[2]);
-  if (phase_state[2] == PhaseState::PHASE_OFF) dc_c = 0.0f;
+  if (phase_state[2] == PhaseState::PHASE_OFF) {
+    dc_c = 0.0f;
+  }
   pwmHiSetDutyCycle(&p->inst[2], dc_c * 100.0f);
 }
 
-void _startADC3PinConversionLowSide(){ }
+void _startADC3PinConversionLowSide()
+{
+}

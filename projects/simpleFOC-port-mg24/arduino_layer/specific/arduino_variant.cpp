@@ -51,16 +51,16 @@ void init_arduino_variant()
 #ifdef ARDUINO_MICROS_TIMER_PERIPHERAL
   TIMER_TypeDef *micros_timer = ((TIMER_TypeDef *)ARDUINO_MICROS_TIMER_PERIPHERAL->base);
   sl_clock_manager_enable_bus_clock(ARDUINO_MICROS_TIMER_PERIPHERAL->bus_clock);
-  
+
   sl_hal_timer_init_t timer_init = SL_HAL_TIMER_INIT_DEFAULT;
   timer_init.count_mode = SL_HAL_TIMER_MODE_UP;
   timer_init.debug_run = true;  // Keep running when debugger disconnects
   timer_init.prescaler = SL_HAL_TIMER_PRESCALER_DIV32;  // 39MHz / 32 = 1.21875 MHz
-  
+
   sl_hal_timer_init(micros_timer, &timer_init);
   sl_hal_timer_enable(micros_timer);
   sl_hal_timer_set_top(micros_timer, 0xFFFFFFFFUL);
- 
+
   sl_hal_timer_start(micros_timer);
 #endif
 }

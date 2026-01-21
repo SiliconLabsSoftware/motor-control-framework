@@ -38,7 +38,7 @@ typedef struct {
   uint32_t interrupt_num;
 } gpio_interrupt_handler_t;
 
-static std::list<gpio_interrupt_handler_t> gpio_interrupt_handlers;
+static std::list < gpio_interrupt_handler_t > gpio_interrupt_handlers;
 
 SemaphoreHandle_t gpio_isr_mutex;
 StaticSemaphore_t gpio_isr_mutex_buf;
