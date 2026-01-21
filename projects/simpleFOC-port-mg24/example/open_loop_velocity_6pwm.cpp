@@ -53,8 +53,11 @@ static void motor_control_task(void *arg);
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
-void doMotor(char* cmd) {
-  if (!command_p) return;
+void doMotor(char* cmd)
+{
+  if (!command_p) {
+    return;
+  }
   command_p->motor(motor_p, cmd);
 }
 /***************************************************************************//**
@@ -106,11 +109,11 @@ static void motor_control_task(void *arg)
   // Max DC voltage allowed - default voltage_power_supply
   driver.voltage_limit = 12;
   // dead zone percentage of the duty cycle - default 0.02 - 2%
-  // Can set value to 0 because the DRV8305 will provide the 
+  // Can set value to 0 because the DRV8305 will provide the
   // required dead-time.
   driver.dead_zone = 0;
 
-  if(!driver.init()){
+  if (!driver.init()) {
     Serial.println("Driver init failed!");
     return;
   }
@@ -135,7 +138,7 @@ static void motor_control_task(void *arg)
   motor.monitor_variables = _MON_TARGET | _MON_CURR_Q | _MON_CURR_D | _MON_VEL;
 #endif
 
-  if(!motor.init()){
+  if (!motor.init()) {
     Serial.println("Motor init failed!");
     return;
   }
