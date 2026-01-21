@@ -1,0 +1,48 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: simpleFOC-port-mg24
+label: simpleFOC-port-mg24
+description: |
+  This example project shows an empty configuration that can be used as a starting point to add components and functionality.
+category: Example|Platform
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+package: platform
+quality: production
+readme:
+- {path: readme.md}
+- {path: readme.md}
+source:
+- {path: app.cpp}
+include:
+- path: .
+  file_list:
+  - {path: app.h}
+sdk: {vendor: null, id: simplicity_sdk, version: 2025.6.2}
+toolchain_settings: []
+component:
+- {id: MGM240PB32VNA}
+- {id: brd2704a}
+- {id: clock_manager}
+- {id: cpp_support}
+- {id: device_init}
+- {id: dmadrv}
+- {id: emlib_rmu}
+- {id: freertos_heap_3}
+- {id: hal_iadc}
+- {id: hal_prs}
+- {id: hal_timer}
+- {id: iostream_rtt}
+- {id: sl_main}
+- {id: sleeptimer}
+- {id: udelay}
+define:
+- {name: DEBUG_EFM}
+ui_hints:
+  highlight:
+  - {path: readme.md, focus: true}
+
