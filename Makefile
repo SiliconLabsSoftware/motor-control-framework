@@ -1,10 +1,10 @@
 .SUFFIXES:				# ignore builtin rules
-.PHONY: all clean simpleFOC-port-mg24 docker_image docker_build docker_run
+.PHONY: all clean simplefoc-port-mg24 docker_image docker_build docker_run
 
 TARGET ?= clean_build
 TYPE ?= Debug #Release
 
-COMPONENTS := simpleFOC-port-mg24
+COMPONENTS := simplefoc-port-mg24
 all: $(COMPONENTS)
 $(COMPONENTS):
 	@echo 'Building $@...!'

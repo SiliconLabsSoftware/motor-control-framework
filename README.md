@@ -85,7 +85,7 @@ make
 The following build targets are available:
  - `all`  
     Builds all firmware components. This is the default target.
- - `simpleFOC-port-mg24`  
+ - `simplefoc-port-mg24`  
     Builds the simpleFOC port firmware for Sparkfun Thing Plus Matter board.
  - `clean`  
     Cleans all build artifacts from firmware components.
@@ -105,8 +105,8 @@ The following arguments can be added:
 
 Examples:
 ```shell
-make simpleFOC-port-mg24 TARGET=build TYPE=Release
-make simpleFOC-port-mg24 TARGET=clean_build
+make simplefoc-port-mg24 TARGET=build TYPE=Release
+make simplefoc-port-mg24 TARGET=clean_build
 make all
 ```
 

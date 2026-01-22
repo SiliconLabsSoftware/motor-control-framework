@@ -61,7 +61,7 @@ void doMotor(char* cmd)
   command_p->motor(motor_p, cmd);
 }
 /***************************************************************************//**
- * Initialize blink example.
+ * Initialize Open Loop Velocity 6PWM example.
  ******************************************************************************/
 void motor_control_init(void)
 {

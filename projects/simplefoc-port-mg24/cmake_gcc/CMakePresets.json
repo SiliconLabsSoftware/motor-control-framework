@@ -8,7 +8,7 @@
     "configurePresets": [
       {
         "name": "project",
-        "displayName": "Configure simpleFOC-port-mg24",
+        "displayName": "Configure simplefoc-port-mg24",
         "generator": "Ninja Multi-Config",
         "binaryDir": "${sourceDir}/build",
         "toolchainFile": "${sourceDir}/toolchain.cmake",
@@ -20,10 +20,10 @@
     "buildPresets": [
       {
         "name": "default_config",
-        "displayName": "Build simpleFOC-port-mg24",
+        "displayName": "Build simplefoc-port-mg24",
         "configurePreset": "project",
         "configuration": "base",
-        "targets": ["simpleFOC-port-mg24"]
+        "targets": ["simplefoc-port-mg24"]
       }
     ],
     "workflowPresets": [

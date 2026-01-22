@@ -1,6 +1,6 @@
 # Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
-project_name: simpleFOC-port-mg24
-label: simpleFOC-port-mg24
+project_name: simplefoc-port-mg24
+label: simplefoc-port-mg24
 description: |
   This example project shows an empty configuration that can be used as a starting point to add components and functionality.
 category: Example|Platform

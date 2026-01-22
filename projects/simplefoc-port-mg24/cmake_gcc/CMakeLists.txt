@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION "3.25")
 
 # Project definition
 project(
-	simpleFOC-port-mg24
+	simplefoc-port-mg24
 	VERSION 1.0
 	LANGUAGES C CXX ASM
 )
@@ -44,9 +44,9 @@ target_include_directories(SimpleFOC PUBLIC
     ${SIMPLEFOC_SRC_DIR}
 )
 
-# Include the definition of the slc_simpleFOC-port-mg24 target,
+# Include the definition of the slc_simplefoc-port-mg24 target,
 # which contains the content of the SLC project
-include(simpleFOC-port-mg24.cmake)
+include(simplefoc-port-mg24.cmake)
 
 # Provide arduino_layer include paths to slc for compilation
 target_include_directories(slc PUBLIC
@@ -57,7 +57,7 @@ target_include_directories(slc PUBLIC
 # Link SimpleFOC to slc so it inherits SLC headers (sl_gpio.h, etc.)
 target_link_libraries(SimpleFOC PUBLIC slc simple_foc_platform_specific)
 
-add_executable(simpleFOC-port-mg24
+add_executable(simplefoc-port-mg24
     # Add additional sources here
     ${CMAKE_CURRENT_LIST_DIR}/../motor_control.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../example/open_loop_velocity_6pwm.cpp
@@ -65,50 +65,50 @@ add_executable(simpleFOC-port-mg24
     ${CMAKE_CURRENT_LIST_DIR}/../example/torque_velocity_6pwm.cpp
 )
 
-target_include_directories(simpleFOC-port-mg24 PUBLIC
+target_include_directories(simplefoc-port-mg24 PUBLIC
     # Add additional include paths here
 )
 
-target_compile_definitions(simpleFOC-port-mg24 PUBLIC
+target_compile_definitions(simplefoc-port-mg24 PUBLIC
     # Add additional macros here
 )
 
-target_compile_options(simpleFOC-port-mg24 PUBLIC
+target_compile_options(simplefoc-port-mg24 PUBLIC
     # Set additional compiler flags here
 )
 
-target_link_options(simpleFOC-port-mg24 PUBLIC
+target_link_options(simplefoc-port-mg24 PUBLIC
     # Set additional linker flags here
 )
 
 # Link with the content defined in the SLC project
-target_link_libraries(simpleFOC-port-mg24 PRIVATE
+target_link_libraries(simplefoc-port-mg24 PRIVATE
     slc
     SimpleFOC
     arduino_layer
 )
 
 # Include managed project content if available
-include(simpleFOC-port-mg24_project.cmake OPTIONAL RESULT_VARIABLE managed_project)
+include(simplefoc-port-mg24_project.cmake OPTIONAL RESULT_VARIABLE managed_project)
 if(managed_project)
     message(STATUS "Using managed project content from ${managed_project}")
 endif()
 
 # Force the gcc linker command
-set_target_properties(simpleFOC-port-mg24 PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(simplefoc-port-mg24 PROPERTIES LINKER_LANGUAGE C)
 
 # Create .bin, .hex and .s37 artifacts after building the project
-add_custom_command(TARGET simpleFOC-port-mg24
+add_custom_command(TARGET simplefoc-port-mg24
     POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_SREC_CMD} "$<TARGET_FILE:simpleFOC-port-mg24>" "$<TARGET_FILE_DIR:simpleFOC-port-mg24>/$<TARGET_FILE_BASE_NAME:simpleFOC-port-mg24>.s37"
-    COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_IHEX_CMD} "$<TARGET_FILE:simpleFOC-port-mg24>" "$<TARGET_FILE_DIR:simpleFOC-port-mg24>/$<TARGET_FILE_BASE_NAME:simpleFOC-port-mg24>.hex"
-    COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_BIN_CMD}  "$<TARGET_FILE:simpleFOC-port-mg24>" "$<TARGET_FILE_DIR:simpleFOC-port-mg24>/$<TARGET_FILE_BASE_NAME:simpleFOC-port-mg24>.bin"
-    COMMAND ${CMAKE_SIZE_UTIL} "$<TARGET_FILE:simpleFOC-port-mg24>"
+    COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_SREC_CMD} "$<TARGET_FILE:simplefoc-port-mg24>" "$<TARGET_FILE_DIR:simplefoc-port-mg24>/$<TARGET_FILE_BASE_NAME:simplefoc-port-mg24>.s37"
+    COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_IHEX_CMD} "$<TARGET_FILE:simplefoc-port-mg24>" "$<TARGET_FILE_DIR:simplefoc-port-mg24>/$<TARGET_FILE_BASE_NAME:simplefoc-port-mg24>.hex"
+    COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_BIN_CMD}  "$<TARGET_FILE:simplefoc-port-mg24>" "$<TARGET_FILE_DIR:simplefoc-port-mg24>/$<TARGET_FILE_BASE_NAME:simplefoc-port-mg24>.bin"
+    COMMAND ${CMAKE_SIZE_UTIL} "$<TARGET_FILE:simplefoc-port-mg24>"
 )
 
 # Run post-build pipeline to perform additional post-processing
 if(post_build_command)
-add_custom_command(TARGET simpleFOC-port-mg24
+add_custom_command(TARGET simplefoc-port-mg24
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/..
     COMMAND ${post_build_command}
