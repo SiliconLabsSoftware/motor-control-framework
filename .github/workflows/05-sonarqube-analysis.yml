@@ -23,7 +23,8 @@ on:
         description: "Sonar project branch name."
         required: false
         default: "default"
-
+permissions:
+  contents: read
 env:
   COMPONENTS: "simplefoc-port-mg24"
   PYTHON_VARIANTS: ""
@@ -45,7 +46,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build Docker Image
-        run: docker build -t ${{ github.event.repository.name }}-build-env:latest . --build-arg INSTALL_DOXYGEN=NO --build-arg INSTALL_SONARQUBE=YES
+        run: docker build -t ${{ github.event.repository.name }}-build-env:latest . --build-arg INSTALL_SONARQUBE=YES
 
       - name: Full Analysis (Build & Scan)
         run: |
@@ -69,6 +70,7 @@ jobs:
             -e PYTHON_VARIANTS="${{ env.PYTHON_VARIANTS }}" \
             ${{ github.event.repository.name }}-build-env:latest \
             /bin/bash -c "
+              set -o pipefail && \
               chmod +x .github/sonar_build.sh .github/sonar_scanner.sh && \
               ./.github/sonar_build.sh all && \
               ./.github/sonar_scanner.sh | tee sonar.log
@@ -87,7 +89,6 @@ jobs:
         run: |
           echo "Waiting for SonarQube analysis task ($CE_TASK_ID) to complete..."
           STATUS=""
-          # Wait loop
           for i in $(seq 1 20); do
             sleep 10
             STATUS_JSON=$(curl -s -u ${{ secrets.SONAR_TOKEN }}: "${{ env.SONAR_HOST }}/api/ce/task?id=$CE_TASK_ID")
@@ -121,18 +122,11 @@ jobs:
         run: |
           echo "Cleaning up generated files using Docker (to handle root permissions)..."
           docker run --rm \
-            -v "${{ github.workspace }}:/source" \
-            -w /source \
+            -v "${{ github.workspace }}:/${{ github.workspace }}" \
+            -w /${{ github.workspace }} \
             ${{ github.event.repository.name }}-build-env:latest \
             /bin/bash -c " \
               set -euo pipefail; \
-              rm -rf /source/.sonar_cache /source/.scannerwork /source/sonar-bw /source/sonar.log || echo '::warning::Failed to clean SonarQube cache files'; \
-              # remove generated directories (build, .venv, __pycache__, artifact) recursively
-              find /source -type d \( -name 'build' -o -name '.venv' -o -name '__pycache__' -o -name 'artifact' \) -prune -exec rm -rf {} + || echo '::warning::Failed to clean build directories'; \
-              # remove generated files (*.pyc, .coverage, coverage reports) recursively
-              find /source -type f \( -name '*.pyc' -o -name '.coverage' -o -name 'coverage*.xml' \) -delete || echo '::warning::Failed to clean Python artifacts'; \
+              git config --global --add safe.directory /${{ github.workspace }} \
+              && git clean -ffdx || echo '::warning::Failed to git clean workspace'; \
             "
-
-          echo "Cleaning Git workspace"
-          git config --global --add safe.directory ${{ github.workspace }}
-          git clean -ffdx

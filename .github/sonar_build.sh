@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # This script builds the project components and collects coverage data for SonarQube analysis.
-# It designed to be used inside Docker containers set up for SonarQube scanning.
+# It is designed to be used inside Docker containers set up for SonarQube scanning.
 # Usage: ./sonar_build.sh [target]
 # where [target] can be "all" or a space-separated list of components/variants to build.
 
 set -euo pipefail
 
 # --- Configuration ---
-COMPONENTS=${COMPONENTS:-"simplefoc-port-mg24"}
-PYTHON_VARIANTS=${PYTHON_VARIANTS:-""}
+COMPONENTS=${COMPONENTS}
+PYTHON_VARIANTS=${PYTHON_VARIANTS}
 
 BW_PATH="/opt/build-wrapper-linux-x86/build-wrapper-linux-x86-64"
 
@@ -17,6 +17,7 @@ TARGET=${1:-"all"}
 
 echo ">>> [sonar_build.sh] Starting build process for target: $TARGET"
 
+#This is for Python variants. IT IS  EXPERIMENTAL USE WITH CAUTION
 if [ -n "$PYTHON_VARIANTS" ]; then
     for variant in $PYTHON_VARIANTS; do
         if [[ "$TARGET" == "all" ]] || [[ " $TARGET " =~ " $variant " ]]; then
@@ -89,7 +90,7 @@ if [ -n "$COMPONENTS" ]; then
             ########################
             # Make sure the make command is updated here to match your project's build system!
             ########################
-            $BW_PATH --out-dir "$OUT_DIR" make $comp TARGET=clean_build TYPE=Debug
+            $BW_PATH --out-dir "$OUT_DIR" make $comp
 
             echo ">>> [sonar_build.sh] Finished building $comp"
         fi
