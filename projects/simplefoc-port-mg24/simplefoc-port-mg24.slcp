@@ -34,13 +34,10 @@ toolchain_settings: [
 component:
 - package: simplicity_sdk
   vendor: silabs
-  id: MGM240PB32VNA
+  id: EFR32MG24B210F1536IM48
 - package: simplicity_sdk
   vendor: silabs
   id: board_control
-- package: simplicity_sdk
-  vendor: silabs
-  id: brd2704a
 - package: simplicity_sdk
   vendor: silabs
   id: clock_manager

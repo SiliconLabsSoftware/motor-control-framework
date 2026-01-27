@@ -23,8 +23,9 @@
 #define ENABLE_MONITOR  0
 #define MOTOR_PP        8  // BLDC motor pole pairs
 
-// pinout config
+// Pin definitions
 #if defined(MGM240PB32VNA)
+// MG24 v1.x pinout
 #define PWM_1H        D4
 #define PWM_1L        D5
 #define PWM_2H        D6
@@ -38,7 +39,28 @@
 #define CURR_SEN_A    A5
 #define CURR_SEN_B    A3
 #define CURR_SEN_C    A4
-#endif // MGM240PB32VNA
+#elif defined(EFR32MG24B210F1536IM48)
+// MG24 v2.x pinout
+#define PWM_1H        PB0
+#define PWM_1L        PA8
+#define PWM_2H        PA9
+#define PWM_2L        PB5
+#define PWM_3H        PA0
+#define PWM_3L        PB2
+#define PWM_EN        PA4
+#define HALL_A        PB4
+#define HALL_B        PB1
+#define HALL_C        PB3
+#define CURR_SEN_A    PC9
+#define CURR_SEN_B    PD5
+#define CURR_SEN_C    PD4
+#define SPI_MOSI      PC1
+#define SPI_MISO      PC6
+#define SPI_SCK       PC3
+#define SPI_CS        PC8
+#else
+#error "Unsupported Device"
+#endif // Pin definitions
 
 #define EXAMPLE_CUSTOM                    0
 #define EXAMPLE_OPEN_LOOP_VELOCITY_6PWM   1

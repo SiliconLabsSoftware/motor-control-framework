@@ -38,15 +38,15 @@ This table describes the connections between the SparkFun Thing Plus Matter, the
 | `3.3V` | `3V3` | HALL/ENC Supply*  | 3.3V Power; the BoosterPack provides 3.3V through an LDO |
 | `GND`  | `PowerSupply GND` | HALL/ENC sensor GND | Common Ground |
 | N/A    | `PowerSupply 24V` | N/A | Power supply for power stage 4.4 to 45 V, consider motor power|
-| `A0`   | ? | ? | ? |
-| `A1`   | ? | ? | ? |
-| `A2`   | ? | ? | ? |
-| `A3`   | `ISENB` | N/A | Phase B current sense |
-| `A4`   | `ISENC` | N/A | Phase C current sense |
+| `A0`   | `VSENC` | N/A | Phase C Voltage sense (Optional, not mandatory to run examples) |
+| `A1`   | `VSENB` | N/A | Phase B Voltage sense (Optional, not mandatory to run examples) |
+| `A2`   | `VSENA` | N/A | Phase A Voltage sense (Optional, not mandatory to run examples) |
+| `A3`   | `ISENC` | N/A | Phase C current sense |
+| `A4`   | `ISENB` | N/A | Phase B current sense |
 | `A5`   | `ISENA` | N/A | Phase A current sense |
-| `A6`   | ? | ? | ? |
-| `A7`   | ? | ? | ? |
-| `A8`   | ? | ? | ? |
+| `A6`   | `VSENVPVDD`   | N/A | DC BUS Voltage sense (Optional, not mandatory to run examples)|
+| `A7`   | N/A | N/A | N/A|
+| `A8`   | `nFAULT` | N/A | Fault indicator, specific FAULT status can be obtained through the status registers |
 | `D0`   | N/A | HALL B or Encoder B | Motor sensor connection (Hall configuration in examples) |
 | `D1`   | N/A | N/A | N/A |
 | `D2`   | N/A | N/A | N/A |
