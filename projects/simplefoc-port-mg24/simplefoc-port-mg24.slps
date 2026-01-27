@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ASCII"?>
 <model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
   <descriptors name="simplefoc-port-mg24">
-    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.sisdk:2025.6.2._-1797643279-2373502477"/>
+    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.sisdk:2025.12.0._-337773319-563987568"/>
     <properties key="universalConfig.relativeWorkspacePath" value="../simplefoc-port-mg24.slcw"/>
     <properties key="universalConfig.generationDirectory" value=""/>
-    <properties key="universalConfig.toolchainCompatibility" value="iar gcc"/>
+    <properties key="universalConfig.toolchainCompatibility" value="iar llvm gcc"/>
     <properties key="projectCommon.overwriteCopiedSources" value="false"/>
     <properties key="projectCommon.boardIds" value="brd2704a:0.0.0.A00"/>
     <properties key="projectCommon.kitId" value=""/>
