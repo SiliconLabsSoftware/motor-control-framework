@@ -1,10 +1,10 @@
 .SUFFIXES:				# ignore builtin rules
-.PHONY: all clean simplefoc-port-mg24 docker_image docker_build docker_run
+.PHONY: all clean simplefoc-port-thingplusmatter simplefoc-port-brd4186c simplefoc-port-brd4401c docker_image docker_build docker_run
 
 TARGET ?= clean_build
 TYPE ?= Debug #Release
 
-COMPONENTS := simplefoc-port-mg24
+COMPONENTS := simplefoc-port-thingplusmatter simplefoc-port-brd4186c simplefoc-port-brd4401c
 all: $(COMPONENTS)
 $(COMPONENTS):
 	@echo 'Building $@...!'
@@ -16,7 +16,7 @@ clean:
 	)
 
 DOCKER_IMAGE_VERSION ?= latest
-DOCKER_IMAGE_NAME ?= simplefoc-port-mg24-build-env:$(DOCKER_IMAGE_VERSION)
+DOCKER_IMAGE_NAME ?= simplefoc-port-build-env:$(DOCKER_IMAGE_VERSION)
 DOCKER_WORKSPACE ?= /home/peps
 ifeq ($(OS),Windows_NT)
 	DOCKER_ARCH ?= x86_64

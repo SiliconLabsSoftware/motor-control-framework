@@ -26,7 +26,7 @@ on:
 permissions:
   contents: read
 env:
-  COMPONENTS: "simplefoc-port-mg24"
+  COMPONENTS: "simplefoc-port-thingplusmatter simplefoc-port-brd4186c simplefoc-port-brd4401c"
   PYTHON_VARIANTS: ""
   SONAR_HOST: "https://sonarqube.silabs.net"
 
