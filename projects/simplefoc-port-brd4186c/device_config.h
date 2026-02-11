@@ -18,8 +18,11 @@
 #ifndef DEVICE_CONFIG_H
 #define DEVICE_CONFIG_H
 
-#define ENABLE_MONITOR  0
-#define MOTOR_PP        8  // BLDC motor pole pairs
+#define ENABLE_MONITOR    0
+#define MOTOR_PP          8         // BLDC motor pole pairs
+#define MOTOR_RESISTANCE  0.4       // BLDC motor resistance [Ohm]
+#define MOTOR_KV          285       // Motor KV rate [RPM per Volt]
+#define MOTOR_INDUCTANCE  0.000165  // Motor phase inductance [H]
 
 // Pin definitions for BRD4186C
 #define PWM_1H        PB0
@@ -44,6 +47,7 @@
 #define EXAMPLE_OPEN_LOOP_VELOCITY_6PWM   1
 #define EXAMPLE_HALL_SENSOR_VELOCITY_6PWM 2
 #define EXAMPLE_TORQUE_VELOCITY_6PWM      3
+#define EXAMPLE_SENSORLESS_VELOCITY_6PWM  4
 
 #define APPLICATION_EXAMPLE  EXAMPLE_CUSTOM
 // Add more device configurations as needed
