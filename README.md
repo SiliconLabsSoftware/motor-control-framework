@@ -1,73 +1,30 @@
-# Developer Services template project
-This repository contains a hardware abstraction layer (HAL) port of the SimpleFOC motor control library for Silicon Labs SDK (SiSDK), with specific support for the SparkFun Thing Plus Matter MGM240P development board.
-## How to use the template
-1. Import the [basic ruleset](https://github.com/SiliconLabsSoftware/devs-template/blob/main/.github/rulesets/Silabs-basic-public-ruleset.json). Follow the official GitHub [guide](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-organization-settings/managing-rulesets-for-repositories-in-your-organization#importing-a-ruleset).
-2. Update if necessary the [issue_templates](.github/ISSUE_TEMPLATE/) and the [pull request template](./.github/PULL_REQUEST_TEMPLATE.md)
-3. Create your sw projects under [projects/](projects/) folder.
-4. Check [.gitignore](.gitignore) file and modify it if it is necessary
-5. Check the [./Dockerfile](./Dockerfile) and extend it if necessary
-6. Make sure that the whole project can be compiled with a single "make all" command.  
-   also implement "make clean"
-7. Fill out the [CODEOWNERS](./.github/CODEOWNERS) file. Here is the official github [guide](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
-8. Add github app private key for CLA assistant signature. Contact silicon labs github support person for it.
-9. Check the available [workflows](./.github/workflows) and adjust them according to the repo types (internal or public)
-10. Update this Readme file and remove this list from it.
+# SimpleFOC Port for Silicon Labs SDK
+This repository contains a hardware abstraction layer (HAL) port of the SimpleFOC motor control library for Silicon Labs SDK (SiSDK), with specific support for the following development boards:
+- SparkFun Thing Plus Matter MGM240P
+- BRD4186C
+- BRD4401C
 
 ## Hardware requirements
-* **[SparkFun Thing Plus Matter](https://www.sparkfun.com/sparkfun-thing-plus-matter-mgm240p.html)**
-* **DRV8305 BoosterPack (BOOSTXL-DRV8305EVM)**
-* **BLDC Motor: DF45M024053 – A2**
+* **Motor Control Interface Board** *(V1 with conversion board for Thing PLus Matter, V2 for Silabs radio boards)*
+* **Supported development board**:
+   * **[SparkFun Thing Plus Matter](https://www.sparkfun.com/sparkfun-thing-plus-matter-mgm240p.html)**
+   * **[BRD4186C](https://www.silabs.com/development-tools/wireless/xg24-rb4186c-efr32xg24-wireless-gecko-radio-board?tab=overview)**
+   * **[BRD4401C](https://www.silabs.com/development-tools/wireless/xg28-rb4401c-efr32xg28-2-4-ghz-ble-and-20-dbm-radio-board?tab=overview)**
+* **[DRV8305 BoosterPack (BOOSTXL-DRV8305EVM)](https://www.ti.com/tool/BOOSTXL-DRV8305EVM)**
+* **BLDC Motor: [DF45M024053 – A2](https://www.nanotec.com/eu/en/products/1789-df45m024053-a2)**
 * USB cable for programming and serial monitor
+* WSTK is required for programming the V2 interface board
 
 ## Hardware Setup
-### SparkFun Thing Plus Matter
-A dedicated interface board setup connecting the Motor - Power Stage - SparkFun Thing Plus Matter. Jump wires can be used as well to connect the boards.
+A dedicated interface board setup connecting the Motor - Power Stage - development board. Jump wires can be used as well to connect the boards.
 
-![hw_setup](resources/hw_with_thingplusmatter.png)
+![hw_setup_v1](resources/hw_with_thingplusmatter.png) ![hw_setup_v2](resources/hw_with_BRD.png)
 
-Connect the SparkFun Thing Plus Matter board to the DRV8305EVM according to the board pin mapping (phase outputs, PWM inputs, and Hall sensor connections).
+Wiring for the supported boards are available in the `projects/project_name/readme.md`:
+- [Sparkfun Thing Plus Matter](projects/simplefoc-port-thingplusmatter/readme.md)
+- [BRD4186C](projects/simplefoc-port-brd4186c/readme.md)
+- [BRD4401C](projects/simplefoc-port-brd4401c/readme.md)
 
-![MC Wiring](resources/sparkfunthingplusmatter_pinout.png)
-
-### Wiring Table: SparkFun Thing Plus Matter to BOOSTXL-DRV8305 & BLDC Motor
-
-This table describes the connections between the SparkFun Thing Plus Matter, the TI BOOSTXL-DRV8305 driver board, and a 3-phase BLDC motor with Hall sensors.
-
-| From (SparkFun Thing Plus Matter) | To (DRV8305 BoosterPack Pin) | BLDC MOTOR | Function / Description |
-| :--- | :--- | :--- | :---|
-| `3.3V` | `3V3` | HALL/ENC Supply*  | 3.3V Power; the BoosterPack provides 3.3V through an LDO |
-| `GND`  | `PowerSupply GND` | HALL/ENC sensor GND | Common Ground |
-| N/A    | `PowerSupply 24V` | N/A | Power supply for power stage 4.4 to 45 V, consider motor power|
-| `A0`   | `VSENC` | N/A | Phase C Voltage sense (Optional, not mandatory to run examples) |
-| `A1`   | `VSENB` | N/A | Phase B Voltage sense (Optional, not mandatory to run examples) |
-| `A2`   | `VSENA` | N/A | Phase A Voltage sense (Optional, not mandatory to run examples) |
-| `A3`   | `ISENC` | N/A | Phase C current sense |
-| `A4`   | `ISENB` | N/A | Phase B current sense |
-| `A5`   | `ISENA` | N/A | Phase A current sense |
-| `A6`   | `VSENVPVDD`   | N/A | DC BUS Voltage sense (Optional, not mandatory to run examples)|
-| `A7`   | N/A | N/A | N/A|
-| `A8`   | `nFAULT` | N/A | Fault indicator, specific FAULT status can be obtained through the status registers |
-| `D0`   | N/A | HALL B or Encoder B | Motor sensor connection (Hall configuration in examples) |
-| `D1`   | N/A | N/A | N/A |
-| `D2`   | N/A | N/A | N/A |
-| `D3`   | N/A | HALL A or Encoder A | Motor sensor connection (Hall configuration in examples) |
-| `D4`   | `PWMHA` | N/A | PWM Phase A High-Side Gate Signal |
-| `D5`   | `PWMLA` | N/A | PWM Phase A Low-Side Gate Signal |
-| `D6`   | `PWMHB` | N/A | PWM Phase B High-Side Gate Signal |
-| `D7`   | `PWMLB` | N/A | PWM Phase B Low-Side Gate Signal |
-| `D8`   | `PWMHC` | N/A | PWM Phase C High-Side Gate Signal |
-| `D9`   | `PWMLC` | N/A | PWM Phase C Low-Side Gate Signal |
-| `D10`  | `ENGATE` | N/A | Enable DRV8305 gate driver |
-| `D11`  | N/A | HALL C or Encoder Index | Motor sensor connection (Hall configuration in examples) |
-| N/A    | `PHASE U` | `PHASE U` | Motor phase connection |
-| N/A    | `PHASE V` | `PHASE V` | Motor phase connection |
-| N/A    | `PHASE W` | `PHASE W` | Motor phase connection |
-
-**Important Notes:**
-*   **Power:** Ensure the DRV8305's `PVDD` and `GVDD` jumpers are correctly set for your motor's voltage. The power supply should be rated at least twice the motor’s nominal power. The BoosterPack can supply the SparkFun Thing Plus Matter if it is not connected to USB.
-* **Rotor sensor:** Some Encoder or Hall sensors might require 5V supply, ensure proper level shifting if required.
-
----
 
 ## Build
 Build system dependency (these are installed if Simplicity Studio is installed):
@@ -76,6 +33,8 @@ Build system dependency (these are installed if Simplicity Studio is installed):
  - ARM GCC compiler (v12.2 or newer)
  - Make (optionally to run the utility scripts)
 
+All submodules should be initialized and updated before building. *(recommended to use `git submodule update --init --recursive`)*
+
 ### Build with Make
 To build every binary you shall run (in the root folder)
 ```shell
@@ -83,12 +42,18 @@ make
 ```
 
 The following build targets are available:
- - `all`  
-    Builds all firmware components. This is the default target.
- - `simplefoc-port-mg24`  
-    Builds the simpleFOC port firmware for Sparkfun Thing Plus Matter board.
- - `clean`  
-    Cleans all build artifacts from firmware components.
+- `all`  
+   Builds all firmware components. This is the default target.
+- `simplefoc-port-thingplusmatter`  
+   Builds the simpleFOC port firmware for Sparkfun Thing Plus Matter board.
+- `simplefoc-port-brd4186c`  
+   Builds the simpleFOC port firmware for BRD4186C board.
+- `simplefoc-port-brd4401c`  
+   Builds the simpleFOC port firmware for BRD4401C board.
+- `clean`  
+   Cleans all build artifacts from firmware components.
+
+*Note: The build can be found under the `projects/project_name/cmake_gcc/build/base` folder.*
 
 The following arguments can be added:
  - `TARGET`  
@@ -105,8 +70,8 @@ The following arguments can be added:
 
 Examples:
 ```shell
-make simplefoc-port-mg24 TARGET=build TYPE=Release
-make simplefoc-port-mg24 TARGET=clean_build
+make simplefoc-port-brd4186c TARGET=build TYPE=Release
+make simplefoc-port-thingplusmatter TARGET=clean_build
 make all
 ```
 
@@ -114,15 +79,15 @@ make all
 Dockerfile is also present in the root folder, to use it the following shall be done:
  1. Install Docker: https://docs.docker.com/engine/install/
  2. Build a docker image. (Default platform is x86_64.)  
-    `docker build . -t simplefoc-port-mg24-build-env:latest`  
+    `docker build . -t simplefoc-port-build-env:latest`  
     You can also use the Makefile to do this operation. This can also recognize Apple Silicon (aarch64).  
     `make docker_image`  
  3. Build the image  
-    `docker run --rm -v .:/home -w /home simplefoc-port-mg24-build-env:latest /bin/sh -c "make all"`  
-    With Makefile:  
+    `docker run --rm -v .:/home -w /home simplefoc-port-build-env:latest /bin/sh -c "make all"`  
+    With Makefile:   
     `make docker_build`  
 
-## Flashing of Sparkfun Thing Plus Matter board
+## Flashing the development board
 Can be flashed on any host with Simplicity Commander (or with any compatible ARM debugger).
 Simplicity Commander guide: https://www.silabs.com/documents/public/user-guides/ug162-simplicity-commander-reference-guide.pdf
 
