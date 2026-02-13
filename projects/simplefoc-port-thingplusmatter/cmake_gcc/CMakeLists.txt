@@ -1,6 +1,9 @@
 # Define minimal required version of CMake.
 cmake_minimum_required(VERSION "3.25")
 
+# Generate compile_commands.json for tooling (clangd, etc.)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Project definition
 project(
 	simplefoc-port-thingplusmatter

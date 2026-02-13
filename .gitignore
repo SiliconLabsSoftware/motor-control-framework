@@ -16,6 +16,8 @@
 **/IAR ARM*
 **/sonar-bw/
 **/.DS_Store
+**/.clangd
+**/compile_commands.json
 
 ##Enable these if you are not tracking Simplicity studio project
 # **/.cproject
