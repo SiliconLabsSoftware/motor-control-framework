@@ -40,6 +40,6 @@ jobs:
       - name: Check Code Convention
         uses: SiliconLabsSoftware/devs-coding-convention-tool@master
         with:
-          exclude-regex: ""
-          codespell-ignore-words: ""
+          exclude-regex: ".*\\.cmake$|.*vscode\\.conf$"
+          codespell-ignore-words: "shiftIn"
           codespell-skip-paths: ""

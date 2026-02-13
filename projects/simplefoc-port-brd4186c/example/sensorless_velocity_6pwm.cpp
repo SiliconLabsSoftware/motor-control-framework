@@ -192,7 +192,6 @@ static void motor_control_task(void *arg)
   float ramp_velocity = 0.0f;
   float dt = 0;
 
-
   while (1) {
     motor.loopFOC();
 
@@ -244,7 +243,6 @@ static void motor_control_task(void *arg)
         motor.move();
         break;
       }
-
     }
 
 #if ENABLE_MONITOR

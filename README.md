@@ -84,7 +84,7 @@ Dockerfile is also present in the root folder, to use it the following shall be 
     `make docker_image`  
  3. Build the image  
     `docker run --rm -v .:/home -w /home simplefoc-port-build-env:latest /bin/sh -c "make all"`  
-    With Makefile:   
+    With Makefile:  
     `make docker_build`  
 
 ## Flashing the development board

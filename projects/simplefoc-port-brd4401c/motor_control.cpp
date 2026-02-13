@@ -41,11 +41,9 @@
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
-BLDCMotor *motor_p;
-BLDCDriver6PWM *driver_p;
-HallSensor *sensor_p;
-Commander *command_p;
-LowsideCurrentSense *current_sense_p;
+static BLDCMotor *motor_p;
+static HallSensor *sensor_p;
+static Commander *commander_p;
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
@@ -57,24 +55,26 @@ static void motor_control_task(void *arg);
  ******************************************************************************/
 void doMotor(char* cmd)
 {
-  if (!command_p) {
+  if (!commander_p) {
     return;
   }
-  command_p->motor(motor_p, cmd);
+  commander_p->motor(motor_p, cmd);
 }
 
-void doA()
-{
-  sensor_p->handleA();
-}
-void doB()
-{
-  sensor_p->handleB();
-}
-void doC()
-{
-  sensor_p->handleC();
-}
+// TODO: Hall sensor callbacks
+// Example code for hall sensor callbacks
+// void doA()
+// {
+//   sensor_p->handleA();
+// }
+// void doB()
+// {
+//   sensor_p->handleB();
+// }
+// void doC()
+// {
+//   sensor_p->handleC();
+// }
 /***************************************************************************//**
  * Initialize blink example.
  ******************************************************************************/
@@ -121,9 +121,9 @@ static void motor_control_task(void *arg)
   // TODO: (optional) current sense setup
 
   // commander setup
-  static Commander command(Serial);
-  command_p = &command;
-  command.add('M', doMotor, "motor");
+  static Commander commander(Serial);
+  commander_p = &commander;
+  commander.add('M', doMotor, "motor");
 
   Serial.println("Commander ready.");
 
@@ -138,7 +138,7 @@ static void motor_control_task(void *arg)
   #endif
 
     // user communication
-    command.run();
+    commander.run();
 
     vTaskDelay(xDelay);
   }
