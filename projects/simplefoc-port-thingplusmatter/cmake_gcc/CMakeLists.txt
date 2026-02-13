@@ -66,6 +66,7 @@ add_executable(simplefoc-port-thingplusmatter
     ${CMAKE_CURRENT_LIST_DIR}/../example/open_loop_velocity_6pwm.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../example/hall_sensor_velocity_6pwm.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../example/torque_velocity_6pwm.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../example/sensorless_velocity_6pwm.cpp
 )
 
 target_include_directories(simplefoc-port-thingplusmatter PUBLIC
