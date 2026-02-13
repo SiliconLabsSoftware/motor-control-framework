@@ -157,6 +157,11 @@ static void motor_control_task(void *arg)
 
   motor.current_limit = MOTOR_CURRENT_LIMIT_A;
 
+#if ENABLE_MONITOR
+  motor.useMonitoring(Serial);
+  motor.monitor_variables = _MON_TARGET | _MON_CURR_Q | _MON_CURR_D | _MON_VEL;
+#endif
+
   if (!motor.init()) {
     Serial.println("Motor init failed!");
     return;
@@ -241,6 +246,10 @@ static void motor_control_task(void *arg)
       }
 
     }
+
+#if ENABLE_MONITOR
+    motor.monitor();
+#endif
 
     commander.run();
 

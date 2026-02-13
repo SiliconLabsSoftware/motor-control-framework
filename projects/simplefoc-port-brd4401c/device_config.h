@@ -14,15 +14,16 @@
  * sections of the MSLA applicable to Source Code.
  *
  ******************************************************************************/
-
 #ifndef DEVICE_CONFIG_H
 #define DEVICE_CONFIG_H
 
-#define ENABLE_MONITOR    0
-#define MOTOR_PP          8         // BLDC motor pole pairs
-#define MOTOR_RESISTANCE  0.4       // BLDC motor resistance [Ohm]
-#define MOTOR_KV          285       // Motor KV rate [RPM per Volt]
-#define MOTOR_INDUCTANCE  0.000165  // Motor phase inductance [H]
+#define ENABLE_MONITOR              0         // [0/1]: Enable motor monitoring
+#define MOTOR_PP                    8         // BLDC motor pole pairs
+#define MOTOR_RESISTANCE            0.4       // [Ohm]: BLDC motor resistance
+#define MOTOR_KV                    285       // [RPM/V]: Motor KV rate
+#define MOTOR_INDUCTANCE            0.000165  // [H]: Motor phase inductance
+#define DRIVER_SHUNT_RESISTANCE     0.007     // [Ohm]: Driver shunt resistance
+#define DRIVER_SHUNT_GAIN           10.0      // [V/A]: Driver shunt gain
 
 // Pin definitions for BRD4401C
 #define PWM_1H        PB0

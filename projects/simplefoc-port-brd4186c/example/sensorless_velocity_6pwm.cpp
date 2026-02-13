@@ -49,7 +49,7 @@
 #define DRIVER_PSU_VOLTAGE_V            24.0f     // [V]: power supply voltage
 #define DRIVER_VOLTAGE_LIMIT_V          12.0f     // [V]: Hard limit on output voltage, in volts. Effectively limits PWM duty cycle proportionally to power supply voltage.
 #define MOTOR_VOLTAGE_LIMIT_V           12.0f     // [V]: Global voltage limit. Limits Q-axis voltage.
-#define MOTOR_CURRENT_LIMIT_A           3.0f      // [A]: Global current limit. Limits Q-axis current.
+#define MOTOR_CURRENT_LIMIT_A           4.0f      // [A]: Global current limit. Limits Q-axis current.
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
@@ -157,6 +157,11 @@ static void motor_control_task(void *arg)
 
   motor.current_limit = MOTOR_CURRENT_LIMIT_A;
 
+#if ENABLE_MONITOR
+  motor.useMonitoring(Serial);
+  motor.monitor_variables = _MON_TARGET | _MON_CURR_Q | _MON_CURR_D | _MON_VEL;
+#endif
+
   if (!motor.init()) {
     Serial.println("Motor init failed!");
     return;
@@ -241,6 +246,10 @@ static void motor_control_task(void *arg)
       }
 
     }
+
+#if ENABLE_MONITOR
+    motor.monitor();
+#endif
 
     commander.run();
 

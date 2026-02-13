@@ -38,13 +38,18 @@
 #ifndef MC_TASK_PRIO
 #define MC_TASK_PRIO            30
 #endif
+
+#define DRIVER_PWM_FREQ_HZ              20000     // [Hz]: PWM frequency
+#define DRIVER_DEAD_ZONE                0.0f      // (DRV8305 has built in deadzone config)
+#define DRIVER_PSU_VOLTAGE_V            24.0f     // [V]: power supply voltage
+#define DRIVER_VOLTAGE_LIMIT_V          12.0f     // [V]: Hard limit on output voltage, in volts. Effectively limits PWM duty cycle proportionally to power supply voltage.
+#define MOTOR_VELOCITY_LIMIT_RPM        530.0f    // [RPM]: Motor velocity limit.
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
-BLDCMotor *motor_p;
-BLDCDriver6PWM *driver_p;
-HallSensor *sensor_p;
-Commander *command_p;
+static BLDCMotor *motor_p;
+static Commander *commander_p;
+static HallSensor *sensor_p;
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
@@ -56,10 +61,10 @@ static void motor_control_task(void *arg);
  ******************************************************************************/
 void doMotor(char* cmd)
 {
-  if (!command_p) {
+  if (!commander_p) {
     return;
   }
-  command_p->motor(motor_p, cmd);
+  commander_p->motor(motor_p, cmd);
 }
 
 void doA()
@@ -117,22 +122,20 @@ static void motor_control_task(void *arg)
   // driver setup
   static BLDCDriver6PWM driver(PWM_1H, PWM_1L, PWM_2H, PWM_2L, PWM_3H, PWM_3L, PWM_EN);
   // power supply voltage [V]
-  driver.voltage_power_supply = 24;
+  driver.voltage_power_supply = DRIVER_PSU_VOLTAGE_V;
   // pwm frequency to be used [Hz]
-  driver.pwm_frequency = 20000; // 20 kHz
+  driver.pwm_frequency = DRIVER_PWM_FREQ_HZ; // 20 kHz
   // Max DC voltage allowed - default voltage_power_supply
-  driver.voltage_limit = 12;
+  driver.voltage_limit = DRIVER_VOLTAGE_LIMIT_V;
   // dead zone percentage of the duty cycle - default 0.02 - 2%
   // Can set value to 0 because the DRV8305 will provide the
   // required dead-time.
-  driver.dead_zone = 0;
+  driver.dead_zone = DRIVER_DEAD_ZONE;
 
   if (!driver.init()) {
     Serial.println("Driver init failed!");
     return;
   }
-
-  driver_p = &driver;
 
   driver.enable();
 
@@ -150,7 +153,7 @@ static void motor_control_task(void *arg)
   motor.linkSensor(&sensor);
 
   // Set below the motor's max 5600 RPM limit = 586 rad/s
-  motor.velocity_limit = 530.0f;
+  motor.velocity_limit = MOTOR_VELOCITY_LIMIT_RPM;
   // set motion control loop to be used
   motor.controller = MotionControlType::velocity;
   // choose FOC modulation (optional) - SinePWM or SpaceVectorPWM
@@ -158,7 +161,7 @@ static void motor_control_task(void *arg)
   // controller configuration
   // velocity PI controller parameters
   motor.PID_velocity.P = 0.05f;
-  motor.PID_velocity.I = 1;
+  motor.PID_velocity.I = 0.4f;
   // velocity low pass filtering time constant
   motor.LPF_velocity.Tf = 0.01f;
 
@@ -173,9 +176,9 @@ static void motor_control_task(void *arg)
   }
 
   // commander setup
-  static Commander command(Serial);
-  command_p = &command;
-  command.add('M', doMotor, "motor");
+  static Commander commander(Serial);
+  commander_p = &commander;
+  commander.add('M', doMotor, "motor");
 
   if (!motor.initFOC()) {
     Serial.println("FOC init failed!");
@@ -200,17 +203,15 @@ static void motor_control_task(void *arg)
     // You can also use motor.move() and set the motor.target in the code
     motor.move();
 
-  #if ENABLE_MONITOR
-    // function intended to be used with serial plotter to monitor motor variables
-    // significantly slowing the execution down!!!!
+#if ENABLE_MONITOR
     motor.monitor();
-  #endif
+#endif
 
     // user communication
-    command.run();
+    commander.run();
 
     vTaskDelay(xDelay);
   }
 }
 
-#endif // APPLICATION_EXAMPLE == EXAMPLE_CUSTOM
+#endif // APPLICATION_EXAMPLE == EXAMPLE_HALL_SENSOR_VELOCITY_6PWM

@@ -38,14 +38,19 @@
 #ifndef MC_TASK_PRIO
 #define MC_TASK_PRIO            30
 #endif
+
+#define DRIVER_PWM_FREQ_HZ              20000     // [Hz]: PWM frequency
+#define DRIVER_DEAD_ZONE                0.0f      // (DRV8305 has built in deadzone config)
+#define DRIVER_PSU_VOLTAGE_V            24.0f     // [V]: power supply voltage
+#define DRIVER_VOLTAGE_LIMIT_V          12.0f     // [V]: Hard limit on output voltage, in volts. Effectively limits PWM duty cycle proportionally to power supply voltage.
+#define MOTOR_VOLTAGE_LIMIT_V           12.0f     // [V]: Global voltage limit. Limits Q-axis voltage.
+#define MOTOR_VELOCITY_LIMIT_RPM        530.0f    // [RPM]: Motor velocity limit.
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
-BLDCMotor *motor_p;
-BLDCDriver6PWM *driver_p;
-HallSensor *sensor_p;
-Commander *command_p;
-LowsideCurrentSense *current_sense_p;
+static BLDCMotor *motor_p;
+static HallSensor *sensor_p;
+static Commander *commander_p;
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
@@ -57,10 +62,10 @@ static void motor_control_task(void *arg);
  ******************************************************************************/
 void doMotor(char* cmd)
 {
-  if (!command_p) {
+  if (!commander_p) {
     return;
   }
-  command_p->motor(motor_p, cmd);
+  commander_p->motor(motor_p, cmd);
 }
 
 void doA()
@@ -118,22 +123,20 @@ static void motor_control_task(void *arg)
   // driver setup
   static BLDCDriver6PWM driver(PWM_1H, PWM_1L, PWM_2H, PWM_2L, PWM_3H, PWM_3L, PWM_EN);
   // power supply voltage [V]
-  driver.voltage_power_supply = 24;
+  driver.voltage_power_supply = DRIVER_PSU_VOLTAGE_V;
   // pwm frequency to be used [Hz]
-  driver.pwm_frequency = 20000; // 20 kHz
+  driver.pwm_frequency = DRIVER_PWM_FREQ_HZ; // 20 kHz
   // Max DC voltage allowed - default voltage_power_supply
-  driver.voltage_limit = 12;
+  driver.voltage_limit = DRIVER_VOLTAGE_LIMIT_V;
   // dead zone percentage of the duty cycle - default 0.02 - 2%
   // Can set value to 0 because the DRV8305 will provide the
   // required dead-time.
-  driver.dead_zone = 0;
+  driver.dead_zone = DRIVER_DEAD_ZONE;
 
   if (!driver.init()) {
     Serial.println("Driver init failed!");
     return;
   }
-
-  driver_p = &driver;
 
   driver.enable();
 
@@ -151,7 +154,7 @@ static void motor_control_task(void *arg)
   motor.linkSensor(&sensor);
 
   // Set below the motor's max 5600 RPM limit = 586 rad/s
-  motor.velocity_limit = 530.0f;
+  motor.velocity_limit = MOTOR_VELOCITY_LIMIT_RPM;
   // set motion control loop to be used
   motor.controller = MotionControlType::velocity;
   // choose FOC modulation (optional) - SinePWM or SpaceVectorPWM
@@ -168,12 +171,12 @@ static void motor_control_task(void *arg)
 
   // current q loop PID
   motor.PID_current_q.P = 1.0f;
-  motor.PID_current_q.I = 100.0f;
+  motor.PID_current_q.I = 50.0f;
   motor.LPF_current_q.Tf = 0.05f;
 
   // current d loop PID
   motor.PID_current_d.P = 1.0f;
-  motor.PID_current_d.I = 100.0f;
+  motor.PID_current_d.I = 50.0f;
   motor.LPF_current_d.Tf = 0.05f;
 
   motor.target = 0.0f;
@@ -189,13 +192,12 @@ static void motor_control_task(void *arg)
   }
 
   // commander setup
-  static Commander command(Serial);
-  command_p = &command;
-  command.add('M', doMotor, "motor");
+  static Commander commander(Serial);
+  commander_p = &commander;
+  commander.add('M', doMotor, "motor");
 
   // Current Sense
-  static LowsideCurrentSense current_sense(0.007f, 10.0f, CURR_SEN_A, CURR_SEN_B, CURR_SEN_C);
-  current_sense_p = &current_sense;
+  static LowsideCurrentSense current_sense(DRIVER_SHUNT_RESISTANCE, DRIVER_SHUNT_GAIN, CURR_SEN_A, CURR_SEN_B, CURR_SEN_C);
 
   current_sense.linkDriver(&driver);
 
@@ -203,11 +205,6 @@ static void motor_control_task(void *arg)
     Serial.println("Current Sense init failed!");
     return;
   }
-
-  // DRV8305 has inverted gains on all channels
-  // current_sense.gain_a *= -1;
-  // current_sense.gain_b *= -1;
-  // current_sense.gain_c *= -1;
 
   // link the motor and the driver
   motor.linkCurrentSense(&current_sense);
@@ -235,17 +232,15 @@ static void motor_control_task(void *arg)
     // You can also use motor.move() and set the motor.target in the code
     motor.move();
 
-  #if ENABLE_MONITOR
-    // function intended to be used with serial plotter to monitor motor variables
-    // significantly slowing the execution down!!!!
+#if ENABLE_MONITOR
     motor.monitor();
-  #endif
+#endif
 
     // user communication
-    command.run();
+    commander.run();
 
     vTaskDelay(xDelay);
   }
 }
 
-#endif // APPLICATION_EXAMPLE == EXAMPLE_CUSTOM
+#endif // APPLICATION_EXAMPLE == EXAMPLE_TORQUE_VELOCITY_6PWM

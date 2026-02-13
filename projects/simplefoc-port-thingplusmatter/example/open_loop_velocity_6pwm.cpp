@@ -38,12 +38,17 @@
 #ifndef MC_TASK_PRIO
 #define MC_TASK_PRIO            30
 #endif
+
+#define DRIVER_PWM_FREQ_HZ              20000     // [Hz]: PWM frequency
+#define DRIVER_DEAD_ZONE                0.0f      // (DRV8305 has built in deadzone config)
+#define DRIVER_PSU_VOLTAGE_V            24.0f     // [V]: power supply voltage
+#define DRIVER_VOLTAGE_LIMIT_V          12.0f     // [V]: Hard limit on output voltage, in volts. Effectively limits PWM duty cycle proportionally to power supply voltage.
+#define MOTOR_VOLTAGE_LIMIT_V           0.8f      // [V]: Global voltage limit. Limits Q-axis voltage.
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
-BLDCMotor *motor_p;
-BLDCDriver6PWM *driver_p;
-Commander *command_p;
+static BLDCMotor *motor_p;
+static Commander *commander_p;
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
@@ -55,10 +60,10 @@ static void motor_control_task(void *arg);
  ******************************************************************************/
 void doMotor(char* cmd)
 {
-  if (!command_p) {
+  if (!commander_p) {
     return;
   }
-  command_p->motor(motor_p, cmd);
+  commander_p->motor(motor_p, cmd);
 }
 /***************************************************************************//**
  * Initialize Open Loop Velocity 6PWM example.
@@ -103,22 +108,20 @@ static void motor_control_task(void *arg)
   // driver setup
   static BLDCDriver6PWM driver(PWM_1H, PWM_1L, PWM_2H, PWM_2L, PWM_3H, PWM_3L, PWM_EN);
   // power supply voltage [V]
-  driver.voltage_power_supply = 24;
+  driver.voltage_power_supply = DRIVER_PSU_VOLTAGE_V;
   // pwm frequency to be used [Hz]
-  driver.pwm_frequency = 20000; // 20 kHz
+  driver.pwm_frequency = DRIVER_PWM_FREQ_HZ; // 20 kHz
   // Max DC voltage allowed - default voltage_power_supply
-  driver.voltage_limit = 12;
+  driver.voltage_limit = DRIVER_VOLTAGE_LIMIT_V;
   // dead zone percentage of the duty cycle - default 0.02 - 2%
   // Can set value to 0 because the DRV8305 will provide the
   // required dead-time.
-  driver.dead_zone = 0;
+  driver.dead_zone = DRIVER_DEAD_ZONE;
 
   if (!driver.init()) {
     Serial.println("Driver init failed!");
     return;
   }
-
-  driver_p = &driver;
 
   driver.enable();
 
@@ -127,7 +130,7 @@ static void motor_control_task(void *arg)
   motor.linkDriver(&driver);
 
   // default voltage_power_supply
-  motor.voltage_limit = 0.8f;
+  motor.voltage_limit = MOTOR_VOLTAGE_LIMIT_V;
   // set motion control loop to be used
   motor.controller = MotionControlType::velocity_openloop;
   // choose FOC modulation (optional) - SinePWM or SpaceVectorPWM
@@ -144,9 +147,9 @@ static void motor_control_task(void *arg)
   }
 
   // commander setup
-  static Commander command(Serial);
-  command_p = &command;
-  command.add('M', doMotor, "motor");
+  static Commander commander(Serial);
+  commander_p = &commander;
+  commander.add('M', doMotor, "motor");
 
   motor_p = &motor;
 
@@ -160,10 +163,10 @@ static void motor_control_task(void *arg)
 #if ENABLE_MONITOR
     motor.monitor();
 #endif
-    command.run();
+    commander.run();
 
     vTaskDelay(xDelay);
   }
 }
 
-#endif // APPLICATION_EXAMPLE == EXAMPLE_CUSTOM
+#endif // APPLICATION_EXAMPLE == EXAMPLE_OPEN_LOOP_VELOCITY_6PWM
