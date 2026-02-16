@@ -1,0 +1,82 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: simplefoc-port-brd4401c
+label: simplefoc-port-brd4401c
+description: |
+  This example project shows an empty configuration that can be used as a starting point to add components and functionality.
+category: Example|Platform
+filter:
+- name: Device Type
+  value:
+  - SoC
+- name: MCU
+  value:
+  - 32-bit MCU
+- name: Project Difficulty
+  value:
+  - Beginner
+package: platform
+quality: production
+readme:
+- path: readme.md
+source:
+- path: app.cpp
+include:
+- path: .
+  file_list:
+  - path: app.h
+sdk:
+  vendor: silabs
+  id: simplicity_sdk
+  version: 2025.12.0
+toolchain_settings: [
+  ]
+component:
+- package: simplicity_sdk
+  vendor: silabs
+  id: EFR32ZG28B322F1024IM68
+- package: simplicity_sdk
+  vendor: silabs
+  id: clock_manager
+- package: simplicity_sdk
+  vendor: silabs
+  id: cpp_support
+- package: simplicity_sdk
+  vendor: silabs
+  id: device_init
+- package: simplicity_sdk
+  vendor: silabs
+  id: dmadrv
+- package: simplicity_sdk
+  vendor: silabs
+  id: emlib_rmu
+- package: simplicity_sdk
+  vendor: silabs
+  id: freertos_heap_3
+- package: simplicity_sdk
+  vendor: silabs
+  id: hal_iadc
+- package: simplicity_sdk
+  vendor: silabs
+  id: hal_prs
+- package: simplicity_sdk
+  vendor: silabs
+  id: hal_timer
+- package: simplicity_sdk
+  vendor: silabs
+  id: iostream_rtt
+- package: simplicity_sdk
+  vendor: silabs
+  id: sl_main
+- package: simplicity_sdk
+  vendor: silabs
+  id: sleeptimer
+- package: simplicity_sdk
+  vendor: silabs
+  id: udelay
+define:
+- name: DEBUG_EFM
+ui_hints:
+  highlight:
+  - path: readme.md
+    focus: true
+

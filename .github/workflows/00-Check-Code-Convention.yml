@@ -5,17 +5,17 @@ on:
       - main
       - master
       - "release/**"
+      - develop
   workflow_dispatch:
     inputs:
       branch:
         description: "Branch to test"
         type: string
         default: "main"
-
 jobs:
   job1:
     name: Check coding convention
-    runs-on: [self-hosted, jammy] #uncrustify 0.64 can not be compiled on ubuntu-24.04
+    runs-on: [self-hosted, jammy]
     steps:
       - name: Trigger
         run: echo "Triggered by ${{github.event_name}} event"
@@ -40,6 +40,6 @@ jobs:
       - name: Check Code Convention
         uses: SiliconLabsSoftware/devs-coding-convention-tool@master
         with:
-          exclude-regex: ""
-          codespell-ignore-words: ""
+          exclude-regex: ".*\\.cmake$|.*vscode\\.conf$"
+          codespell-ignore-words: "shiftIn"
           codespell-skip-paths: ""
