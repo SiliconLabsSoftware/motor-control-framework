@@ -6,13 +6,13 @@ on:
       - master
       - develop
       - "release/**"
+      - develop
   workflow_dispatch:
     inputs:
       branch:
         description: "Branch to test"
         type: string
         default: "main"
-
 jobs:
   job1:
     name: Check coding convention

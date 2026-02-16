@@ -6,6 +6,9 @@ on:
             - master
             - develop
             - "release/**"
+permissions:
+  contents: read
+
 jobs:
   trufflehog_scan:
     runs-on: ubuntu-24.04
