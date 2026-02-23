@@ -15,9 +15,9 @@
  *
  ******************************************************************************/
 #include "device_config.h"
- 
+
 #if APPLICATION_EXAMPLE == EXAMPLE_SENSORLESS_VELOCITY_6PWM
- 
+
 #include "cmsis_os2.h"
 #include "motor_control.h"
 #include "FreeRTOS.h"
@@ -101,21 +101,21 @@ void doMotor(char* cmd)
 void motor_control_init(void)
 {
   xHandle_io = xTaskCreateStatic(io_task,
-                              "io task",
-                              IO_TASK_STACK_SIZE,
-                              ( void * ) NULL,
-                              IO_TASK_PRIO,
-                              xStack_io,
-                              &xTaskBuffer_io);
+                                 "io task",
+                                 IO_TASK_STACK_SIZE,
+                                 ( void * ) NULL,
+                                 IO_TASK_PRIO,
+                                 xStack_io,
+                                 &xTaskBuffer_io);
   EFM_ASSERT(xHandle_io != NULL);
 
   xHandle_mc = xTaskCreateStatic(motor_control_task,
-                              "motor control task",
-                              MC_TASK_STACK_SIZE,
-                              ( void * ) NULL,
-                              MC_TASK_PRIO,
-                              xStack_mc,
-                              &xTaskBuffer_mc);
+                                 "motor control task",
+                                 MC_TASK_STACK_SIZE,
+                                 ( void * ) NULL,
+                                 MC_TASK_PRIO,
+                                 xStack_mc,
+                                 &xTaskBuffer_mc);
   EFM_ASSERT(xHandle_mc != NULL);
 
   uint32_t timer_frequency;
@@ -287,7 +287,7 @@ static void motor_control_task(void *arg)
   uint32_t foc_tick = 0;
 
   while (1) {
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
     motor_p->loopFOC();
     if (++foc_tick >= VELOCITY_LOOP_DOWNSAMPLE) {
       foc_tick = 0;

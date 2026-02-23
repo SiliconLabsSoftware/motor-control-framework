@@ -38,11 +38,11 @@
  #define MC_TASK_STACK_SIZE              4096
  #define MC_TASK_PRIO                    osPriorityRealtime5
  #define MC_TASK_TIMER_PERIPHERAL        SL_PERIPHERAL_TIMER3
- 
+
  #define IO_TASK_DELAY_MS                1
  #define IO_TASK_STACK_SIZE              1024
  #define IO_TASK_PRIO                    osPriorityNormal
- 
+
  #define VELOCITY_LOOP_DOWNSAMPLE        5
 
 #define DRIVER_PWM_FREQ_HZ              20000     // [Hz]: PWM frequency
@@ -101,57 +101,57 @@ void doC()
 /***************************************************************************//**
  * Initialize Torque Sensor Velocity 6PWM example.
  ******************************************************************************/
- void motor_control_init(void)
- {
-   xHandle_io = xTaskCreateStatic(io_task,
-                               "io task",
-                               IO_TASK_STACK_SIZE,
-                               ( void * ) NULL,
-                               IO_TASK_PRIO,
-                               xStack_io,
-                               &xTaskBuffer_io);
-   EFM_ASSERT(xHandle_io != NULL);
- 
-   xHandle_mc = xTaskCreateStatic(motor_control_task,
-                               "motor control task",
-                               MC_TASK_STACK_SIZE,
-                               ( void * ) NULL,
-                               MC_TASK_PRIO,
-                               xStack_mc,
-                               &xTaskBuffer_mc);
-   EFM_ASSERT(xHandle_mc != NULL);
- 
-   uint32_t timer_frequency;
-   uint32_t timer_top = 0xFFFFFFFF;
-   uint32_t timer_prescaler = 0;
- 
-   sl_clock_manager_enable_bus_clock(MC_TASK_TIMER_PERIPHERAL->bus_clock);
-   sl_clock_manager_get_clock_branch_frequency(MC_TASK_TIMER_PERIPHERAL->clk_branch, &timer_frequency);
- 
-   while (timer_top > 0xFFFF) {
-     timer_top = timer_frequency / MC_TASK_FREQUENCY_HZ;
- 
-     if (timer_top == 0) {
-       timer_top = 1;
-       break;
-     } else if (timer_top > 0xFFFF) {
-       timer_frequency /= 2;
-       timer_prescaler = (timer_prescaler << 1) | 1;
-     } else {
-       break;
-     }
-   }
- 
-   sl_hal_timer_init_t timer_init = SL_HAL_TIMER_INIT_DEFAULT;
-   timer_init.prescaler = (sl_hal_timer_prescaler_t)timer_prescaler;
- 
-   sl_hal_timer_init((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, &timer_init);
-   sl_hal_timer_enable((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
-   sl_hal_timer_stop((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
-   sl_hal_timer_set_top((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, timer_top);
-   sl_hal_timer_disable_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
-   sl_hal_timer_clear_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
- }
+void motor_control_init(void)
+{
+  xHandle_io = xTaskCreateStatic(io_task,
+                                 "io task",
+                                 IO_TASK_STACK_SIZE,
+                                 ( void * ) NULL,
+                                 IO_TASK_PRIO,
+                                 xStack_io,
+                                 &xTaskBuffer_io);
+  EFM_ASSERT(xHandle_io != NULL);
+
+  xHandle_mc = xTaskCreateStatic(motor_control_task,
+                                 "motor control task",
+                                 MC_TASK_STACK_SIZE,
+                                 ( void * ) NULL,
+                                 MC_TASK_PRIO,
+                                 xStack_mc,
+                                 &xTaskBuffer_mc);
+  EFM_ASSERT(xHandle_mc != NULL);
+
+  uint32_t timer_frequency;
+  uint32_t timer_top = 0xFFFFFFFF;
+  uint32_t timer_prescaler = 0;
+
+  sl_clock_manager_enable_bus_clock(MC_TASK_TIMER_PERIPHERAL->bus_clock);
+  sl_clock_manager_get_clock_branch_frequency(MC_TASK_TIMER_PERIPHERAL->clk_branch, &timer_frequency);
+
+  while (timer_top > 0xFFFF) {
+    timer_top = timer_frequency / MC_TASK_FREQUENCY_HZ;
+
+    if (timer_top == 0) {
+      timer_top = 1;
+      break;
+    } else if (timer_top > 0xFFFF) {
+      timer_frequency /= 2;
+      timer_prescaler = (timer_prescaler << 1) | 1;
+    } else {
+      break;
+    }
+  }
+
+  sl_hal_timer_init_t timer_init = SL_HAL_TIMER_INIT_DEFAULT;
+  timer_init.prescaler = (sl_hal_timer_prescaler_t)timer_prescaler;
+
+  sl_hal_timer_init((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, &timer_init);
+  sl_hal_timer_enable((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
+  sl_hal_timer_stop((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
+  sl_hal_timer_set_top((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, timer_top);
+  sl_hal_timer_disable_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
+  sl_hal_timer_clear_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
+}
 
 /*******************************************************************************
  * Torque Sensor Velocity 6PWM task.
@@ -274,7 +274,7 @@ static void motor_control_task(void *arg)
   uint32_t foc_tick = 0;
 
   while (1) {
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    xTaskNotifyWait(0, 0, NULL, portMAX_DELAY);
     motor_p->loopFOC();
     if (++foc_tick >= VELOCITY_LOOP_DOWNSAMPLE) {
       foc_tick = 0;

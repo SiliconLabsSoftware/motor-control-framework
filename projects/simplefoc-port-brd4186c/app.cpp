@@ -32,7 +32,7 @@ void app_init(void)
   arduino_layer_init();
   motor_control_init();
 #if ENABLE_BLE
-sl_bt_system_start_bluetooth();
+  sl_bt_system_start_bluetooth();
 #endif
 }
 
