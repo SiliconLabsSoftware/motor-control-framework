@@ -14,9 +14,9 @@
  * sections of the MSLA applicable to Source Code.
  *
  ******************************************************************************/
- #include "device_config.h"
+#include "device_config.h"
  
- #if APPLICATION_EXAMPLE == EXAMPLE_SENSORLESS_VELOCITY_6PWM
+#if APPLICATION_EXAMPLE == EXAMPLE_SENSORLESS_VELOCITY_6PWM
  
 #include "cmsis_os2.h"
 #include "motor_control.h"
@@ -27,8 +27,10 @@
 
 #include "../external/simplefoc/src/SimpleFOC.h"
 #include "MXLEMMINGObserverSensor.h"
-#include "../../common/ble_stream_adapter/ble_stream_adapter.h"
 
+#if ENABLE_BLE
+#include "../../common/ble_stream_adapter/ble_stream_adapter.h"
+#endif
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
@@ -304,7 +306,9 @@ static void io_task(void *arg)
       motor_p->monitor();
 #endif
       commander_p->run();
+#if ENABLE_BLE
       commander_p->run(bleStreamAdapter);
+#endif
     }
     vTaskDelay(pdMS_TO_TICKS(IO_TASK_DELAY_MS));
   }

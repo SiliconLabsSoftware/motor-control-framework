@@ -24,6 +24,10 @@
 
 #include "../../external/simplefoc/src/SimpleFOC.h"
 
+#if ENABLE_BLE
+#include "../../common/ble_stream_adapter/ble_stream_adapter.h"
+#endif
+
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
@@ -164,7 +168,9 @@ static void motor_control_task(void *arg)
     motor.monitor();
 #endif
     commander.run();
-
+#if ENABLE_BLE
+    commander.run(bleStreamAdapter);
+#endif
     vTaskDelay(xDelay);
   }
 }

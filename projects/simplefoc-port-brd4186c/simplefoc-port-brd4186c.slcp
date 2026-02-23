@@ -42,6 +42,9 @@ component:
   id: bluetooth_feature_gatt_server
 - package: simplicity_sdk
   vendor: silabs
+  id: bluetooth_on_demand_start
+- package: simplicity_sdk
+  vendor: silabs
   id: clock_manager
 - package: simplicity_sdk
   vendor: silabs
