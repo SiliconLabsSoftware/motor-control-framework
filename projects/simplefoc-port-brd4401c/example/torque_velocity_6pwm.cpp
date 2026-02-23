@@ -18,26 +18,32 @@
 
 #if APPLICATION_EXAMPLE == EXAMPLE_TORQUE_VELOCITY_6PWM
 
+#include "cmsis_os2.h"
 #include "motor_control.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "sl_hal_timer.h"
+#include "sl_device_peripheral.h"
 
 #include "../../external/simplefoc/src/SimpleFOC.h"
+
+#if ENABLE_BLE
+#include "../../common/ble_stream_adapter/ble_stream_adapter.h"
+#endif
 
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
-#ifndef TOOGLE_DELAY_MS
-#define TOOGLE_DELAY_MS            1
-#endif
-
-#ifndef MC_TASK_STACK_SIZE
-#define MC_TASK_STACK_SIZE      8192
-#endif
-
-#ifndef MC_TASK_PRIO
-#define MC_TASK_PRIO            30
-#endif
+ #define MC_TASK_FREQUENCY_HZ            5000      // [Hz]: MC task frequency
+ #define MC_TASK_STACK_SIZE              4096
+ #define MC_TASK_PRIO                    osPriorityRealtime5
+ #define MC_TASK_TIMER_PERIPHERAL        SL_PERIPHERAL_TIMER3
+ 
+ #define IO_TASK_DELAY_MS                1
+ #define IO_TASK_STACK_SIZE              1024
+ #define IO_TASK_PRIO                    osPriorityNormal
+ 
+ #define VELOCITY_LOOP_DOWNSAMPLE        5
 
 #define DRIVER_PWM_FREQ_HZ              20000     // [Hz]: PWM frequency
 #define DRIVER_DEAD_ZONE                0.0f      // (DRV8305 has built in deadzone config)
@@ -51,12 +57,24 @@
 static BLDCMotor *motor_p;
 static HallSensor *sensor_p;
 static Commander *commander_p;
+
+static bool is_mc_ready = false;
+
+// Task handles
+static TaskHandle_t xHandle_mc = NULL;
+static TaskHandle_t xHandle_io = NULL;
+
+// Task buffers
+static StaticTask_t xTaskBuffer_mc;
+static StaticTask_t xTaskBuffer_io;
+static StackType_t  xStack_mc[MC_TASK_STACK_SIZE];
+static StackType_t  xStack_io[IO_TASK_STACK_SIZE];
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
 
 static void motor_control_task(void *arg);
-
+static void io_task(void *arg);
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
@@ -83,26 +101,57 @@ void doC()
 /***************************************************************************//**
  * Initialize Torque Sensor Velocity 6PWM example.
  ******************************************************************************/
-void motor_control_init(void)
-{
-  TaskHandle_t xHandle = NULL;
-
-  static StaticTask_t xTaskBuffer;
-  static StackType_t  xStack[MC_TASK_STACK_SIZE];
-
-  xHandle = xTaskCreateStatic(motor_control_task,
-                              "motor control task",
-                              MC_TASK_STACK_SIZE,
-                              ( void * ) NULL,
-                              MC_TASK_PRIO,
-                              xStack,
-                              &xTaskBuffer);
-
-  // Since puxStackBuffer and pxTaskBuffer parameters are not NULL,
-  // it is impossible for xHandle to be null. This check is for
-  // rigorous example demonstration.
-  EFM_ASSERT(xHandle != NULL);
-}
+ void motor_control_init(void)
+ {
+   xHandle_io = xTaskCreateStatic(io_task,
+                               "io task",
+                               IO_TASK_STACK_SIZE,
+                               ( void * ) NULL,
+                               IO_TASK_PRIO,
+                               xStack_io,
+                               &xTaskBuffer_io);
+   EFM_ASSERT(xHandle_io != NULL);
+ 
+   xHandle_mc = xTaskCreateStatic(motor_control_task,
+                               "motor control task",
+                               MC_TASK_STACK_SIZE,
+                               ( void * ) NULL,
+                               MC_TASK_PRIO,
+                               xStack_mc,
+                               &xTaskBuffer_mc);
+   EFM_ASSERT(xHandle_mc != NULL);
+ 
+   uint32_t timer_frequency;
+   uint32_t timer_top = 0xFFFFFFFF;
+   uint32_t timer_prescaler = 0;
+ 
+   sl_clock_manager_enable_bus_clock(MC_TASK_TIMER_PERIPHERAL->bus_clock);
+   sl_clock_manager_get_clock_branch_frequency(MC_TASK_TIMER_PERIPHERAL->clk_branch, &timer_frequency);
+ 
+   while (timer_top > 0xFFFF) {
+     timer_top = timer_frequency / MC_TASK_FREQUENCY_HZ;
+ 
+     if (timer_top == 0) {
+       timer_top = 1;
+       break;
+     } else if (timer_top > 0xFFFF) {
+       timer_frequency /= 2;
+       timer_prescaler = (timer_prescaler << 1) | 1;
+     } else {
+       break;
+     }
+   }
+ 
+   sl_hal_timer_init_t timer_init = SL_HAL_TIMER_INIT_DEFAULT;
+   timer_init.prescaler = (sl_hal_timer_prescaler_t)timer_prescaler;
+ 
+   sl_hal_timer_init((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, &timer_init);
+   sl_hal_timer_enable((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
+   sl_hal_timer_stop((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
+   sl_hal_timer_set_top((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, timer_top);
+   sl_hal_timer_disable_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
+   sl_hal_timer_clear_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
+ }
 
 /*******************************************************************************
  * Torque Sensor Velocity 6PWM task.
@@ -110,9 +159,6 @@ void motor_control_init(void)
 static void motor_control_task(void *arg)
 {
   (void)&arg;
-
-  //Use the provided calculation macro to convert milliseconds to OS ticks
-  const TickType_t xDelay = pdMS_TO_TICKS(TOOGLE_DELAY_MS);
 
   // Serial uses RTT so baudrate is ignored
   Serial.begin(0);
@@ -219,28 +265,48 @@ static void motor_control_task(void *arg)
   Serial.println("Motor ready!");
   Serial.println("Set target velocity [rad/s]");
 
-  vTaskDelay(1000 / portTICK_PERIOD_MS);
+  sl_interrupt_manager_set_irq_priority(TIMER3_IRQn, 3);
+  sl_interrupt_manager_enable_irq(TIMER3_IRQn);
+  sl_hal_timer_enable_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, TIMER_IF_OF);
+  sl_hal_timer_start((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
+
+  is_mc_ready = true;
+  uint32_t foc_tick = 0;
 
   while (1) {
-    // main FOC algorithm function
-    // the faster you run this function the better
-    motor.loopFOC();
-
-    // Motion control function
-    // velocity, position or voltage (defined in motor.controller)
-    // this function can be run at much lower frequency than loopFOC() function
-    // You can also use motor.move() and set the motor.target in the code
-    motor.move();
-
-#if ENABLE_MONITOR
-    motor.monitor();
-#endif
-
-    // user communication
-    commander.run();
-
-    vTaskDelay(xDelay);
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    motor_p->loopFOC();
+    if (++foc_tick >= VELOCITY_LOOP_DOWNSAMPLE) {
+      foc_tick = 0;
+      motor_p->move();
+    }
   }
+}
+
+static void io_task(void *arg)
+{
+  (void)&arg;
+
+  while (1) {
+    if (is_mc_ready) {
+#if ENABLE_MONITOR
+      motor_p->monitor();
+#endif
+      commander_p->run();
+#if ENABLE_BLE
+      commander_p->run(bleStreamAdapter);
+#endif
+    }
+    vTaskDelay(pdMS_TO_TICKS(IO_TASK_DELAY_MS));
+  }
+}
+
+void TIMER3_IRQHandler(void)
+{
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  sl_hal_timer_clear_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, TIMER_IF_OF);
+  xTaskNotifyFromISR(xHandle_mc, 0, eNoAction, &xHigherPriorityTaskWoken);
+  portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 #endif // APPLICATION_EXAMPLE == EXAMPLE_TORQUE_VELOCITY_6PWM

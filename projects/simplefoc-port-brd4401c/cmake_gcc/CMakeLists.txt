@@ -22,6 +22,9 @@ target_include_directories(simple_foc_platform_specific PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/../../common/arduino_layer/specific
 )
 
+# --- ble stream adapter ---
+add_subdirectory(${CMAKE_SOURCE_DIR}/../../common/ble_stream_adapter ${CMAKE_BINARY_DIR}/ble_stream_adapter)
+
 # --- SimpleFOC static library ---
 
 # Adjust this if your submodule is somewhere else
@@ -63,6 +66,7 @@ target_link_libraries(SimpleFOC PUBLIC slc simple_foc_platform_specific)
 add_executable(simplefoc-port-brd4401c
     # Add additional sources here
     ${CMAKE_CURRENT_LIST_DIR}/../motor_control.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/../ble_handler.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../example/open_loop_velocity_6pwm.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../example/hall_sensor_velocity_6pwm.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../example/torque_velocity_6pwm.cpp
@@ -90,6 +94,7 @@ target_link_libraries(simplefoc-port-brd4401c PRIVATE
     slc
     SimpleFOC
     arduino_layer
+    ble_stream_adapter
 )
 
 # Include managed project content if available
