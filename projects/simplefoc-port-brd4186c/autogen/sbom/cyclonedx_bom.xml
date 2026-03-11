@@ -10,7 +10,7 @@ referenced in this SBOM.)
 -->
 <bom xmlns="http://cyclonedx.org/schema/bom/1.6" version="1">
   <metadata>
-    <timestamp>2026-02-23T11:14:47Z</timestamp>
+    <timestamp>2026-03-10T12:58:20Z</timestamp>
     <authors>
       <author>
         <name>Silicon Laboratories, Inc.</name>
@@ -47,6 +47,16 @@ referenced in this SBOM.)
         </component>
         <component bom-ref="silabs.simplicity_sdk:2025.12.0:bluetooth_feature_gatt_server" type="library">
           <name>GATT Server</name>
+          <version>2025.12.0</version>
+	      <supplier>
+	        <name>Silicon Laboratories, Inc.</name>
+	      </supplier>
+          <licenses>
+            <expression>MSLA</expression>
+          </licenses>
+        </component>
+        <component bom-ref="silabs.simplicity_sdk:2025.12.0:bluetooth_on_demand_start" type="library">
+          <name>Bluetooth on-demand start</name>
           <version>2025.12.0</version>
 	      <supplier>
 	        <name>Silicon Laboratories, Inc.</name>
@@ -1615,8 +1625,8 @@ referenced in this SBOM.)
             <expression>Zlib</expression>
           </licenses>
         </component>
-        <component bom-ref="silabs.simplicity_sdk:2025.12.0:bluetooth_on_demand_start" type="library">
-          <name>Bluetooth on-demand start</name>
+        <component bom-ref="silabs.simplicity_sdk:2025.12.0:bluetooth_feature_gap" type="library">
+          <name>GAP</name>
           <version>2025.12.0</version>
 	      <supplier>
 	        <name>Silicon Laboratories, Inc.</name>

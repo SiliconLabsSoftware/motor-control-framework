@@ -23,11 +23,11 @@ extern const sli_bt_gattdb_t gattdb;
 #define gattdb_service_changed_char_len       4
 #define gattdb_database_hash_len              16
 #define gattdb_client_support_features_len    1
-#define gattdb_device_name_len                13
+#define gattdb_device_name_len                12
 #define gattdb_device_information_len         2
 #define gattdb_manufacturer_name_string_len   12
 #define gattdb_system_id_len                  8
-#define gattdb_spp_data_len                   20
+#define gattdb_spp_data_len                   40
 
 
 #endif // __GATT_DB_H

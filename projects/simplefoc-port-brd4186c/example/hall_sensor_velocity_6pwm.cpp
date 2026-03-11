@@ -266,6 +266,7 @@ static void io_task(void *arg)
       commander_p->run();
 #if ENABLE_BLE
       commander_p->run(bleStreamAdapter);
+      bleStreamAdapter.flushTx();
 #endif
     }
     vTaskDelay(pdMS_TO_TICKS(IO_TASK_DELAY_MS));

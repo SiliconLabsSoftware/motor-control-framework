@@ -3,7 +3,7 @@
   "specVersion" : "1.6",
   "version" : 1,
   "metadata" : {
-    "timestamp" : "2026-02-23T11:14:47Z",
+    "timestamp" : "2026-03-10T12:58:20Z",
     "authors" : [ {
       "name" : "Silicon Laboratories, Inc."
     } ],
@@ -50,6 +50,18 @@
       "type" : "library",
       "bom-ref" : "silabs.simplicity_sdk:2025.12.0:bluetooth_feature_gatt_server",
       "name" : "GATT Server",
+      "version" : "2025.12.0",
+      "supplier" : {
+        "name" : "Silicon Laboratories, Inc."
+      },
+      "licenses" : [ {
+        "expression" : "MSLA"
+      } ]
+    }, {
+      "scope" : "required",
+      "type" : "library",
+      "bom-ref" : "silabs.simplicity_sdk:2025.12.0:bluetooth_on_demand_start",
+      "name" : "Bluetooth on-demand start",
       "version" : "2025.12.0",
       "supplier" : {
         "name" : "Silicon Laboratories, Inc."
@@ -1908,8 +1920,8 @@
     }, {
       "scope" : "required",
       "type" : "library",
-      "bom-ref" : "silabs.simplicity_sdk:2025.12.0:bluetooth_on_demand_start",
-      "name" : "Bluetooth on-demand start",
+      "bom-ref" : "silabs.simplicity_sdk:2025.12.0:bluetooth_feature_gap",
+      "name" : "GAP",
       "version" : "2025.12.0",
       "supplier" : {
         "name" : "Silicon Laboratories, Inc."

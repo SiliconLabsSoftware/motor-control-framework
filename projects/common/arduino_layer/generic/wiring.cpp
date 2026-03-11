@@ -43,9 +43,27 @@ uint32_t millis()
 uint32_t micros()
 {
 #if defined(ARDUINO_MICROS_TIMER_PERIPHERAL)
-  // TIMER is configured to run at 39MHz / 32 = 1.21875 MHz, i.e., 0.82 us per tick
   TIMER_TypeDef *micros_timer = ((TIMER_TypeDef *)ARDUINO_MICROS_TIMER_PERIPHERAL->base);
-  return (uint32_t)((sl_hal_timer_get_counter(micros_timer) * 32u) / 39u);
+  static bool micros_scaling_initialized = false;
+  static uint64_t micros_scale_numerator = 0u;
+  static uint32_t micros_scale_denominator = 1u;
+
+  if (!micros_scaling_initialized) {
+    // TIMER is set up: count rate = clk_freq / prescaler => time_us = counter * prescaler * 1e6 / clk_freq
+    const uint32_t prescaler = ((micros_timer->CFG & _TIMER_CFG_PRESC_MASK) >> _TIMER_CFG_PRESC_SHIFT) + 1u;
+    uint32_t clk_freq = 0u;
+    sl_clock_manager_get_clock_branch_frequency(ARDUINO_MICROS_TIMER_PERIPHERAL->clk_branch, &clk_freq);
+    if (clk_freq == 0u) {
+      return 0u;
+    }
+
+    micros_scale_numerator = (uint64_t)prescaler * 1000000ULL;
+    micros_scale_denominator = clk_freq;
+    micros_scaling_initialized = true;
+  }
+
+  const uint32_t counter = sl_hal_timer_get_counter(micros_timer);
+  return (uint32_t)((uint64_t)counter * micros_scale_numerator / (uint64_t)micros_scale_denominator);
 #else
   // Fallback: sleeptimer-based microseconds (30.52us resolution)
   uint64_t us = static_cast < uint64_t > (sl_sleeptimer_get_tick_count()) * sleeptimer_tick_period_us_x100 / 100u;

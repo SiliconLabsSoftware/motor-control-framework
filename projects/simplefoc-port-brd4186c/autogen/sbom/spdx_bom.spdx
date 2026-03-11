@@ -13,7 +13,7 @@ DocumentNamespace: https://silabs.com
 
 ## Creation Information
 Creator: Organization: Silicon Laboratories, Inc.
-Created: 2026-02-23T11:14:47Z
+Created: 2026-03-10T12:58:20Z
 ## Relationships
 Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-silabs.simplicity_sdk-2025.12.0
 
@@ -28,6 +28,7 @@ PackageSupplier: Organization: Silicon Laboratories, Inc.
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-EFR32MG24B210F1536IM48
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-ble_peer_manager_peripheral
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gatt_server
+Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-clock_manager
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-cpp_support
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-device_init
@@ -172,7 +173,7 @@ Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.si
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-sl_main_init
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-sl_main_process_action
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-gpio
-Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start
+Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0 CONTAINS SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gap
 
 ## Package Information
 PackageName: EFR32MG24B210F1536IM48
@@ -206,6 +207,17 @@ PackageSupplier: Organization: Silicon Laboratories, Inc.
 PackageLicenseConcluded: MSLA
 ## Relationships
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gatt_server CONTAINED_BY SPDXRef-silabs.simplicity_sdk-2025.12.0
+
+## Package Information
+PackageName: Bluetooth on-demand start
+SPDXID: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start
+PackageVersion: 2025.12.0
+PrimaryPackagePurpose: LIBRARY
+PackageDownloadLocation: NOASSERTION
+PackageSupplier: Organization: Silicon Laboratories, Inc.
+PackageLicenseConcluded: MSLA
+## Relationships
+Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start CONTAINED_BY SPDXRef-silabs.simplicity_sdk-2025.12.0
 
 ## Package Information
 PackageName: Clock Manager
@@ -1882,12 +1894,12 @@ PackageLicenseConcluded: Zlib
 Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0-gpio CONTAINED_BY SPDXRef-silabs.simplicity_sdk-2025.12.0
 
 ## Package Information
-PackageName: Bluetooth on-demand start
-SPDXID: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start
+PackageName: GAP
+SPDXID: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gap
 PackageVersion: 2025.12.0
 PrimaryPackagePurpose: LIBRARY
 PackageDownloadLocation: NOASSERTION
 PackageSupplier: Organization: Silicon Laboratories, Inc.
 PackageLicenseConcluded: MSLA
 ## Relationships
-Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start CONTAINED_BY SPDXRef-silabs.simplicity_sdk-2025.12.0
+Relationship: SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gap CONTAINED_BY SPDXRef-silabs.simplicity_sdk-2025.12.0

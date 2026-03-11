@@ -19,21 +19,19 @@ static size_t ring_free(size_t head, size_t tail, size_t cap)
   return cap - ring_available(head, tail, cap) - 1u;   // one slot reserved
 }
 
-BleStreamAdapter::BleStreamAdapter(size_t rx_buffer_size, size_t tx_buffer_size)
-  : rx_size_(rx_buffer_size),
-  tx_size_(tx_buffer_size),
-  rx_buf_(nullptr),
-  tx_buf_(nullptr),
+BleStreamAdapter::BleStreamAdapter()
+  : rx_size_(DEFAULT_RX_SIZE),
+  tx_size_(DEFAULT_TX_SIZE),
   rx_head_(0),
   rx_tail_(0),
   tx_head_(0),
   tx_tail_(0),
   send_cb_(nullptr),
+  check_send_cb_(nullptr),
+  max_send_chunk_(DEFAULT_MAX_SEND_CHUNK),
   rx_mutex_(nullptr),
   tx_mutex_(nullptr)
 {
-  rx_buf_ = new uint8_t[rx_size_];
-  tx_buf_ = new uint8_t[tx_size_];
   rx_mutex_ = xSemaphoreCreateMutexStatic(&rx_mutex_buf_);
   tx_mutex_ = xSemaphoreCreateMutexStatic(&tx_mutex_buf_);
   configASSERT(rx_mutex_ != nullptr);
@@ -50,15 +48,11 @@ BleStreamAdapter::~BleStreamAdapter()
     vSemaphoreDelete(tx_mutex_);
     tx_mutex_ = nullptr;
   }
-  delete[] rx_buf_;
-  rx_buf_ = nullptr;
-  delete[] tx_buf_;
-  tx_buf_ = nullptr;
 }
 
 int BleStreamAdapter::available()
 {
-  if (!rx_buf_ || !rx_mutex_) {
+  if (!rx_mutex_) {
     return 0;
   }
   xSemaphoreTake(rx_mutex_, portMAX_DELAY);
@@ -69,7 +63,7 @@ int BleStreamAdapter::available()
 
 int BleStreamAdapter::read()
 {
-  if (!rx_buf_ || !rx_mutex_) {
+  if (!rx_mutex_) {
     return -1;
   }
   xSemaphoreTake(rx_mutex_, portMAX_DELAY);
@@ -85,7 +79,7 @@ int BleStreamAdapter::read()
 
 int BleStreamAdapter::peek()
 {
-  if (!rx_buf_ || !rx_mutex_) {
+  if (!rx_mutex_) {
     return -1;
   }
   xSemaphoreTake(rx_mutex_, portMAX_DELAY);
@@ -100,7 +94,7 @@ int BleStreamAdapter::peek()
 
 void BleStreamAdapter::pushReceivedData(const uint8_t *data, size_t len)
 {
-  if (!rx_buf_ || !rx_mutex_ || !data) {
+  if (!rx_mutex_ || !data) {
     return;
   }
   xSemaphoreTake(rx_mutex_, portMAX_DELAY);
@@ -122,20 +116,34 @@ size_t BleStreamAdapter::write(uint8_t data)
 
 size_t BleStreamAdapter::write(const uint8_t *buffer, size_t size)
 {
-  if (!tx_buf_ || !tx_mutex_ || !buffer) {
+  if (!tx_mutex_ || !buffer) {
     return 0;
   }
-  xSemaphoreTake(tx_mutex_, portMAX_DELAY);
   size_t written = 0;
   for (; written < size; written++) {
+    xSemaphoreTake(tx_mutex_, portMAX_DELAY);
     if (ring_free(tx_head_, tx_tail_, tx_size_) == 0) {
+      xSemaphoreGive(tx_mutex_);
       break;
     }
     tx_buf_[tx_head_] = buffer[written];
     tx_head_ = (tx_head_ + 1) % tx_size_;
+    size_t avail = ring_available(tx_head_, tx_tail_, tx_size_);
+    xSemaphoreGive(tx_mutex_);
+
+    bool do_flush = false;
+    if (check_send_cb_) {
+      // User-supplied condition (e.g. flush on \r or \n), matching sppBLE sendReady
+      do_flush = check_send_cb_(written, buffer, size);
+    }
+    // Fallback: flush when buffer reaches a full chunk (handles output without \r\n)
+    if (!do_flush && avail >= max_send_chunk_) {
+      do_flush = true;
+    }
+    if (do_flush) {
+      flushTxInternal();
+    }
   }
-  xSemaphoreGive(tx_mutex_);
-  flushTxInternal();
   return written;
 }
 
@@ -144,30 +152,46 @@ void BleStreamAdapter::setSendCallback(BleStreamSendFn send_fn)
   send_cb_ = send_fn;
 }
 
+void BleStreamAdapter::onCheckSendCondition(BleStreamCheckSendFn check_fn)
+{
+  check_send_cb_ = check_fn;
+}
+
+void BleStreamAdapter::setMaxSendChunk(size_t max_chunk)
+{
+  if (max_chunk == 0u) {
+    max_chunk = 1u;
+  }
+  if (max_chunk > MAX_BLE_PDU) {
+    max_chunk = MAX_BLE_PDU;
+  }
+  max_send_chunk_ = max_chunk;
+}
+
 void BleStreamAdapter::flushTx()
 {
   flushTxInternal();
 }
 
-// TODO: fix needed for MAX_BLE_PDU and characteristic actual size mismtach...
-// This path dequeues up to 250 bytes per send, but the generated gattdb_spp_data characteristic is configured with max_len = 20, and the BGAPI docs for notifications say bytes beyond the effective ATT payload are not delivered (or the send API fails for oversized values). Because bytes are removed from the TX ring before send completion and no status is checked, long Commander responses are silently truncated/lost instead of being fragmented and retried.
 void BleStreamAdapter::flushTxInternal()
 {
-  if (!send_cb_ || !tx_buf_ || !tx_mutex_) {
+  if (!send_cb_ || !tx_mutex_) {
     return;
   }
-  xSemaphoreTake(tx_mutex_, portMAX_DELAY);
-  size_t n = ring_available(tx_head_, tx_tail_, tx_size_);
-  if (n == 0) {
-    xSemaphoreGive(tx_mutex_);
-    return;
-  }
-  size_t chunk = (n > MAX_BLE_PDU) ? MAX_BLE_PDU : n;
   uint8_t tmp[MAX_BLE_PDU];
-  for (size_t i = 0; i < chunk; i++) {
-    tmp[i] = tx_buf_[tx_tail_];
-    tx_tail_ = (tx_tail_ + 1) % tx_size_;
+  for (;; ) {
+    xSemaphoreTake(tx_mutex_, portMAX_DELAY);
+    size_t n = ring_available(tx_head_, tx_tail_, tx_size_);
+    if (n == 0) {
+      xSemaphoreGive(tx_mutex_);
+      return;
+    }
+    size_t chunk = (n > max_send_chunk_) ? max_send_chunk_ : n;
+    for (size_t i = 0; i < chunk; i++) {
+      tmp[i] = tx_buf_[tx_tail_];
+      tx_tail_ = (tx_tail_ + 1) % tx_size_;
+    }
+    xSemaphoreGive(tx_mutex_);
+    send_cb_(0xFF, tmp, chunk);   // 0xFF = all connections; app can use single conn if needed
   }
-  xSemaphoreGive(tx_mutex_);
-  send_cb_(0xFF, tmp, chunk);   // 0xFF = all connections; app can use single conn if needed
 }

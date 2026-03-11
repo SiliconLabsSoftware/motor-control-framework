@@ -170,6 +170,7 @@ static void motor_control_task(void *arg)
     commander.run();
 #if ENABLE_BLE
     commander.run(bleStreamAdapter);
+    bleStreamAdapter.flushTx();
 #endif
     vTaskDelay(xDelay);
   }

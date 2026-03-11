@@ -5,7 +5,7 @@
   "name" : "Silicon-Laboratories",
   "documentNamespace" : "https://silabs.com",
   "creationInfo" : {
-    "created" : "2026-02-23T11:14:47Z",
+    "created" : "2026-03-10T12:58:20Z",
     "creators" : [ "Tool: Silicon Labs Configuration Tooling" ]
   },
   "comment" : "TERMS OF USE - SILICON LABORATORIES INC.\n(With respect to Silicon Labs software components, this Software Bill of Materials (SBOM) is based upon Silicon Labs'\nreview and analysis of the code version when released.  It is provided \"AS IS\" and does not modify, change or alter\nthe terms or conditions of your use of Silicon Labs' software and/or SDKs based upon license terms and/or agreements\nassociated with this software or SDKs when distributed to you, received by you, or installed by you.  Further, no\nwarranties or obligations are created by this SBOM.  It is your obligation to comply with the terms of licenses\nreferenced in this SBOM.)",
@@ -36,6 +36,14 @@
   }, {
     "SPDXID" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gatt_server",
     "name" : "GATT Server",
+    "versionInfo" : "2025.12.0",
+    "primaryPackagePurpose" : "LIBRARY",
+    "downloadLocation" : "NOASSERTION",
+    "supplier" : "Organization: Silicon Laboratories, Inc.",
+    "licenseConcluded" : "MSLA"
+  }, {
+    "SPDXID" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start",
+    "name" : "Bluetooth on-demand start",
     "versionInfo" : "2025.12.0",
     "primaryPackagePurpose" : "LIBRARY",
     "downloadLocation" : "NOASSERTION",
@@ -1284,8 +1292,8 @@
     "supplier" : "Organization: Silicon Laboratories, Inc.",
     "licenseConcluded" : "Zlib"
   }, {
-    "SPDXID" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start",
-    "name" : "Bluetooth on-demand start",
+    "SPDXID" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gap",
+    "name" : "GAP",
     "versionInfo" : "2025.12.0",
     "primaryPackagePurpose" : "LIBRARY",
     "downloadLocation" : "NOASSERTION",
@@ -1307,6 +1315,10 @@
   }, {
     "spdxElementId" : "SPDXRef-silabs.simplicity_sdk-2025.12.0",
     "relatedSpdxElement" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gatt_server",
+    "relationshipType" : "CONTAINS"
+  }, {
+    "spdxElementId" : "SPDXRef-silabs.simplicity_sdk-2025.12.0",
+    "relatedSpdxElement" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start",
     "relationshipType" : "CONTAINS"
   }, {
     "spdxElementId" : "SPDXRef-silabs.simplicity_sdk-2025.12.0",
@@ -1910,7 +1922,7 @@
     "relationshipType" : "CONTAINS"
   }, {
     "spdxElementId" : "SPDXRef-silabs.simplicity_sdk-2025.12.0",
-    "relatedSpdxElement" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_on_demand_start",
+    "relatedSpdxElement" : "SPDXRef-silabs.simplicity_sdk-2025.12.0-bluetooth_feature_gap",
     "relationshipType" : "CONTAINS"
   } ]
 }

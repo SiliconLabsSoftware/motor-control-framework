@@ -8,7 +8,7 @@
 
     <!--Device Name-->
     <characteristic const="false" id="device_name" name="Device Name" sourceId="org.bluetooth.characteristic.gap.device_name" uuid="2A00">
-      <value length="13" type="utf-8" variable_length="false">Motor Control</value>
+      <value length="12" type="utf-8" variable_length="false">motor_123456</value>
       <properties>
         <read authenticated="false" bonded="false" encrypted="false"/>
         <write authenticated="false" bonded="false" encrypted="false"/>
@@ -54,7 +54,7 @@
     <!--SPP Data-->
     <characteristic const="false" id="spp_data" name="SPP Data" sourceId="" uuid="fec26ec4-6d71-4442-9f81-55bc21d658d6">
       <description>SPP Data</description>
-      <value length="20" type="hex" variable_length="true">00</value>
+      <value length="40" type="hex" variable_length="true">00</value>
       <properties>
         <write_no_response authenticated="false" bonded="false" encrypted="false"/>
         <notify authenticated="false" bonded="false" encrypted="false"/>

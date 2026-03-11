@@ -39,6 +39,9 @@ component:
   id: ble_peer_manager_peripheral
 - package: simplicity_sdk
   vendor: silabs
+  id: bluetooth_feature_gap
+- package: simplicity_sdk
+  vendor: silabs
   id: bluetooth_feature_gatt_server
 - package: simplicity_sdk
   vendor: silabs
