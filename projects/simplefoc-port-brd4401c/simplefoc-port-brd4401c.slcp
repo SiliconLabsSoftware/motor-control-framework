@@ -36,6 +36,15 @@ component:
   id: EFR32ZG28B322F1024IM68
 - package: simplicity_sdk
   vendor: silabs
+  id: ble_peer_manager_peripheral
+- package: simplicity_sdk
+  vendor: silabs
+  id: bluetooth_feature_gatt_server
+- package: simplicity_sdk
+  vendor: silabs
+  id: bluetooth_on_demand_start
+- package: simplicity_sdk
+  vendor: silabs
   id: clock_manager
 - package: simplicity_sdk
   vendor: silabs
@@ -52,6 +61,12 @@ component:
 - package: simplicity_sdk
   vendor: silabs
   id: freertos_heap_3
+- package: simplicity_sdk
+  vendor: silabs
+  id: gatt_configuration
+- package: simplicity_sdk
+  vendor: silabs
+  id: gatt_service_device_information_override
 - package: simplicity_sdk
   vendor: silabs
   id: hal_iadc

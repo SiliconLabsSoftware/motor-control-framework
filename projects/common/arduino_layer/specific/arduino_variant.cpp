@@ -46,7 +46,7 @@ CHIP_ERROR AppTask::StartAppTask()
 void init_arduino_variant()
 {
   // Init TIMER0 for micros() function
-  // Power-of-2 prescalers only: 39MHz / 32 = 1.21875 MHz
+  // Power-of-2 prescalers only
   // Software scaling in micros() converts to microseconds
 #ifdef ARDUINO_MICROS_TIMER_PERIPHERAL
   TIMER_TypeDef *micros_timer = ((TIMER_TypeDef *)ARDUINO_MICROS_TIMER_PERIPHERAL->base);
@@ -55,13 +55,16 @@ void init_arduino_variant()
   sl_hal_timer_init_t timer_init = SL_HAL_TIMER_INIT_DEFAULT;
   timer_init.count_mode = SL_HAL_TIMER_MODE_UP;
   timer_init.debug_run = true;  // Keep running when debugger disconnects
-  timer_init.prescaler = SL_HAL_TIMER_PRESCALER_DIV32;  // 39MHz / 32 = 1.21875 MHz
+  timer_init.prescaler = SL_HAL_TIMER_PRESCALER_DIV64;
 
   sl_hal_timer_init(micros_timer, &timer_init);
   sl_hal_timer_enable(micros_timer);
   sl_hal_timer_set_top(micros_timer, 0xFFFFFFFFUL);
 
   sl_hal_timer_start(micros_timer);
+
+  // Call micros() to initialize the micros timer
+  micros();
 #endif
 }
 

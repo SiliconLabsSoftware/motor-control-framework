@@ -18,6 +18,7 @@
 #define DEVICE_CONFIG_H
 
 #define ENABLE_MONITOR              0         // [0/1]: Enable motor monitoring
+#define ENABLE_BLE                  1         // [0/1]: Enable BLE
 #define MOTOR_PP                    8         // BLDC motor pole pairs
 #define MOTOR_RESISTANCE            0.4       // [Ohm]: BLDC motor resistance
 #define MOTOR_KV                    285       // [RPM/V]: Motor KV rate
