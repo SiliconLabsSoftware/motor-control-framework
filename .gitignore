@@ -3,7 +3,6 @@
 *.orig
 *.bak
 .vscode/
-**/build/
 **/GNU ARM v*
 **/.projectlinkstore
 **/.settings
@@ -18,6 +17,9 @@
 **/.DS_Store
 **/.clangd
 **/compile_commands.json
+projects/*/build/
+projects/*/cmake_*/build/
+**/.cursor
 
 ##Enable these if you are not tracking Simplicity studio project
 # **/.cproject

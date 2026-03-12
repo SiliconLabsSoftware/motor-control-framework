@@ -282,7 +282,7 @@
 // <e> Use DPLL
 // <i> Enable to use the DPLL with HFRCO
 #ifndef SL_CLOCK_MANAGER_HFRCO_DPLL_EN
-#define SL_CLOCK_MANAGER_HFRCO_DPLL_EN    0
+#define SL_CLOCK_MANAGER_HFRCO_DPLL_EN    1
 #endif
 
 // <o SL_CLOCK_MANAGER_DPLL_FREQ> Target Frequency in Hz <1000000-80000000>

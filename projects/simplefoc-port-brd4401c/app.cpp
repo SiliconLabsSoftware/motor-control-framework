@@ -17,6 +17,12 @@
 #include "app.h"
 #include "../common/arduino_layer/generic/Arduino.h"
 #include "motor_control.h"
+#ifdef __cplusplus
+extern "C" {
+#include "sl_bt_api.h"
+#include "device_config.h"
+}
+#endif
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/
@@ -25,6 +31,9 @@ void app_init(void)
   // Initialize Arduino variant
   arduino_layer_init();
   motor_control_init();
+#if ENABLE_BLE
+  sl_bt_system_start_bluetooth();
+#endif
 }
 
 /***************************************************************************//**
