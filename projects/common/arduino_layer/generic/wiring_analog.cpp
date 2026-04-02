@@ -158,9 +158,9 @@ void analogWriteResolution(int resolution)
   DAC_1.set_write_resolution((uint8_t)resolution);
   #endif // (NUM_DAC_HW > 1)
 }
+#endif // NUM_DAC_HW > 0
 
 void analogReadResolution(int resolution)
 {
   ADC.set_read_resolution((uint8_t)resolution);
 }
-#endif // NUM_DAC_HW > 0

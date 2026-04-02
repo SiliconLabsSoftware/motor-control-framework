@@ -41,4 +41,5 @@ void app_init(void)
  ******************************************************************************/
 void app_process_action(void)
 {
+  // application runs in freeRTOS tasks, so we don't need to do anything here
 }

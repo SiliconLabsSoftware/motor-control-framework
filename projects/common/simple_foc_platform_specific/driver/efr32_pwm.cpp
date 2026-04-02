@@ -185,7 +185,7 @@ void pwmHiDeinit(
     .port = inst->h.port,
     .pin = inst->h.pin
   };
-  sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_DISABLED, 0);
+  sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_DISABLED, false);
 
   sl_peripheral_t timerPeripheral = _getTimerPeripheral(inst->h.timer);
   if (NULL == timerPeripheral) {
@@ -277,7 +277,7 @@ void pwmLoInit(
     .port = inst->l.port,
     .pin = inst->l.pin
   };
-  sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_PUSH_PULL, 0);
+  sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_PUSH_PULL, false);
 
   volatile uint32_t *routeRegister = &GPIO->TIMERROUTE[TIMER_NUM(inst->h.timer)].CDTI0ROUTE;
   routeRegister += inst->h.channel;
@@ -303,7 +303,7 @@ void pwmLoDeinit(
     .port = inst->l.port,
     .pin = inst->l.pin
   };
-  sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_DISABLED, 0);
+  sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_DISABLED, false);
 }
 
 void pwmLoOn(

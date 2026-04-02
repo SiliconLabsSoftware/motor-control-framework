@@ -136,6 +136,10 @@ void attachInterrupt(PinName interruptNumber, voidFuncPtr callback, PinStatus mo
     case RISING:
       flags = SL_GPIO_INTERRUPT_RISING_EDGE;
       break;
+
+    default:
+      xSemaphoreGive(gpio_isr_mutex);
+      return;
   }
 
   // Allocate an interrupt number for the pin
