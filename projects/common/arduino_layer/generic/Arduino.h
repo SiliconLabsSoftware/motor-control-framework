@@ -94,7 +94,6 @@ void analogReadDMA(PinName pin, uint32_t *buffer, uint32_t size, void (*user_ons
 void analogReadDMA(pin_size_t pin, uint32_t *buffer, uint32_t size, void (*user_onsampling_finished_callback)());
 
 bool get_system_init_finished();
-// uint32_t get_system_reset_cause();
 void escape_hatch();
 void gpio_interrupt_handler_init();
 void arduino_layer_init();

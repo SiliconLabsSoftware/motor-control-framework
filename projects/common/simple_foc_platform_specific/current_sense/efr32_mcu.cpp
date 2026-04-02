@@ -60,6 +60,7 @@ static void _adcBusAllocate(
         } else if ((GPIO->ABUSALLOC & _GPIO_ABUSALLOC_AEVEN1_MASK) == GPIO_ABUSALLOC_AEVEN1_TRISTATE) {
           GPIO->ABUSALLOC |= GPIO_ABUSALLOC_AEVEN1_ADC0;
         } else {
+          // MISRA
         }
       } else {
         if ((GPIO->ABUSALLOC & _GPIO_ABUSALLOC_AODD0_MASK) == GPIO_ABUSALLOC_AODD0_TRISTATE) {
@@ -117,6 +118,10 @@ static void _adcBusAllocate(
       }
       break;
 #endif
+
+    default:
+      // MISRA
+      break;
   }
 }
 
@@ -228,7 +233,7 @@ static void _currentSenseInitScan(
       .port = params->inst[i].port,
       .pin = params->inst[i].pin
     };
-    sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_DISABLED, 0);
+    sl_gpio_set_pin_mode(&gpio, SL_GPIO_MODE_DISABLED, false);
   }
 
   sl_hal_iadc_init_t init = SL_HAL_IADC_INIT_DEFAULT;
@@ -426,7 +431,7 @@ void* _configureADCLowSide(
 
   EFR32CurrentSenseParams *params = &current_sense_params[current_sense_params_index++];
   *params = (EFR32CurrentSenseParams) {
-    .adc_voltage_conv = (_ADC_VOLTAGE) / (_ADC_RESOLUTION),
+    .adc_voltage_conv = _ADC_VOLTAGE / _ADC_RESOLUTION,
     .firstIndex = 0xFF,
     .noAdcChannels = 0,
     .vRef = SILABS_ADC_VREF,
@@ -495,6 +500,7 @@ float _readADCVoltageInline(
     _currentSenseStartScan(params);
 
     while (!params->dataReady) {
+      // Wait for data to be ready
     }
   }
 
@@ -516,7 +522,7 @@ void* _configureADCInline(
 
   EFR32CurrentSenseParams *params = &current_sense_params[current_sense_params_index++];
   *params = (EFR32CurrentSenseParams) {
-    .adc_voltage_conv = (_ADC_VOLTAGE) / (_ADC_RESOLUTION),
+    .adc_voltage_conv = _ADC_VOLTAGE / _ADC_RESOLUTION,
     .firstIndex = 0xFF,
     .noAdcChannels = 0,
     .vRef = SILABS_ADC_VREF,

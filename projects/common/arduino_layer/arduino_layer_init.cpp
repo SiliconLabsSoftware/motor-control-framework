@@ -34,5 +34,5 @@ bool get_system_init_finished()
 
 SL_WEAK void escape_hatch()
 {
-  ;
+  // MISRA
 }

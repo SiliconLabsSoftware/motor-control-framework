@@ -90,7 +90,8 @@ static void _alignPWMTimers(
 
   sl_clock_manager_enable_bus_clock(SL_BUS_CLOCK_PRS);
 
-  uint32_t prsSignal, prsEvent;
+  uint32_t prsSignal = 0;
+  uint32_t prsEvent = SL_HAL_PRS_CONSUMER_NONE;
 
   initCC->input_type = SL_HAL_TIMER_CHANNEL_INPUT_PRS_ASYNC_PULSE;
 
@@ -389,7 +390,7 @@ void* _configure6PWM(
   pwmInit(&params->inst[2], &pwmConfig, NULL, NULL);
 
   // Dead Time PWM
-  uint32_t deadTimeNs = (float) (1e9f / pwm_frequency) * dead_zone;
+  uint32_t deadTimeNs = (uint32_t)((1e9f / pwm_frequency) * params->dead_zone);
   EFR32PwmDeadTimeConfig deadTimeConfig;
   deadTimeConfig.deadTimeNs = deadTimeNs >> 1;
   deadTimeConfig.outputMask = TIMER_DTOGEN_DTOGCC0EN
@@ -497,4 +498,5 @@ void _writeDutyCycle6PWM(
 
 void _startADC3PinConversionLowSide()
 {
+  // nothing to do
 }

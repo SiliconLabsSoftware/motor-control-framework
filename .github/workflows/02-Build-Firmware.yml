@@ -7,8 +7,8 @@ on:
         branches:
             - main
             - master
-            - "release/**"
             - develop
+            - "release/**"
     workflow_dispatch:
         inputs:
             branch:
@@ -19,15 +19,13 @@ permissions:
     contents: read
 jobs:
     FW_build:
-        # Choose a runner type here by commenting out the not needed one.
-        # runs-on: ubuntu-24.04
-        runs-on: large
+        runs-on: self-hosted
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-                  submodules: recursive
+                  submodules: true
                   ref: ${{ github.event.inputs.branch }}
 
             - name: Build Docker Image
