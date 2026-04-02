@@ -20,19 +20,22 @@ DOCKER_IMAGE_NAME ?= simplefoc-port-build-env:$(DOCKER_IMAGE_VERSION)
 DOCKER_WORKSPACE ?= /home/peps
 ifeq ($(OS),Windows_NT)
 	DOCKER_ARCH ?= x86_64
+	DOCKER_PLATFORM ?= amd64
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
         DOCKER_ARCH ?= x86_64
+        DOCKER_PLATFORM ?= amd64
     else
         DOCKER_ARCH ?= aarch64
+        DOCKER_PLATFORM ?= arm64
     endif
 endif
-DOCKER_RUN_COMMON_ARGS := --platform linux/$(DOCKER_ARCH) --rm -v $(CURDIR):$(DOCKER_WORKSPACE) -w $(DOCKER_WORKSPACE) $(DOCKER_IMAGE_NAME)
+DOCKER_RUN_COMMON_ARGS := --platform linux/$(DOCKER_PLATFORM) --rm -v $(CURDIR):$(DOCKER_WORKSPACE) -w $(DOCKER_WORKSPACE) $(DOCKER_IMAGE_NAME)
 
 docker_image:
 	@echo 'Building Docker Image...!'
-	docker build $(CURDIR) -t $(DOCKER_IMAGE_NAME) --platform linux/$(DOCKER_ARCH) --build-arg ARCH=$(DOCKER_ARCH)
+	docker build $(CURDIR) -t $(DOCKER_IMAGE_NAME) --platform linux/$(DOCKER_PLATFORM) --build-arg ARCH=$(DOCKER_ARCH)
 docker_build:
 	@echo 'Building project with the Docker Image...!'
 	docker run $(DOCKER_RUN_COMMON_ARGS) /bin/sh -c "make all"

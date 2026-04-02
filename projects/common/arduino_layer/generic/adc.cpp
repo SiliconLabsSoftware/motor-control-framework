@@ -418,7 +418,7 @@ void AdcClass::handle_dma_finished_callback()
   this->user_onsampling_finished_callback();
 }
 
-bool dma_transfer_finished_cb(unsigned int channel, unsigned int sequenceNo, void *userParam)
+static bool dma_transfer_finished_cb(unsigned int channel, unsigned int sequenceNo, void *userParam)
 {
   (void)channel;
   (void)sequenceNo;
