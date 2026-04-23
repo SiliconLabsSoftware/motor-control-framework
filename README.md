@@ -20,10 +20,7 @@ A dedicated interface board setup connecting the Motor - Power Stage - developme
 
 ![hw_setup_v1](resources/hw_with_thingplusmatter.png) ![hw_setup_v2](resources/hw_with_BRD.png)
 
-Wiring for the supported boards are available in the `projects/project_name/readme.md`:
-- [Sparkfun Thing Plus Matter](projects/simplefoc-port-thingplusmatter/readme.md)
-- [BRD4186C](projects/simplefoc-port-brd4186c/readme.md)
-- [BRD4401C](projects/simplefoc-port-brd4401c/readme.md)
+The wiring descriptions are in the user guide: [User Guide](documentation/user_guide.md#pcb-wiring-details)
 
 
 ## Build
