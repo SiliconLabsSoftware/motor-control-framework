@@ -17,7 +17,7 @@ clean:
 
 DOCKER_IMAGE_VERSION ?= latest
 DOCKER_IMAGE_NAME ?= simplefoc-port-build-env:$(DOCKER_IMAGE_VERSION)
-DOCKER_WORKSPACE ?= /home/peps
+DOCKER_WORKSPACE ?= /home/simplefoc-port
 ifeq ($(OS),Windows_NT)
 	DOCKER_ARCH ?= x86_64
 	DOCKER_PLATFORM ?= amd64

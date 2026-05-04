@@ -6,15 +6,12 @@ on:
             - master
             - develop
             - "release/**"
-permissions:
-  contents: read
-
 jobs:
   trufflehog_scan:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
     - name: Secret Scanning
