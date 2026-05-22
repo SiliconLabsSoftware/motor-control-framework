@@ -1,0 +1,10 @@
+# Properties file for Simplicity Studio metadata.
+id=com.example.sdk.motor_control_framework_extension
+label=Motor Control Framework Extension
+description=Motor Control Framework Extension for SiSDK.
+version=1.0.0
+dependantSdkVersion=2025.12.0
+prop.subLabel=Motor_Control_Framework_Extension\\ 1.0.0
+
+# General properties are prepended with "prop."
+prop.file.templatesFile=motor_control_framework_extension_templates.xml
