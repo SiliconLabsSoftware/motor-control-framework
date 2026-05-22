@@ -29,8 +29,8 @@
 #define MXLEMMING_OBSERVER_SENSOR_H
 
 #include "Arduino.h"
-#include "../external/simplefoc/src/common/base_classes/FOCMotor.h"
-#include "../external/simplefoc/src/common/base_classes/Sensor.h"
+#include "FOCMotor.h"
+#include "Sensor.h"
 
 /**
 

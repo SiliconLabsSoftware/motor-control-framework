@@ -19,7 +19,7 @@
 
 #include "efr32_mcu.h"
 #include "sl_hal_prs.h"
-#include "../../common/simple_foc_platform_specific/driver/efr32_mcu.h"
+#include "../driver/efr32_mcu.h"
 
 #ifndef _ADC_VOLTAGE
 #define _ADC_VOLTAGE 3.3f

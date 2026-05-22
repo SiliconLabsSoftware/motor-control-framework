@@ -1,7 +1,7 @@
 #ifndef EFR32_DRIVER_MCU_H
 #define EFR32_DRIVER_MCU_H
 
-#include "../../external/simplefoc/src/drivers/hardware_api.h"
+#include "drivers/hardware_api.h"
 
 #include "efr32_pwm.h"
 

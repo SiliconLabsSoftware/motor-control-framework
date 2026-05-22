@@ -17,7 +17,7 @@
 #ifndef EFR32_CURRENTSENSE_MCU_H
 #define EFR32_CURRENTSENSE_MCU_H
 
-#include "../../external/simplefoc/src/current_sense/hardware_api.h"
+#include "current_sense/hardware_api.h"
 
 #include "sl_hal_iadc.h"
 #include <FreeRTOS.h>

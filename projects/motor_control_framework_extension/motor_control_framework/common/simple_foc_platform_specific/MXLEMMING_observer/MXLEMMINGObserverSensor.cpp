@@ -26,8 +26,8 @@
  * SOFTWARE.
  ******************************************************************************/
 #include "MXLEMMINGObserverSensor.h"
-#include "../external/simplefoc/src/common/foc_utils.h"
-#include "../external/simplefoc/src/common/time_utils.h"
+#include "foc_utils.h"
+#include "time_utils.h"
 
 MXLEMMINGObserverSensor::MXLEMMINGObserverSensor(const FOCMotor& m) : _motor(m)
 {
