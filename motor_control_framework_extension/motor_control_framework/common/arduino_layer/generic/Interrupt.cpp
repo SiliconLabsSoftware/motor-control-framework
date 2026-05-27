@@ -43,6 +43,11 @@ static std::list < gpio_interrupt_handler_t > gpio_interrupt_handlers;
 SemaphoreHandle_t gpio_isr_mutex;
 StaticSemaphore_t gpio_isr_mutex_buf;
 
+/* Arduino noInterrupts()/interrupts(): nesting state for CORE_EnterCritical wrapper (Arduino.h).
+ * Not for use from ISRs (shared state); see comment above macros in Arduino.h. */
+volatile uint32_t _foc_irq_nesting = 0;
+CORE_irqState_t _foc_irq_saved = 0;
+
 static void gpio_irq_handler(uint8_t interrupt_num, void *ctx)
 {
   (void)ctx;

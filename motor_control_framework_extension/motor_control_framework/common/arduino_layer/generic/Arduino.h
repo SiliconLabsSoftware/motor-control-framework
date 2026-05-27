@@ -42,6 +42,7 @@ extern "C" {
 // RMU has no HAL equivalent at this time
 #include "em_rmu.h"
 #include "sl_udelay.h"
+#include "sl_core.h"
 }
 
 #include "pinDefinitions.h"
@@ -61,8 +62,33 @@ using std::min;
 using std::max;
 using std::abs;
 
-#define interrupts() __enable_irq()
-#define noInterrupts() __disable_irq()
+/** @note State lives in Interrupt.cpp. SimpleFOC-compatible usage: thread/task context
+ *        only; do not yield between them.
+ *        Do not call noInterrupts()/interrupts() from an ISR - shared nesting state is not re-entrant. */
+extern volatile uint32_t _foc_irq_nesting;
+extern CORE_irqState_t _foc_irq_saved;
+
+static inline void _foc_no_interrupts(void)
+{
+  CORE_irqState_t st = CORE_EnterCritical();
+  if (_foc_irq_nesting == 0) {
+    _foc_irq_saved = st;
+  }
+  _foc_irq_nesting++;
+}
+
+static inline void _foc_interrupts(void)
+{
+  if (_foc_irq_nesting == 0) {
+    return;
+  }
+  if (--_foc_irq_nesting == 0) {
+    CORE_ExitCritical(_foc_irq_saved);
+  }
+}
+
+#define noInterrupts() _foc_no_interrupts()
+#define interrupts() _foc_interrupts()
 
 /***************************************************************************//**
  * Sets the DAC voltage reference
