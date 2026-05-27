@@ -110,5 +110,5 @@ secondary components.
   `../../motor_control_framework/overlays/<board-feature>/motor_control_framework_config.h`
 - **Condition:** the board feature name from the Simplicity SDK (`brd4186c`,
   `brd4401c`, …).
-- **Unused pins:** set to `NA` (defined as `(-1)`). The `#error` guard at the
+- **Unused pins:** set to `NA`. The `#error` guard at the
   bottom of the config header fires if any pin is left at `MC_PIN_UNSET`.

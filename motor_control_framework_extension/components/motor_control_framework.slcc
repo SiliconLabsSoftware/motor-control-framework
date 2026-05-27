@@ -222,7 +222,7 @@ source:
   - path: external/simplefoc/src/sensors/MagneticSensorI2C.cpp
   - path: external/simplefoc/src/sensors/MagneticSensorPWM.cpp
   - path: external/simplefoc/src/sensors/MagneticSensorSPI.cpp
-requires: 
+requires:
   - name: ble_peer_manager_peripheral
   - name: bluetooth_feature_gap
   - name: bluetooth_feature_gatt_server

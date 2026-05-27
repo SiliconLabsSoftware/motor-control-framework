@@ -13,7 +13,7 @@
  * software is distributed to you in Source Code format and is governed by the
  * sections of the MSLA applicable to Source Code.
  *
- ******************************************************************************/ 
+ ******************************************************************************/
 #include "cmsis_os2.h"
 #include "motor_control.h"
 #include "FreeRTOS.h"
@@ -214,7 +214,7 @@ static void motor_control_task(void *arg)
 
   static BLDCMotor motor(MOTOR_PP, MOTOR_RESISTANCE, MOTOR_KV, MOTOR_INDUCTANCE);
   static BLDCDriver6PWM driver(PWM_1H, PWM_1L, PWM_2H, PWM_2L, PWM_3H, PWM_3L, PWM_EN);
-  static LowsideCurrentSense current_sense(0.007f, 10.0f, CURR_SEN_A, CURR_SEN_B, CURR_SEN_C);
+  static LowsideCurrentSense current_sense(DRIVER_SHUNT_RESISTANCE, DRIVER_SHUNT_GAIN, CURR_SEN_A, CURR_SEN_B, CURR_SEN_C);
   static MXLEMMINGObserverSensor observer(motor);
   static Commander commander(Serial);
 

@@ -45,7 +45,7 @@
 // <d> 400
 #define MOTOR_RESISTANCE_mOhm            400
 
-#define MOTOR_RESISTANCE                (float)(MOTOR_RESISTANCE_mOhm/1000.0f)
+#define MOTOR_RESISTANCE                (float)(MOTOR_RESISTANCE_mOhm / 1000.0f)
  
  // <o MOTOR_KV> Motor KV rating (RPM per volt) <1-2000>
  // <i> [RPM/V]: Manufacturer KV rating.
@@ -57,7 +57,7 @@
  // <d> 165
  #define MOTOR_INDUCTANCE_uH            165
 
- #define MOTOR_INDUCTANCE                (float)(MOTOR_INDUCTANCE_uH/1000000.0f)
+ #define MOTOR_INDUCTANCE                (float)(MOTOR_INDUCTANCE_uH / 1000000.0f)
  
  // </h>
  
@@ -68,20 +68,20 @@
  // <d> 7
  #define DRIVER_SHUNT_RESISTANCE_mOhm     7
 
- #define DRIVER_SHUNT_RESISTANCE      (float)(DRIVER_SHUNT_RESISTANCE_mOhm/1000.0f)
+ #define DRIVER_SHUNT_RESISTANCE      (float)(DRIVER_SHUNT_RESISTANCE_mOhm / 1000.0f)
  
  // <o DRIVER_SHUNT_GAIN_mV_A> Shunt amplifier gain (mV/A)
  // <i> [mV/A]: Amplifier gain from phase current to sense voltage.
  // <d> 10000
 #define DRIVER_SHUNT_GAIN_mV_A           10000
 
-#define DRIVER_SHUNT_GAIN            (float)(DRIVER_SHUNT_GAIN_mV_A/1000.0)
+#define DRIVER_SHUNT_GAIN            (float)(DRIVER_SHUNT_GAIN_mV_A / 1000.0)
  
 // </h>
 
 // <h> Pin map (Enter port pin names (e.g. 'PB0'). Build fails until all are set. Use 'NA' for not applicable.) 
 
-#define MC_PIN_UNSET    (-1)
+#define MC_PIN_UNSET    (-2)
 #define NA              (-1)
 
 // <s.16 PWM_1H> Phase 1 high-side PWM pin

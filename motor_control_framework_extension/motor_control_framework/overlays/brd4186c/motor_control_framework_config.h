@@ -41,7 +41,7 @@
 // <o MOTOR_RESISTANCE_mOhm> Phase resistance (mOhm)
 // <d> 400
 #define MOTOR_RESISTANCE_mOhm            400
-#define MOTOR_RESISTANCE                (float)(MOTOR_RESISTANCE_mOhm/1000.0f)
+#define MOTOR_RESISTANCE                (float)(MOTOR_RESISTANCE_mOhm / 1000.0f)
 
 // <o MOTOR_KV> Motor KV rating (RPM per volt) <1-2000>
 // <d> 285
@@ -50,7 +50,7 @@
 // <o MOTOR_INDUCTANCE_uH> Phase inductance (µH)
 // <d> 165
 #define MOTOR_INDUCTANCE_uH            165
-#define MOTOR_INDUCTANCE                (float)(MOTOR_INDUCTANCE_uH/1000000.0f)
+#define MOTOR_INDUCTANCE                (float)(MOTOR_INDUCTANCE_uH / 1000000.0f)
 
 // </h>
 
@@ -59,18 +59,18 @@
 // <o DRIVER_SHUNT_RESISTANCE_mOhm> Shunt resistance (mOhm)
 // <d> 7
 #define DRIVER_SHUNT_RESISTANCE_mOhm     7
-#define DRIVER_SHUNT_RESISTANCE      (float)(DRIVER_SHUNT_RESISTANCE_mOhm/1000.0f)
+#define DRIVER_SHUNT_RESISTANCE      (float)(DRIVER_SHUNT_RESISTANCE_mOhm / 1000.0f)
 
 // <o DRIVER_SHUNT_GAIN_mV_A> Shunt amplifier gain (mV/A)
 // <d> 10000
 #define DRIVER_SHUNT_GAIN_mV_A           10000
-#define DRIVER_SHUNT_GAIN            (float)(DRIVER_SHUNT_GAIN_mV_A/1000.0)
+#define DRIVER_SHUNT_GAIN            (float)(DRIVER_SHUNT_GAIN_mV_A / 1000.0)
 
 // </h>
 
 // <h> Pin map (BRD4186C wiring. Use 'NA' for not applicable.)
 
-#define MC_PIN_UNSET    (-1)
+#define MC_PIN_UNSET    (-2)
 #define NA              (-1)
 
 // <s.16 PWM_1H> Phase 1 high-side PWM pin
@@ -143,23 +143,23 @@
 
 // </h>
 
-#if (PWM_1H == MC_PIN_UNSET) \
- || (PWM_1L == MC_PIN_UNSET) \
- || (PWM_2H == MC_PIN_UNSET) \
- || (PWM_2L == MC_PIN_UNSET) \
- || (PWM_3H == MC_PIN_UNSET) \
- || (PWM_3L == MC_PIN_UNSET) \
- || (PWM_EN == MC_PIN_UNSET) \
- || (HALL_A == MC_PIN_UNSET) \
- || (HALL_B == MC_PIN_UNSET) \
- || (HALL_C == MC_PIN_UNSET) \
- || (CURR_SEN_A == MC_PIN_UNSET) \
- || (CURR_SEN_B == MC_PIN_UNSET) \
- || (CURR_SEN_C == MC_PIN_UNSET) \
- || (SPI_MOSI == MC_PIN_UNSET) \
- || (SPI_MISO == MC_PIN_UNSET) \
- || (SPI_SCK == MC_PIN_UNSET) \
- || (SPI_CS == MC_PIN_UNSET)
+#if (PWM_1H == MC_PIN_UNSET)      \
+  || (PWM_1L == MC_PIN_UNSET)     \
+  || (PWM_2H == MC_PIN_UNSET)     \
+  || (PWM_2L == MC_PIN_UNSET)     \
+  || (PWM_3H == MC_PIN_UNSET)     \
+  || (PWM_3L == MC_PIN_UNSET)     \
+  || (PWM_EN == MC_PIN_UNSET)     \
+  || (HALL_A == MC_PIN_UNSET)     \
+  || (HALL_B == MC_PIN_UNSET)     \
+  || (HALL_C == MC_PIN_UNSET)     \
+  || (CURR_SEN_A == MC_PIN_UNSET) \
+  || (CURR_SEN_B == MC_PIN_UNSET) \
+  || (CURR_SEN_C == MC_PIN_UNSET) \
+  || (SPI_MOSI == MC_PIN_UNSET)   \
+  || (SPI_MISO == MC_PIN_UNSET)   \
+  || (SPI_SCK == MC_PIN_UNSET)    \
+  || (SPI_CS == MC_PIN_UNSET)
 #error Motor Control Framework: configure all pins in Project Configurator (Pin map section).
 #endif
 

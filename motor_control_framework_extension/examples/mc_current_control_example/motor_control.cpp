@@ -13,7 +13,7 @@
  * software is distributed to you in Source Code format and is governed by the
  * sections of the MSLA applicable to Source Code.
  *
- ******************************************************************************/ 
+ ******************************************************************************/
 #include "cmsis_os2.h"
 #include "motor_control.h"
 #include "FreeRTOS.h"
@@ -29,8 +29,8 @@
 #endif
 
 /*******************************************************************************
-*******************************   DEFINES   ***********************************
-******************************************************************************/
+ *******************************   DEFINES   ***********************************
+ ******************************************************************************/
 #define MC_TASK_FREQUENCY_HZ            5000      // [Hz]: MC task frequency
 #define MC_TASK_STACK_SIZE              4096
 #define MC_TASK_PRIO                    osPriorityRealtime5
@@ -49,8 +49,8 @@
 #define MOTOR_VOLTAGE_LIMIT_V           12.0f     // [V]: Global voltage limit. Limits Q-axis voltage.
 #define MOTOR_VELOCITY_LIMIT_RPM        530.0f    // [RPM]: Motor velocity limit.
 /*******************************************************************************
-***************************  LOCAL VARIABLES   ********************************
-******************************************************************************/
+ ***************************  LOCAL VARIABLES   ********************************
+ ******************************************************************************/
 static BLDCMotor *motor_p;
 static HallSensor *sensor_p;
 static Commander *commander_p;
@@ -67,14 +67,14 @@ static StaticTask_t xTaskBuffer_io;
 static StackType_t  xStack_mc[MC_TASK_STACK_SIZE];
 static StackType_t  xStack_io[IO_TASK_STACK_SIZE];
 /*******************************************************************************
-*********************   LOCAL FUNCTION PROTOTYPES   ***************************
-******************************************************************************/
+ *********************   LOCAL FUNCTION PROTOTYPES   ***************************
+ ******************************************************************************/
 
 static void motor_control_task(void *arg);
 static void io_task(void *arg);
 /*******************************************************************************
-**************************   GLOBAL FUNCTIONS   *******************************
-******************************************************************************/
+ **************************   GLOBAL FUNCTIONS   *******************************
+ ******************************************************************************/
 void doMotor(char* cmd)
 {
   if (!commander_p) {
@@ -96,26 +96,26 @@ void doC()
   sensor_p->handleC();
 }
 /***************************************************************************//**
-* Initialize Torque Sensor Velocity 6PWM example.
-******************************************************************************/
+ * Initialize Torque Sensor Velocity 6PWM example.
+ ******************************************************************************/
 void motor_control_init(void)
 {
   xHandle_io = xTaskCreateStatic(io_task,
-                                "io task",
-                                IO_TASK_STACK_SIZE,
-                                ( void * ) NULL,
-                                IO_TASK_PRIO,
-                                xStack_io,
-                                &xTaskBuffer_io);
+                                 "io task",
+                                 IO_TASK_STACK_SIZE,
+                                 ( void * ) NULL,
+                                 IO_TASK_PRIO,
+                                 xStack_io,
+                                 &xTaskBuffer_io);
   EFM_ASSERT(xHandle_io != NULL);
 
   xHandle_mc = xTaskCreateStatic(motor_control_task,
-                                "motor control task",
-                                MC_TASK_STACK_SIZE,
-                                ( void * ) NULL,
-                                MC_TASK_PRIO,
-                                xStack_mc,
-                                &xTaskBuffer_mc);
+                                 "motor control task",
+                                 MC_TASK_STACK_SIZE,
+                                 ( void * ) NULL,
+                                 MC_TASK_PRIO,
+                                 xStack_mc,
+                                 &xTaskBuffer_mc);
   EFM_ASSERT(xHandle_mc != NULL);
 
   uint32_t timer_frequency;
@@ -151,8 +151,8 @@ void motor_control_init(void)
 }
 
 /*******************************************************************************
-* Torque Sensor Velocity 6PWM task.
-******************************************************************************/
+ * Torque Sensor Velocity 6PWM task.
+ ******************************************************************************/
 static void motor_control_task(void *arg)
 {
   (void)&arg;
