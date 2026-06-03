@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ASCII"?>
+<model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
+  <descriptors name="mc_open_loop_example" label="Motor Control Framework - Open Loop Example&#xA;" description="Motor Control Framework - Open Loop Example for SiSDK.&#xA;">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="examples.mc_open_loop_example.mc_open_loop_example.slcp"/>
+    <properties key="projectFilePaths" value="examples/mc_open_loop_example/mc_open_loop_example.slcp"/>
+    <properties key="readmeFiles" value="examples/mc_open_loop_example/readme.md"/>
+    <properties key="boardCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*"/>
+    <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc"/>
+    <properties key="category" value="Motor Control Framework Examples"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="sltPackageIds" value="{&quot;simplicity-sdk&quot;:&quot;~2025.12.0&quot;}"/>
+    <properties key="sltPackagePath" value="examples/mc_open_loop_example/mc_open_loop_example.slcp"/>
+    <properties key="filters" value="Motor\ Control|Open\ Loop|Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="mc_sensorless_example" label="Motor Control Framework - Sensorless Example&#xA;" description="Motor Control Framework - Sensorless Example for SiSDK.&#xA;">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="examples.mc_sensorless_example.mc_sensorless_example.slcp"/>
+    <properties key="projectFilePaths" value="examples/mc_sensorless_example/mc_sensorless_example.slcp"/>
+    <properties key="readmeFiles" value="examples/mc_sensorless_example/readme.md"/>
+    <properties key="boardCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*"/>
+    <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc"/>
+    <properties key="category" value="Motor Control Framework Examples"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="sltPackageIds" value="{&quot;simplicity-sdk&quot;:&quot;~2025.12.0&quot;}"/>
+    <properties key="sltPackagePath" value="examples/mc_sensorless_example/mc_sensorless_example.slcp"/>
+    <properties key="filters" value="Motor\ Control|Sensorless|Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="mc_hall_sensor_example" label="Motor Control Framework - Hall Sensor Example&#xA;" description="Motor Control Framework - Hall Sensor Example for SiSDK.&#xA;">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="examples.mc_hall_sensor_example.mc_hall_sensor_example.slcp"/>
+    <properties key="projectFilePaths" value="examples/mc_hall_sensor_example/mc_hall_sensor_example.slcp"/>
+    <properties key="readmeFiles" value="examples/mc_hall_sensor_example/readme.md"/>
+    <properties key="boardCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*"/>
+    <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc"/>
+    <properties key="category" value="Motor Control Framework Examples"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="sltPackageIds" value="{&quot;simplicity-sdk&quot;:&quot;~2025.12.0&quot;}"/>
+    <properties key="sltPackagePath" value="examples/mc_hall_sensor_example/mc_hall_sensor_example.slcp"/>
+    <properties key="filters" value="Motor\ Control|Hall\ Sensor|Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="mc_current_control_example" label="Motor Control Framework - Current Control Example&#xA;" description="Motor Control Framework - Current Control Example for SiSDK.&#xA;">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="examples.mc_current_control_example.mc_current_control_example.slcp"/>
+    <properties key="projectFilePaths" value="examples/mc_current_control_example/mc_current_control_example.slcp"/>
+    <properties key="readmeFiles" value="examples/mc_current_control_example/readme.md"/>
+    <properties key="boardCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*"/>
+    <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc"/>
+    <properties key="category" value="Motor Control Framework Examples"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="sltPackageIds" value="{&quot;simplicity-sdk&quot;:&quot;~2025.12.0&quot;}"/>
+    <properties key="sltPackagePath" value="examples/mc_current_control_example/mc_current_control_example.slcp"/>
+    <properties key="filters" value="Motor\ Control|Current\ Control|Project\ Difficulty|Advanced"/>
+  </descriptors>
+</model:MDescriptors>

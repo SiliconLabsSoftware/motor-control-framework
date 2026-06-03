@@ -1,0 +1,242 @@
+id: motor_control_framework
+label: Motor Control Framework
+package: motor_control_framework_extension
+description: >
+  Framework which enables the SimpleFOC library to run on SiSDK.
+category: Motor Control
+quality: experimental
+root_path: motor_control_framework
+include:
+  - path: common/arduino_layer/generic/
+    file_list:
+      - path: Arduino.h
+      - path: Serial.h
+      - path: adc.h
+      - path: overloads.h
+      - path: pinDefinitions.h
+  - path: common/arduino_layer/generic/api/
+    file_list:
+      - path: ArduinoAPI.h
+      - path: Common.h
+      - path: Compat.h
+      - path: HardwareSerial.h
+      - path: Print.h
+      - path: Printable.h
+      - path: RingBuffer.h
+      - path: Stream.h
+      - path: String_ex.h
+      - path: WCharacter.h
+      - path: itoa.h
+  - path: common/arduino_layer/generic/api/deprecated-avr-comp/avr/
+    file_list:
+      - path: dtostrf.h
+      - path: interrupt.h
+      - path: pgmspace.h
+  - path: common/arduino_layer/specific/
+    file_list:
+      - path: SPI.h
+      - path: Wire.h
+      - path: arduino_serial_config.h
+      - path: arduino_variant.h
+      - path: pins_arduino.h
+  - path: common/ble_stream_adapter/
+    file_list:
+      - path: ble_stream_adapter.h
+  - path: common/simple_foc_platform_specific/MXLEMMING_observer/
+    file_list:
+      - path: MXLEMMINGObserverSensor.h
+  - path: common/simple_foc_platform_specific/current_sense/
+    file_list:
+      - path: efr32_mcu.h
+  - path: common/simple_foc_platform_specific/driver/
+    file_list:
+      - path: efr32_mcu.h
+      - path: efr32_pwm.h
+  - path: external/simplefoc/src/
+    file_list:
+      - path: BLDCMotor.h
+      - path: HybridStepperMotor.h
+      - path: SimpleFOC.h
+      - path: StepperMotor.h
+  - path: external/simplefoc/src/common/
+    file_list:
+      - path: defaults.h
+      - path: foc_utils.h
+      - path: lowpass_filter.h
+      - path: pid.h
+      - path: time_utils.h
+  - path: external/simplefoc/src/common/base_classes/
+    file_list:
+      - path: BLDCDriver.h
+      - path: CurrentSense.h
+      - path: FOCDriver.h
+      - path: FOCMotor.h
+      - path: Sensor.h
+      - path: StepperDriver.h
+  - path: external/simplefoc/src/communication/
+    file_list:
+      - path: Commander.h
+      - path: SimpleFOCDebug.h
+      - path: StepDirListener.h
+      - path: commands.h
+  - path: external/simplefoc/src/current_sense/
+    file_list:
+      - path: GenericCurrentSense.h
+      - path: InlineCurrentSense.h
+      - path: LowsideCurrentSense.h
+      - path: hardware_api.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/esp32/
+    file_list:
+      - path: esp32_adc_driver.h
+      - path: esp32_mcu.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/rp2040/
+    file_list:
+      - path: rp2040_mcu.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/samd/
+    file_list:
+      - path: samd21_mcu.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/silabs/
+    file_list:
+      - path: efr32_mcu.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/
+    file_list:
+      - path: stm32_adc_utils.h
+      - path: stm32_mcu.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/b_g431/
+    file_list:
+      - path: b_g431_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/stm32f1/
+    file_list:
+      - path: stm32f1_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/stm32f4/
+    file_list:
+      - path: stm32f4_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/stm32f7/
+    file_list:
+      - path: stm32f7_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/stm32g4/
+    file_list:
+      - path: stm32g4_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/stm32h7/
+    file_list:
+      - path: stm32h7_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/stm32/stm32l4/
+    file_list:
+      - path: stm32l4_hal.h
+  - path: external/simplefoc/src/current_sense/hardware_specific/teensy/
+    file_list:
+      - path: teensy4_mcu.h
+  - path: external/simplefoc/src/drivers/
+    file_list:
+      - path: BLDCDriver3PWM.h
+      - path: BLDCDriver6PWM.h
+      - path: StepperDriver2PWM.h
+      - path: StepperDriver4PWM.h
+      - path: hardware_api.h
+  - path: external/simplefoc/src/drivers/hardware_specific/esp32/
+    file_list:
+      - path: esp32_driver_mcpwm.h
+      - path: mcpwm_private.h
+  - path: external/simplefoc/src/drivers/hardware_specific/renesas/
+    file_list:
+      - path: renesas.h
+  - path: external/simplefoc/src/drivers/hardware_specific/rp2040/
+    file_list:
+      - path: rp2040_mcu.h
+  - path: external/simplefoc/src/drivers/hardware_specific/samd/
+    file_list:
+      - path: samd_mcu.h
+  - path: external/simplefoc/src/drivers/hardware_specific/silabs/
+    file_list:
+      - path: efr32_mcu.h
+      - path: efr32_pwm.h
+  - path: external/simplefoc/src/drivers/hardware_specific/stm32/
+    file_list:
+      - path: stm32_mcu.h
+      - path: stm32_searchtimers.h
+      - path: stm32_timerutils.h
+  - path: external/simplefoc/src/drivers/hardware_specific/teensy/
+    file_list:
+      - path: teensy4_mcu.h
+      - path: teensy_mcu.h
+  - path: external/simplefoc/src/sensors/
+    file_list:
+      - path: Encoder.h
+      - path: GenericSensor.h
+      - path: HallSensor.h
+      - path: MagneticSensorAnalog.h
+      - path: MagneticSensorI2C.h
+      - path: MagneticSensorPWM.h
+      - path: MagneticSensorSPI.h
+config_file:
+  - path: config/motor_control_framework_config.h
+    file_id: motor_control_framework_config
+source:
+  - path: common/arduino_layer/arduino_layer_init.cpp
+  - path: common/arduino_layer/generic/Interrupt.cpp
+  - path: common/arduino_layer/generic/Serial.cpp
+  - path: common/arduino_layer/generic/adc.cpp
+  - path: common/arduino_layer/generic/api/Print.cpp
+  - path: common/arduino_layer/generic/api/Stream.cpp
+  - path: common/arduino_layer/generic/api/String_ex.cpp
+  - path: common/arduino_layer/generic/pinToIndex.cpp
+  - path: common/arduino_layer/generic/wiring.cpp
+  - path: common/arduino_layer/generic/wiring_analog.cpp
+  - path: common/arduino_layer/generic/wiring_digital.cpp
+  - path: common/arduino_layer/specific/arduino_serial_config.cpp
+  - path: common/arduino_layer/specific/arduino_variant.cpp
+  - path: common/ble_stream_adapter/ble_stream_adapter.cpp
+  - path: common/simple_foc_platform_specific/MXLEMMING_observer/MXLEMMINGObserverSensor.cpp
+  - path: common/simple_foc_platform_specific/current_sense/efr32_mcu.cpp
+  - path: common/simple_foc_platform_specific/driver/efr32_mcu.cpp
+  - path: common/simple_foc_platform_specific/driver/efr32_pwm.cpp
+  - path: external/simplefoc/src/BLDCMotor.cpp
+  - path: external/simplefoc/src/HybridStepperMotor.cpp
+  - path: external/simplefoc/src/StepperMotor.cpp
+  - path: external/simplefoc/src/common/base_classes/CurrentSense.cpp
+  - path: external/simplefoc/src/common/base_classes/FOCMotor.cpp
+  - path: external/simplefoc/src/common/base_classes/Sensor.cpp
+  - path: external/simplefoc/src/common/foc_utils.cpp
+  - path: external/simplefoc/src/common/lowpass_filter.cpp
+  - path: external/simplefoc/src/common/pid.cpp
+  - path: external/simplefoc/src/common/time_utils.cpp
+  - path: external/simplefoc/src/communication/Commander.cpp
+  - path: external/simplefoc/src/communication/SimpleFOCDebug.cpp
+  - path: external/simplefoc/src/communication/StepDirListener.cpp
+  - path: external/simplefoc/src/current_sense/GenericCurrentSense.cpp
+  - path: external/simplefoc/src/current_sense/InlineCurrentSense.cpp
+  - path: external/simplefoc/src/current_sense/LowsideCurrentSense.cpp
+  - path: external/simplefoc/src/current_sense/hardware_specific/generic_mcu.cpp
+  - path: external/simplefoc/src/current_sense/hardware_specific/silabs/efr32_mcu.cpp
+  - path: external/simplefoc/src/drivers/BLDCDriver3PWM.cpp
+  - path: external/simplefoc/src/drivers/BLDCDriver6PWM.cpp
+  - path: external/simplefoc/src/drivers/StepperDriver2PWM.cpp
+  - path: external/simplefoc/src/drivers/StepperDriver4PWM.cpp
+  - path: external/simplefoc/src/drivers/hardware_specific/generic_mcu.cpp
+  - path: external/simplefoc/src/drivers/hardware_specific/silabs/efr32_mcu.cpp
+  - path: external/simplefoc/src/drivers/hardware_specific/silabs/efr32_pwm.cpp
+  - path: external/simplefoc/src/sensors/Encoder.cpp
+  - path: external/simplefoc/src/sensors/GenericSensor.cpp
+  - path: external/simplefoc/src/sensors/HallSensor.cpp
+  - path: external/simplefoc/src/sensors/MagneticSensorAnalog.cpp
+  - path: external/simplefoc/src/sensors/MagneticSensorI2C.cpp
+  - path: external/simplefoc/src/sensors/MagneticSensorPWM.cpp
+  - path: external/simplefoc/src/sensors/MagneticSensorSPI.cpp
+requires:
+  - name: ble_peer_manager_peripheral
+  - name: bluetooth_feature_gap
+  - name: bluetooth_feature_gatt_server
+  - name: bluetooth_on_demand_start
+  - name: cpp_support
+  - name: dmadrv
+  - name: emlib_rmu
+  - name: freertos_heap_3
+  - name: gatt_configuration
+  - name: hal_iadc
+  - name: hal_prs
+  - name: hal_timer
+  - name: iostream_rtt
+  - name: sleeptimer
+  - name: udelay
+provides:
+  - name: motor_control_framework

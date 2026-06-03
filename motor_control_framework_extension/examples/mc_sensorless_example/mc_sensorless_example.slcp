@@ -1,0 +1,98 @@
+project_name: mc_sensorless_example
+package: Motor Control Framework Extension
+label: >
+  Motor Control Framework - Sensorless Example
+description: >
+  Demonstrates the Motor Control Framework running on a radio board with sensorless control.
+category: Motor Control Framework Examples
+quality: experimental
+
+filter:
+  - name: "Motor Control"
+    value: ["Sensorless"]
+  - name: "Device Type"
+    value: ["SoC"]
+  - name: "Project Difficulty"
+    value: ["Advanced"]
+
+sdk_extension:
+  - id: motor_control_framework_extension
+    vendor: silabs
+    version: 1.0.0
+
+sdk:
+  vendor: silabs
+  id: simplicity_sdk
+  version: 2025.12.0
+
+toolchain_settings: [
+  ]
+
+component:
+- package: motor_control_framework_extension
+  vendor: silabs
+  id: motor_control_framework
+- package: simplicity_sdk
+  vendor: silabs
+  id: clock_manager
+- package: simplicity_sdk
+  vendor: silabs
+  id: cpp_support
+- package: simplicity_sdk
+  vendor: silabs
+  id: device_init
+- package: simplicity_sdk
+  vendor: silabs
+  id: sl_main
+
+source:
+  - path: app.cpp
+  - path: ble_handler.cpp
+  - path: motor_control.cpp
+
+include:
+  - path: .
+    file_list:
+      - path: app.h
+      - path: ble_handler.h
+      - path: motor_control.h
+
+configuration:
+  - name: SL_STACK_SIZE
+    value: "4096"
+  - name: SL_CLOCK_MANAGER_HFRCO_DPLL_EN
+    value: "1"
+  - name: SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE_HFRCODPLL"
+
+config_file:
+  - override:
+      component: gatt_configuration
+      file_id: gatt_configuration_file_id
+    path: gatt_configuration.btconf
+    directory: btconf
+  # Board-specific overlays for motor_control_framework_config.h.
+  # Each entry is gated by a board feature and overrides the framework's
+  # default config file when that board is selected. If none match, the
+  # generic motor_control_framework_config.h ships unchanged.
+  - override:
+      component: motor_control_framework
+      file_id: motor_control_framework_config
+    path: ../../motor_control_framework/overlays/brd4186c/motor_control_framework_config.h
+    condition:
+      - brd4186c
+  - override:
+      component: motor_control_framework
+      file_id: motor_control_framework_config
+    path: ../../motor_control_framework/overlays/brd4401c/motor_control_framework_config.h
+    condition:
+      - brd4401c
+
+readme:
+  - path: readme.md
+
+ui_hints:
+  highlight:
+    - path: config/btconf/gatt_configuration.btconf
+    - path: readme.md
+      focus: true
