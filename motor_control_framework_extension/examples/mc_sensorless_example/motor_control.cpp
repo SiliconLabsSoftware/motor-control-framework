@@ -230,7 +230,10 @@ static void motor_control_task(void *arg)
   driver.pwm_frequency = DRIVER_PWM_FREQ_HZ;
   driver.dead_zone = DRIVER_DEAD_ZONE;
 
-  driver.init();
+  if(!driver.init()) {
+    Serial.println("Driver init failed!");
+    return;
+  }
   driver.enable();
 
   motor.linkDriver(&driver);
@@ -259,7 +262,10 @@ static void motor_control_task(void *arg)
   }
 
   current_sense.linkDriver(&driver);
-  current_sense.init();
+  if(!current_sense.init()) {
+    Serial.println("Current sense init failed!");
+    return;
+  }
   motor.linkCurrentSense(&current_sense);
 
   // Sensorless: skip sensor alignment

@@ -46,7 +46,7 @@
 #define DRIVER_DEAD_ZONE                0.0f      // (DRV8305 has built in deadzone config)
 #define DRIVER_PSU_VOLTAGE_V            24.0f     // [V]: power supply voltage
 #define DRIVER_VOLTAGE_LIMIT_V          12.0f     // [V]: Hard limit on output voltage, in volts. Effectively limits PWM duty cycle proportionally to power supply voltage.
-#define MOTOR_VELOCITY_LIMIT_RPM        530.0f    // [RPM]: Motor velocity limit.
+#define MOTOR_VELOCITY_LIMIT_RAD_S      530.0f    // [rad/s]: Motor velocity limit.
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
@@ -195,8 +195,8 @@ static void motor_control_task(void *arg)
   motor.linkDriver(&driver);
   motor.linkSensor(&sensor);
 
-  // Set below the motor's max 5600 RPM limit = 586 rad/s
-  motor.velocity_limit = MOTOR_VELOCITY_LIMIT_RPM;
+  // Set below the motor's max velocity limit
+  motor.velocity_limit = MOTOR_VELOCITY_LIMIT_RAD_S;
   // set motion control loop to be used
   motor.controller = MotionControlType::velocity;
   // choose FOC modulation (optional) - SinePWM or SpaceVectorPWM
