@@ -128,7 +128,6 @@ What to consider when raising a Pull Request:
 4. **Evaluate the Action Workflow Results**
    The following workflows are included in every repository:
    - **[Coding Convention Check](workflows/00-Check-Code-Convention.yml)**: Analyzes the code formatting and fails if any rules are broken.
-   - **[Firmware Build](workflows/02-Build-Firmware.yml)**: Builds the firmware inside the [Dockerfile](../Dockerfile).
    - **[Secret Scanner](workflows/04-TruffleHog-Security-Scan.yml)**: Runs the TruffleHog security scanner to look for API keys and committed secrets.
 
 ### As a Reviewer
