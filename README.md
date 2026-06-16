@@ -50,7 +50,15 @@ If you already cloned without submodules:
 git submodule update --init --recursive
 ```
 
-The SimpleFOC library is vendored as a submodule under `motor_control_framework_extension/motor_control_framework/external/simplefoc/`.
+#### External dependencies
+- SimpleFOC library
+   - Located at `motor_control_framework_extension/motor_control_framework/external/simplefoc/`
+   - Commit `2d78e7e`
+- ArduinoCore-API library
+   - Located at `motor_control_framework_extension/motor_control_framework/external/ArduinoCore-API/`
+   - Commit `0f4e57e`
+
+*Note: All the dependencies and their licenses are listed in [LICENSE.md](LICENSE.md).*
 
 ### 2. Install the extension in Simplicity Studio 6
 

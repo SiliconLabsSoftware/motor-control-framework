@@ -9,9 +9,14 @@ add_library(arduino_layer STATIC
     generic/wiring_digital.cpp
 
     # API
-    generic/api/Print.cpp
-    generic/api/Stream.cpp
-    generic/api/String_ex.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/CanMsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/CanMsgRingbuffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/Common.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/IPAddress.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/PluggableUSB.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/Print.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/Stream.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API/api/String.cpp
 
     # Specific configuration
     specific/arduino_serial_config.cpp
@@ -22,7 +27,7 @@ add_library(arduino_layer STATIC
 
 target_include_directories(arduino_layer PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/generic
-    ${CMAKE_CURRENT_SOURCE_DIR}/generic/api
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/ArduinoCore-API
     ${CMAKE_CURRENT_SOURCE_DIR}/specific
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

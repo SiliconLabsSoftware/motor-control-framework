@@ -2,3 +2,6 @@
 	path = motor_control_framework_extension/motor_control_framework/external/simplefoc
 	url = https://github.com/simplefoc/Arduino-FOC.git
 	branch = dev
+[submodule "motor_control_framework_extension/motor_control_framework/external/ArduinoCore-API"]
+	path = motor_control_framework_extension/motor_control_framework/external/ArduinoCore-API
+	url = https://github.com/arduino/ArduinoCore-API.git

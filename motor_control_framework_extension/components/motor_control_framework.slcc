@@ -14,24 +14,46 @@ include:
       - path: adc.h
       - path: overloads.h
       - path: pinDefinitions.h
-  - path: common/arduino_layer/generic/api/
+  - path: external/ArduinoCore-API
     file_list:
-      - path: ArduinoAPI.h
-      - path: Common.h
-      - path: Compat.h
-      - path: HardwareSerial.h
-      - path: Print.h
-      - path: Printable.h
-      - path: RingBuffer.h
-      - path: Stream.h
-      - path: String_ex.h
-      - path: WCharacter.h
-      - path: itoa.h
-  - path: common/arduino_layer/generic/api/deprecated-avr-comp/avr/
-    file_list:
-      - path: dtostrf.h
-      - path: interrupt.h
-      - path: pgmspace.h
+      - path: api/ArduinoAPI.h
+      - path: api/Binary.h
+      - path: api/CanMsg.h
+      - path: api/CanMsgRingbuffer.h
+      - path: api/Client.h
+      - path: api/Common.h
+      - path: api/Compat.h
+      - path: api/DMAPool.h
+      - path: api/HardwareCAN.h
+      - path: api/HardwareI2C.h
+      - path: api/HardwareSPI.h
+      - path: api/HardwareSerial.h
+      - path: api/IPAddress.h
+      - path: api/Interrupts.h
+      - path: api/PluggableUSB.h
+      - path: api/Print.h
+      - path: api/Printable.h
+      - path: api/RingBuffer.h
+      - path: api/Server.h
+      - path: api/Stream.h
+      - path: api/String.h
+      - path: api/USBAPI.h
+      - path: api/Udp.h
+      - path: api/WCharacter.h
+      - path: api/itoa.h
+      - path: api/deprecated-avr-comp/avr/dtostrf.c.impl
+      - path: api/deprecated-avr-comp/avr/dtostrf.h
+      - path: api/deprecated-avr-comp/avr/interrupt.h
+      - path: api/deprecated-avr-comp/avr/pgmspace.h
+      - path: api/deprecated/Client.h
+      - path: api/deprecated/HardwareSerial.h
+      - path: api/deprecated/IPAddress.h
+      - path: api/deprecated/Print.h
+      - path: api/deprecated/Printable.h
+      - path: api/deprecated/Server.h
+      - path: api/deprecated/Stream.h
+      - path: api/deprecated/Udp.h
+      - path: api/deprecated/WString.h
   - path: common/arduino_layer/specific/
     file_list:
       - path: SPI.h
@@ -176,9 +198,14 @@ source:
   - path: common/arduino_layer/generic/Interrupt.cpp
   - path: common/arduino_layer/generic/Serial.cpp
   - path: common/arduino_layer/generic/adc.cpp
-  - path: common/arduino_layer/generic/api/Print.cpp
-  - path: common/arduino_layer/generic/api/Stream.cpp
-  - path: common/arduino_layer/generic/api/String_ex.cpp
+  - path: external/ArduinoCore-API/api/CanMsg.cpp
+  - path: external/ArduinoCore-API/api/CanMsgRingbuffer.cpp
+  - path: external/ArduinoCore-API/api/Common.cpp
+  - path: external/ArduinoCore-API/api/IPAddress.cpp
+  - path: external/ArduinoCore-API/api/PluggableUSB.cpp
+  - path: external/ArduinoCore-API/api/Print.cpp
+  - path: external/ArduinoCore-API/api/Stream.cpp
+  - path: external/ArduinoCore-API/api/String.cpp
   - path: common/arduino_layer/generic/pinToIndex.cpp
   - path: common/arduino_layer/generic/wiring.cpp
   - path: common/arduino_layer/generic/wiring_analog.cpp
