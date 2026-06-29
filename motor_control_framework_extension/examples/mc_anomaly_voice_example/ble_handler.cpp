@@ -35,7 +35,7 @@ static void handle_gatt_server_attribute_value(sl_bt_evt_gatt_server_attribute_v
 {
   switch (evt->attribute) {
     case gattdb_spp_data:
-      //TODO data arrived here
+      //data arrived here
       bleStreamAdapter.pushReceivedData(evt->value.data, evt->value.len);
       break;
 
