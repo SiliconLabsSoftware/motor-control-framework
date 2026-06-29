@@ -74,7 +74,7 @@
     <properties key="solutionReferenceId" value="examples.mc_anomaly_voice_example.mc_anomaly_voice_example.slcp"/>
     <properties key="projectFilePaths" value="examples/mc_anomaly_voice_example/mc_anomaly_voice_example.slcp"/>
     <properties key="readmeFiles" value="examples/mc_anomaly_voice_example/readme.md"/>
-    <properties key="boardCompatibility" value=".*"/>
+    <properties key="boardCompatibility" value="brd4120a"/>
     <properties key="partCompatibility" value=".*"/>
     <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc"/>
