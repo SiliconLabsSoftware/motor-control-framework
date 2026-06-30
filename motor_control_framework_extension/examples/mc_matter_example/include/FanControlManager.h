@@ -33,89 +33,88 @@ using namespace chip::app;
 using namespace chip::app::Clusters::FanControl;
 using Protocols::InteractionModel::Status;
 
-class FanControlManager : public Delegate
+class FanControlManager: public Delegate
 {
 public:
-    CHIP_ERROR Init();
+  CHIP_ERROR Init();
 
-    FanControlManager(EndpointId endpoint) : Delegate(endpoint) {}
+  FanControlManager(EndpointId endpoint) : Delegate(endpoint) {
+  }
 
-    /**
-     * @brief Handle attribute changes for the Fan Control Cluster
-     * @param[in] attributeId    Cluster attribute id that changed
-     * @param[in] type           Cluster attribute type
-     * @param[in] size           Size of the attribute
-     * @param[in] value          Pointer to the new value
-     */
-    void HandleFanControlAttributeChange(AttributeId attributeId, uint8_t type, uint16_t size, uint8_t * value);
+  /**
+   * @brief Handle attribute changes for the Fan Control Cluster
+   * @param[in] attributeId    Cluster attribute id that changed
+   * @param[in] type           Cluster attribute type
+   * @param[in] size           Size of the attribute
+   * @param[in] value          Pointer to the new value
+   */
+  void HandleFanControlAttributeChange(AttributeId attributeId, uint8_t type, uint16_t size, uint8_t * value);
 
-    void PercentSettingWriteCallback(uint8_t aNewPercentSetting);
-    void SpeedSettingWriteCallback(uint8_t aNewSpeedSetting);
-    void FanModeWriteCallback(FanModeEnum aNewFanMode);
-    void AirflowDirectionSettingWriteCallback(uint8_t aNewDirectionSetting);
+  void PercentSettingWriteCallback(uint8_t aNewPercentSetting);
+  void SpeedSettingWriteCallback(uint8_t aNewSpeedSetting);
+  void FanModeWriteCallback(FanModeEnum aNewFanMode);
+  void AirflowDirectionSettingWriteCallback(uint8_t aNewDirectionSetting);
 
+  void SetPercentSetting(Percent aNewPercentSetting);
+  DataModel::Nullable < uint8_t > GetSpeedSetting();
+  DataModel::Nullable < Percent > GetPercentSetting();
+  AirflowDirectionEnum GetDirectionSetting();
+  void UpdateFanMode();
 
-    void SetPercentSetting(Percent aNewPercentSetting);
-    DataModel::Nullable<uint8_t> GetSpeedSetting();
-    DataModel::Nullable<Percent> GetPercentSetting();
-    AirflowDirectionEnum GetDirectionSetting();
-    void UpdateFanMode();
+  static void UpdateClusterState(intptr_t arg);
 
-    static void UpdateClusterState(intptr_t arg);
+  FanModeEnum GetFanMode();
+  void UpdateFanControlLED();
+  void UpdateFanControlLCD();
+  EndpointId GetEndPoint();
 
-    FanModeEnum GetFanMode();
-    void UpdateFanControlLED();
-    void UpdateFanControlLCD();
-    EndpointId GetEndPoint();
+  /**
+   * @brief Handle the step command from the Fan Control Cluster
+   */
+  Status HandleStep(StepDirectionEnum aDirection, bool aWrap, bool aLowestOff) override;
 
-    /**
-     * @brief Handle the step command from the Fan Control Cluster
-     */
-    Status HandleStep(StepDirectionEnum aDirection, bool aWrap, bool aLowestOff) override;
-
-    struct AttributeUpdateInfo
-    {
-        FanModeEnum fanMode;
-        uint8_t speedCurrent;
-        uint8_t percentCurrent;
-        uint8_t speedSetting;
-        uint8_t percentSetting;
-        uint8_t directionCurrent;
-        bool isPercentCurrent = false;
-        bool isSpeedCurrent   = false;
-        bool isSpeedSetting   = false;
-        bool isFanMode        = false;
-        bool isPercentSetting = false;
-        bool isDirectionCurrent = false;
-        EndpointId endPoint;
-    };
+  struct AttributeUpdateInfo{
+    FanModeEnum fanMode;
+    uint8_t speedCurrent;
+    uint8_t percentCurrent;
+    uint8_t speedSetting;
+    uint8_t percentSetting;
+    uint8_t directionCurrent;
+    bool isPercentCurrent = false;
+    bool isSpeedCurrent   = false;
+    bool isSpeedSetting   = false;
+    bool isFanMode        = false;
+    bool isPercentSetting = false;
+    bool isDirectionCurrent = false;
+    EndpointId endPoint;
+  };
 
 private:
-    friend FanControlManager & FanControlMgr(void);
+  friend FanControlManager & FanControlMgr(void);
 
-    EndpointId mEndPoint = 1;
-    FanModeEnum mFanMode;
-    uint8_t mSpeedMax;
+  EndpointId mEndPoint = 1;
+  FanModeEnum mFanMode;
+  uint8_t mSpeedMax;
 
-    uint8_t percentCurrent;
-    uint8_t speedCurrent;
-    uint8_t directionCurrent;
+  uint8_t percentCurrent;
+  uint8_t speedCurrent;
+  uint8_t directionCurrent;
 
-    // Fan Mode Limits
-    static constexpr int kFanModeLowLowerBound    = 1;
-    static constexpr int kFanModeLowUpperBound    = 3;
-    static constexpr int kFanModeMediumLowerBound = 4;
-    static constexpr int kFanModeMediumUpperBound = 7;
-    static constexpr int kFanModeHighLowerBound   = 8;
-    static constexpr int kFanModeHighUpperBound   = 10;
+  // Fan Mode Limits
+  static constexpr int kFanModeLowLowerBound    = 1;
+  static constexpr int kFanModeLowUpperBound    = 3;
+  static constexpr int kFanModeMediumLowerBound = 4;
+  static constexpr int kFanModeMediumUpperBound = 7;
+  static constexpr int kFanModeHighLowerBound   = 8;
+  static constexpr int kFanModeHighUpperBound   = 10;
 
-    static constexpr int kaLowestOffTrue  = 0;
-    static constexpr int kaLowestOffFalse = 1;
+  static constexpr int kaLowestOffTrue  = 0;
+  static constexpr int kaLowestOffFalse = 1;
 
-    static FanControlManager sFan;
+  static FanControlManager sFan;
 };
 
 inline FanControlManager & FanControlMgr(void)
 {
-    return FanControlManager::sFan;
+  return FanControlManager::sFan;
 }

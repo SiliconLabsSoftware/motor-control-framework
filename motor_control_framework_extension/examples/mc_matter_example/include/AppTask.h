@@ -50,53 +50,55 @@
  * AppTask Declaration
  *********************************************************/
 
-class AppTask : public BaseApplication
+class AppTask: public BaseApplication
 {
-
 public:
-    AppTask() = default;
+  AppTask() = default;
 
-    static AppTask & GetAppTask() { return sAppTask; }
+  static AppTask & GetAppTask()
+  {
+    return sAppTask;
+  }
 
-    /**
-     * @brief AppTask task main loop function
-     *
-     * @param pvParameter FreeRTOS task parameter
-     */
-    static void AppTaskMain(void * pvParameter);
+  /**
+   * @brief AppTask task main loop function
+   *
+   * @param pvParameter FreeRTOS task parameter
+   */
+  static void AppTaskMain(void * pvParameter);
 
-    CHIP_ERROR StartAppTask();
+  CHIP_ERROR StartAppTask();
 
-    /**
-     * @brief Event handler when a button is pressed
-     * Function posts an event for button processing
-     *
-     * @param buttonHandle APP_FAN_SWITCH or APP_FUNCTION_BUTTON
-     * @param btnAction button action - SL_SIMPLE_BUTTON_PRESSED,
-     *                  SL_SIMPLE_BUTTON_RELEASED or SL_SIMPLE_BUTTON_DISABLED
-     */
-    static void ButtonEventHandler(uint8_t button, uint8_t btnAction);
+  /**
+   * @brief Event handler when a button is pressed
+   * Function posts an event for button processing
+   *
+   * @param buttonHandle APP_FAN_SWITCH or APP_FUNCTION_BUTTON
+   * @param btnAction button action - SL_SIMPLE_BUTTON_PRESSED,
+   *                  SL_SIMPLE_BUTTON_RELEASED or SL_SIMPLE_BUTTON_DISABLED
+   */
+  static void ButtonEventHandler(uint8_t button, uint8_t btnAction);
 
-    void UpdateFanControlUI();
+  void UpdateFanControlUI();
 
 private:
-    /**
-     * @brief Override of BaseApplication::AppInit() virtual method, called by BaseApplication::Init()
-     *
-     * @return CHIP_ERROR
-     */
-    CHIP_ERROR AppInit() override;
+  /**
+   * @brief Override of BaseApplication::AppInit() virtual method, called by BaseApplication::Init()
+   *
+   * @return CHIP_ERROR
+   */
+  CHIP_ERROR AppInit() override;
 
-    static AppTask sAppTask;
+  static AppTask sAppTask;
 
-    static void UpdateClusterState(intptr_t context);
+  static void UpdateClusterState(intptr_t context);
 
-    /**
-     * @brief PB0 Button event processing function
-     *        Press and hold will trigger a factory reset timer start
-     *        Press and release will restart BLEAdvertising if not commisionned
-     *
-     * @param aEvent button event being processed
-     */
-    static void ButtonHandler(AppEvent * aEvent);
+  /**
+   * @brief PB0 Button event processing function
+   *        Press and hold will trigger a factory reset timer start
+   *        Press and release will restart BLEAdvertising if not commisionned
+   *
+   * @param aEvent button event being processed
+   */
+  static void ButtonHandler(AppEvent * aEvent);
 };

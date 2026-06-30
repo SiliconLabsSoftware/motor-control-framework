@@ -36,20 +36,19 @@ using namespace ::chip::app::Clusters;
 void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & attributePath, uint8_t type, uint16_t size,
                                        uint8_t * value)
 {
-    ClusterId clusterId     = attributePath.mClusterId;
-    AttributeId attributeId = attributePath.mAttributeId;
-    ChipLogProgress(Zcl, "Cluster callback: " ChipLogFormatMEI, ChipLogValueMEI(clusterId));
+  ClusterId clusterId     = attributePath.mClusterId;
+  AttributeId attributeId = attributePath.mAttributeId;
+  ChipLogProgress(Zcl, "Cluster callback: " ChipLogFormatMEI, ChipLogValueMEI(clusterId));
 
-    switch (clusterId)
-    {
+  switch (clusterId) {
     case FanControl::Id:
-        FanControlMgr().HandleFanControlAttributeChange(attributeId, type, size, value);
-        break;
+      FanControlMgr().HandleFanControlAttributeChange(attributeId, type, size, value);
+      break;
     case Identify::Id:
-        ChipLogProgress(Zcl, "Identify attribute ID: " ChipLogFormatMEI " Type: %u Value: %u, length %u",
-                        ChipLogValueMEI(attributeId), type, *value, size);
-        break;
+      ChipLogProgress(Zcl, "Identify attribute ID: " ChipLogFormatMEI " Type: %u Value: %u, length %u",
+                      ChipLogValueMEI(attributeId), type, *value, size);
+      break;
     default:
-        break;
-    }
+      break;
+  }
 }
