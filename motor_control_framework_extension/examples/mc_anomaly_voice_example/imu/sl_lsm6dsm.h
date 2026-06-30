@@ -146,7 +146,7 @@ sl_status_t sl_lsm6dsm_deinit(void);
  *       specified data rates. Use SL_LSM6DSM_ODR_OFF to disable a sensor.
  ******************************************************************************/
 sl_status_t sl_lsm6dsm_set_sample_rate(sl_lsm6dsm_odr_t accel_odr,
-                                        sl_lsm6dsm_odr_t gyro_odr);
+                                       sl_lsm6dsm_odr_t gyro_odr);
 
 /***************************************************************************//**
  * @brief Set accelerometer full scale range

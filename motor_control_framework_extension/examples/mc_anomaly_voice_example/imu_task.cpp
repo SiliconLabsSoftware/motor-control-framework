@@ -29,19 +29,19 @@
  #include "sl_tflite_micro_config.h"
  #include "ml_common.h"
  #include "constants.h"
- /*******************************************************************************
-  *******************************   DEFINES   ***********************************
-  ******************************************************************************/
+/*******************************************************************************
+ *******************************   DEFINES   ***********************************
+ ******************************************************************************/
  #ifndef LSM6DSM_ID
  #define LSM6DSM_ID            0x6AU
  #endif
- 
+
  #define ABS(x) ((x) < 0 ? -(x) : (x))
- 
+
  #ifndef IMU_TASK_STACK_SIZE
  #define IMU_TASK_STACK_SIZE      512
  #endif
- 
+
  #ifndef IMU_TASK_PRIO
  #define IMU_TASK_PRIO            29
  #endif
@@ -60,33 +60,34 @@ static sl_lsm6dsm_data_t imu_data_prev;
 static float latestAnomalyScore;
 static bool imu_hw_initialized = false;
 static volatile bool deinit_requested = false;
- /*******************************************************************************
-  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
-  ******************************************************************************/    
- 
- static void imu_task(void *arg);
- static void imu_init(void);
- static void model_init(void);
- static sl_status_t accelerometer_read(sl_lsm6dsm_data_t * dst);
- static float mae(float* output);
- /*******************************************************************************
-  **************************   GLOBAL FUNCTIONS   *******************************
-  ******************************************************************************/
- float getAnomaly(void){
+/*******************************************************************************
+ *********************   LOCAL FUNCTION PROTOTYPES   ***************************
+ ******************************************************************************/
+
+static void imu_task(void *arg);
+static void imu_init(void);
+static void model_init(void);
+static sl_status_t accelerometer_read(sl_lsm6dsm_data_t * dst);
+static float mae(float* output);
+/*******************************************************************************
+ **************************   GLOBAL FUNCTIONS   *******************************
+ ******************************************************************************/
+float getAnomaly(void)
+{
   return latestAnomalyScore;
 }
- 
-  /***************************************************************************//**
-  * Initialize blink example.
-  ******************************************************************************/
- // Triggered by the inference_timer
- static void on_timeout_inference(sl_sleeptimer_timer_handle_t *handle, void* data)
- {
-   (void)handle; // unused
-   (void)data; // unused
-   inference_timeout = true;
- }
- 
+
+/***************************************************************************//**
+ * Initialize blink example.
+ ******************************************************************************/
+// Triggered by the inference_timer
+static void on_timeout_inference(sl_sleeptimer_timer_handle_t *handle, void* data)
+{
+  (void)handle;  // unused
+  (void)data;  // unused
+  inference_timeout = true;
+}
+
 void imu_task_init(void)
 {
   static StaticTask_t xImuTaskBuffer;
@@ -119,7 +120,7 @@ void imu_task_deinit(void)
 
   const uint32_t MAX_DEINIT_RETRIES = 10;
   const uint32_t DEINIT_RETRY_DELAY_MS = 50;
-  
+
   for (uint32_t retry = 0; retry < MAX_DEINIT_RETRIES; retry++) {
     if (xImuTaskHandle != NULL) {
       vTaskDelay(pdMS_TO_TICKS(DEINIT_RETRY_DELAY_MS));
@@ -134,48 +135,48 @@ void imu_task_deinit(void)
     vTaskDelete(xImuTaskHandle);
     xImuTaskHandle = NULL;
   }
-  
+
   sl_sleeptimer_stop_timer(&inference_timer);
-  
+
   if (imu_hw_initialized) {
     Serial.println("IMU deinit: deinitializing hardware");
     sl_lsm6dsm_deinit();
     imu_hw_initialized = false;
   }
-  
+
   head_ptr = -1;
   data_ready = false;
   inference_timeout = false;
   latestAnomalyScore = 0.0f;
   model_input = nullptr;
   interpreter = nullptr;
-  
+
   ml_model_release(ML_MODEL_IMU);
-  
+
   Serial.println("IMU deinit: complete");
 }
- 
- /*******************************************************************************
-  * Torque Sensor Velocity 6PWM task.
-  ******************************************************************************/
- static void imu_task(void *arg)
+
+/*******************************************************************************
+ * Torque Sensor Velocity 6PWM task.
+ ******************************************************************************/
+static void imu_task(void *arg)
 {
   (void)&arg;
   sl_status_t status;
-  
+
   model_init();
   imu_init();
-  
+
   if (model_input == nullptr || interpreter == nullptr) {
     Serial.println("ERROR: Model initialization failed");
     xImuTaskHandle = NULL;
     vTaskDelete(NULL);
     return;
   }
-  
+
   sl_lsm6dsm_data_t *dst = (sl_lsm6dsm_data_t *) model_input->data.f;
   sl_sleeptimer_start_periodic_timer_ms(&inference_timer, INFERENCE_PERIOD_MS, on_timeout_inference, NULL, 0, 0);
-  
+
   while (1) {
     if (deinit_requested) {
       break;
@@ -198,16 +199,16 @@ void imu_task_deinit(void)
       inference_timeout = false;
       data_ready = false;
       TfLiteStatus invoke_status = interpreter->Invoke();
-  
+
       if (invoke_status != kTfLiteOk) {
         Serial.println("error: inference failed");
         break;
       }
-  
+
       float *output = interpreter->output(0)->data.f;
       latestAnomalyScore = SIGMOID(mae(output));
       Serial.print("Anomaly: ");
-      Serial.println((uint32_t)(latestAnomalyScore*100.0));
+      Serial.println((uint32_t)(latestAnomalyScore * 100.0));
     }
     vTaskDelay(pdMS_TO_TICKS(1));
   }
@@ -215,8 +216,9 @@ void imu_task_deinit(void)
   xImuTaskHandle = NULL;
   vTaskDelete(NULL);
 }
- 
-static float mae(float* output){
+
+static float mae(float* output)
+{
   float mae_value = 0.0;
   sl_lsm6dsm_data_t* pred_output = (sl_lsm6dsm_data_t*)output;
   for (int i = 0; i < SEQUENCE_LENGTH; i++) {
@@ -224,8 +226,9 @@ static float mae(float* output){
   }
   return mae_value / (SEQUENCE_LENGTH * ACCELEROMETER_CHANNELS);
 }
- 
-static void imu_init(void){
+
+static void imu_init(void)
+{
   sl_status_t status;
   uint8_t device_id;
   sl_lsm6dsm_config_t config = {
@@ -250,7 +253,7 @@ static void imu_init(void){
   Serial.println(" (expected 0x6A)");
 
   Serial.print("\r\nConfiguring accelerometer...\r\n");
-  
+
   status = sl_lsm6dsm_set_sample_rate(SL_LSM6DSM_ODR_104HZ, SL_LSM6DSM_ODR_104HZ);
   if (status != SL_STATUS_OK) {
     Serial.println("ERROR: Failed to set sample rate");
@@ -272,8 +275,9 @@ static void imu_init(void){
     return;
   }
 }
- 
- static void model_init(void){
+
+static void model_init(void)
+{
   const tflite::Model* model = tflite::GetModel(sl_tflite_model_array);
   if (model->version() != TFLITE_SCHEMA_VERSION) {
     Serial.println("ERROR: Invalid IMU model version");
@@ -281,7 +285,7 @@ static void imu_init(void){
   }
 
   // Create op resolver (local instance for IMU model)
-  static tflite::MicroMutableOpResolver<7> opcode_resolver;
+  static tflite::MicroMutableOpResolver < 7 > opcode_resolver;
   static bool resolver_initialized = false;
   if (!resolver_initialized) {
     opcode_resolver.AddQuantize();
@@ -305,16 +309,17 @@ static void imu_init(void){
 
   interpreter = model_ctx.interpreter;
   model_input = model_ctx.input_tensor;
-   if ((model_input->dims->size != 3) || (model_input->dims->data[0] != 1)
-       || (model_input->dims->data[1] != SEQUENCE_LENGTH)
-       || (model_input->dims->data[2] != ACCELEROMETER_CHANNELS)
-       || (model_input->type != kTfLiteFloat32)) {
-     Serial.println("ERROR: Bad input tensor parameters in model");
-     return;
-   }
- }
- 
- static sl_status_t accelerometer_read(sl_lsm6dsm_data_t *dst){
+  if ((model_input->dims->size != 3) || (model_input->dims->data[0] != 1)
+      || (model_input->dims->data[1] != SEQUENCE_LENGTH)
+      || (model_input->dims->data[2] != ACCELEROMETER_CHANNELS)
+      || (model_input->type != kTfLiteFloat32)) {
+    Serial.println("ERROR: Bad input tensor parameters in model");
+    return;
+  }
+}
+
+static sl_status_t accelerometer_read(sl_lsm6dsm_data_t *dst)
+{
   sl_status_t status;
   sl_lsm6dsm_data_t imu_acc;
   status = sl_lsm6dsm_get_acceleration(&imu_acc);
@@ -323,18 +328,18 @@ static void imu_init(void){
     return SL_STATUS_FAIL;
   }
   if (!data_ready) {
-   if (head_ptr >= 0) {
-     imu_data[head_ptr].x = (imu_acc.x - imu_data_prev.x - MEAN_X) / STD_X;
-     imu_data[head_ptr].y = (imu_acc.y - imu_data_prev.y - MEAN_Y) / STD_Y;
-     imu_data[head_ptr].z = (imu_acc.z - imu_data_prev.z - MEAN_Z) / STD_Z;
-     dst[head_ptr].x = imu_data[head_ptr].x;
-     dst[head_ptr].y = imu_data[head_ptr].y;
-     dst[head_ptr].z = imu_data[head_ptr].z;
-   }
-   imu_data_prev.x = imu_acc.x;
-   imu_data_prev.y = imu_acc.y;
-   imu_data_prev.z = imu_acc.z;
-   head_ptr++;
+    if (head_ptr >= 0) {
+      imu_data[head_ptr].x = (imu_acc.x - imu_data_prev.x - MEAN_X) / STD_X;
+      imu_data[head_ptr].y = (imu_acc.y - imu_data_prev.y - MEAN_Y) / STD_Y;
+      imu_data[head_ptr].z = (imu_acc.z - imu_data_prev.z - MEAN_Z) / STD_Z;
+      dst[head_ptr].x = imu_data[head_ptr].x;
+      dst[head_ptr].y = imu_data[head_ptr].y;
+      dst[head_ptr].z = imu_data[head_ptr].z;
+    }
+    imu_data_prev.x = imu_acc.x;
+    imu_data_prev.y = imu_acc.y;
+    imu_data_prev.z = imu_acc.z;
+    head_ptr++;
   }
   if (head_ptr >= SEQUENCE_LENGTH ) {
     head_ptr = -1;

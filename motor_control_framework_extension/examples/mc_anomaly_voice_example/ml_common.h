@@ -36,11 +36,11 @@ typedef struct {
 inline ml_runtime_state_t& ml_runtime_state()
 {
   static ml_runtime_state_t state = {
-      ML_MODEL_NONE,
-      nullptr,
-      nullptr,
-      0U,
-      nullptr
+    ML_MODEL_NONE,
+    nullptr,
+    nullptr,
+    0U,
+    nullptr
   };
   return state;
 }
@@ -89,11 +89,11 @@ inline sl_status_t ml_model_acquire(ml_model_id_t model_id,
 
   if (state.interpreter == nullptr) {
     state.interpreter = new tflite::MicroInterpreter(
-        model,
-        opcode_resolver,
-        state.arena_aligned,
-        state.arena_size
-    );
+      model,
+      opcode_resolver,
+      state.arena_aligned,
+      state.arena_size
+      );
     if (state.interpreter == nullptr) {
       return SL_STATUS_ALLOCATION_FAILED;
     }

@@ -19,7 +19,6 @@
 #include <cstdio>
 #include <limits>
 
-
 RecognizeCommands::RecognizeCommands(tflite::ErrorReporter* error_reporter,
                                      int32_t average_window_duration_ms,
                                      uint8_t detection_threshold,
@@ -78,8 +77,8 @@ TfLiteStatus RecognizeCommands::ProcessLatestResults(
       converted_scores[i] = (uint8_t)(latest_results->data.int8[i] + 128);
     }
   } else {
-      TF_LITE_REPORT_ERROR(error_reporter_, "Unsupported output tensor data type, must be int8 or float32");
-      return kTfLiteError;
+    TF_LITE_REPORT_ERROR(error_reporter_, "Unsupported output tensor data type, must be int8 or float32");
+    return kTfLiteError;
   }
 
   // If the minimum count is 0, then disable averaging and only consider the latest result
@@ -93,7 +92,7 @@ TfLiteStatus RecognizeCommands::ProcessLatestResults(
     }
   } else {
     // Add the latest results to the head of the queue.
-    previous_results_.push_back({current_time_ms, converted_scores});
+    previous_results_.push_back({ current_time_ms, converted_scores });
 
     // Prune any earlier results that are too old for the averaging window.
     const int64_t time_limit = current_time_ms - average_window_duration_ms_;
@@ -155,9 +154,9 @@ TfLiteStatus RecognizeCommands::ProcessLatestResults(
   int64_t time_since_last_top;
   time_since_last_top = current_time_ms - previous_top_label_time_;
 
-  if ((current_top_score > detection_threshold_) &&
-     (ignore_underscore_ && current_top_label[0] != '_') &&
-     (time_since_last_top > suppression_ms_)) {
+  if ((current_top_score > detection_threshold_)
+      && (ignore_underscore_ && current_top_label[0] != '_')
+      && (time_since_last_top > suppression_ms_)) {
     previous_top_label_index_ = current_top_index;
     previous_top_label_time_ = current_time_ms;
     *is_new_command = true;

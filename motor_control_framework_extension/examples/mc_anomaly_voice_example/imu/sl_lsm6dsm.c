@@ -278,7 +278,7 @@ sl_status_t sl_lsm6dsm_deinit(void)
  * Configure the sensor sampling rate
  ******************************************************************************/
 sl_status_t sl_lsm6dsm_set_sample_rate(sl_lsm6dsm_odr_t accel_odr,
-                                        sl_lsm6dsm_odr_t gyro_odr)
+                                       sl_lsm6dsm_odr_t gyro_odr)
 {
   // Set accelerometer ODR
   if (lsm6dsm_xl_data_rate_set(&dev_ctx, convert_accel_odr(accel_odr)) != 0) {

@@ -1,58 +1,57 @@
 /**
-  ******************************************************************************
-  * @file    lsm6dsm_reg.c
-  * @author  Sensors Software Solution Team
-  * @brief   LSM6DSM driver file
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    lsm6dsm_reg.c
+ * @author  Sensors Software Solution Team
+ * @brief   LSM6DSM driver file
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 #include "lsm6dsm_reg.h"
 
 /**
-  * @defgroup    LSM6DSM
-  * @brief       This file provides a set of functions needed to drive the
-  *              lsm6dsm enanced inertial module.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM
+ * @brief       This file provides a set of functions needed to drive the
+ *              lsm6dsm enanced inertial module.
+ * @{
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_interfaces_functions
-  * @brief       This section provide a set of functions used to read and
-  *              write a generic register of the device.
-  *              MANDATORY: return 0 -> no Error.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_interfaces_functions
+ * @brief       This section provide a set of functions used to read and
+ *              write a generic register of the device.
+ *              MANDATORY: return 0 -> no Error.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Read generic device register
-  *
-  * @param  ctx   read / write interface definitions(ptr)
-  * @param  reg   register to read
-  * @param  data  pointer to buffer that store the data read(ptr)
-  * @param  len   number of consecutive register to read
-  * @retval       interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
+ * @brief  Read generic device register
+ *
+ * @param  ctx   read / write interface definitions(ptr)
+ * @param  reg   register to read
+ * @param  data  pointer to buffer that store the data read(ptr)
+ * @param  len   number of consecutive register to read
+ * @retval       interface status (MANDATORY: return 0 -> no Error)
+ *
+ */
 int32_t __weak lsm6dsm_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                 uint8_t *data,
                                 uint16_t len)
 {
   int32_t ret;
 
-  if (ctx == NULL)
-  {
+  if (ctx == NULL) {
     return -1;
   }
 
@@ -62,23 +61,22 @@ int32_t __weak lsm6dsm_read_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 }
 
 /**
-  * @brief  Write generic device register
-  *
-  * @param  ctx   read / write interface definitions(ptr)
-  * @param  reg   register to write
-  * @param  data  pointer to data to write in register reg(ptr)
-  * @param  len   number of consecutive register to write
-  * @retval       interface status (MANDATORY: return 0 -> no Error)
-  *
-  */
+ * @brief  Write generic device register
+ *
+ * @param  ctx   read / write interface definitions(ptr)
+ * @param  reg   register to write
+ * @param  data  pointer to data to write in register reg(ptr)
+ * @param  len   number of consecutive register to write
+ * @retval       interface status (MANDATORY: return 0 -> no Error)
+ *
+ */
 int32_t __weak lsm6dsm_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
                                  uint8_t *data,
                                  uint16_t len)
 {
   int32_t ret;
 
-  if (ctx == NULL)
-  {
+  if (ctx == NULL) {
     return -1;
   }
 
@@ -88,17 +86,16 @@ int32_t __weak lsm6dsm_write_reg(const stmdev_ctx_t *ctx, uint8_t reg,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Sensitivity
-  * @brief       These functions convert raw-data into engineering units.
-  * @{
-  *
-  */
-
+ * @defgroup    LSM6DSM_Sensitivity
+ * @brief       These functions convert raw-data into engineering units.
+ * @{
+ *
+ */
 float_t lsm6dsm_from_fs2g_to_mg(int16_t lsb)
 {
   return ((float_t)lsb * 0.061f);
@@ -150,27 +147,26 @@ float_t lsm6dsm_from_lsb_to_celsius(int16_t lsb)
 }
 
 /**
-  * @}
-  *
-  */
-
-
-/**
-  * @defgroup    LSM6DSM_data_generation
-  * @brief       This section groups all the functions concerning data
-  *              generation
-  * @{
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @brief  Accelerometer full-scale selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fs_xl in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @defgroup    LSM6DSM_data_generation
+ * @brief       This section groups all the functions concerning data
+ *              generation
+ * @{
+ *
+ */
+
+/**
+ * @brief  Accelerometer full-scale selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fs_xl in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_fs_xl_t val)
 {
@@ -179,8 +175,7 @@ int32_t lsm6dsm_xl_full_scale_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_xl.fs_xl = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   }
@@ -189,13 +184,13 @@ int32_t lsm6dsm_xl_full_scale_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer full-scale selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of fs_xl in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer full-scale selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of fs_xl in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_fs_xl_t *val)
 {
@@ -204,10 +199,11 @@ int32_t lsm6dsm_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl1_xl.fs_xl)
-  {
+  switch (ctrl1_xl.fs_xl) {
     case LSM6DSM_2g:
       *val = LSM6DSM_2g;
       break;
@@ -233,13 +229,13 @@ int32_t lsm6dsm_xl_full_scale_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer data rate selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of odr_xl in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer data rate selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of odr_xl in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_data_rate_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_odr_xl_t val)
 {
@@ -248,8 +244,7 @@ int32_t lsm6dsm_xl_data_rate_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_xl.odr_xl = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   }
@@ -258,13 +253,13 @@ int32_t lsm6dsm_xl_data_rate_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer data rate selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of odr_xl in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer data rate selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of odr_xl in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_data_rate_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_odr_xl_t *val)
 {
@@ -273,10 +268,11 @@ int32_t lsm6dsm_xl_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl1_xl.odr_xl)
-  {
+  switch (ctrl1_xl.odr_xl) {
     case LSM6DSM_XL_ODR_OFF:
       *val = LSM6DSM_XL_ODR_OFF;
       break;
@@ -334,13 +330,13 @@ int32_t lsm6dsm_xl_data_rate_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Gyroscope chain full-scale selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fs_g in reg CTRL2_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope chain full-scale selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fs_g in reg CTRL2_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_full_scale_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_fs_g_t val)
 {
@@ -349,8 +345,7 @@ int32_t lsm6dsm_gy_full_scale_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl2_g.fs_g = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
   }
@@ -359,13 +354,13 @@ int32_t lsm6dsm_gy_full_scale_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Gyroscope chain full-scale selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of fs_g in reg CTRL2_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope chain full-scale selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of fs_g in reg CTRL2_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_full_scale_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_fs_g_t *val)
 {
@@ -374,10 +369,11 @@ int32_t lsm6dsm_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl2_g.fs_g)
-  {
+  switch (ctrl2_g.fs_g) {
     case LSM6DSM_250dps:
       *val = LSM6DSM_250dps;
       break;
@@ -407,13 +403,13 @@ int32_t lsm6dsm_gy_full_scale_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Gyroscope data rate selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of odr_g in reg CTRL2_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope data rate selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of odr_g in reg CTRL2_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_data_rate_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_odr_g_t val)
 {
@@ -422,8 +418,7 @@ int32_t lsm6dsm_gy_data_rate_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl2_g.odr_g = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
   }
@@ -432,13 +427,13 @@ int32_t lsm6dsm_gy_data_rate_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Gyroscope data rate selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of odr_g in reg CTRL2_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope data rate selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of odr_g in reg CTRL2_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_data_rate_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_odr_g_t *val)
 {
@@ -447,10 +442,11 @@ int32_t lsm6dsm_gy_data_rate_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL2_G, (uint8_t *)&ctrl2_g, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl2_g.odr_g)
-  {
+  switch (ctrl2_g.odr_g) {
     case LSM6DSM_GY_ODR_OFF:
       *val = LSM6DSM_GY_ODR_OFF;
       break;
@@ -504,13 +500,13 @@ int32_t lsm6dsm_gy_data_rate_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Block data update.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of bdu in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Block data update.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of bdu in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -518,8 +514,7 @@ int32_t lsm6dsm_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.bdu = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -528,13 +523,13 @@ int32_t lsm6dsm_block_data_update_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Block data update.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of bdu in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Block data update.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of bdu in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -542,7 +537,9 @@ int32_t lsm6dsm_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl3_c.bdu;
 
@@ -550,14 +547,14 @@ int32_t lsm6dsm_block_data_update_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Weight of XL user offset bits of registers
-  *         X_OFS_USR(73h), Y_OFS_USR(74h), Z_OFS_USR(75h).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of usr_off_w in reg CTRL6_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Weight of XL user offset bits of registers
+ *         X_OFS_USR(73h), Y_OFS_USR(74h), Z_OFS_USR(75h).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of usr_off_w in reg CTRL6_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_offset_weight_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_usr_off_w_t val)
 {
@@ -566,8 +563,7 @@ int32_t lsm6dsm_xl_offset_weight_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl6_c.usr_off_w = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
   }
@@ -576,14 +572,14 @@ int32_t lsm6dsm_xl_offset_weight_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Weight of XL user offset bits of registers
-  *         X_OFS_USR(73h), Y_OFS_USR(74h), Z_OFS_USR(75h).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of usr_off_w in reg CTRL6_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Weight of XL user offset bits of registers
+ *         X_OFS_USR(73h), Y_OFS_USR(74h), Z_OFS_USR(75h).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of usr_off_w in reg CTRL6_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_offset_weight_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_usr_off_w_t *val)
 {
@@ -592,10 +588,11 @@ int32_t lsm6dsm_xl_offset_weight_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl6_c.usr_off_w)
-  {
+  switch (ctrl6_c.usr_off_w) {
     case LSM6DSM_LSb_1mg:
       *val = LSM6DSM_LSb_1mg;
       break;
@@ -613,13 +610,13 @@ int32_t lsm6dsm_xl_offset_weight_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  High-performance operating mode for accelerometer[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of xl_hm_mode in reg CTRL6_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  High-performance operating mode for accelerometer[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of xl_hm_mode in reg CTRL6_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_power_mode_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_xl_hm_mode_t val)
 {
@@ -628,8 +625,7 @@ int32_t lsm6dsm_xl_power_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl6_c.xl_hm_mode = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
   }
@@ -638,13 +634,13 @@ int32_t lsm6dsm_xl_power_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  High-performance operating mode for accelerometer.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of xl_hm_mode in reg CTRL6_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  High-performance operating mode for accelerometer.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of xl_hm_mode in reg CTRL6_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_power_mode_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_xl_hm_mode_t *val)
 {
@@ -653,10 +649,11 @@ int32_t lsm6dsm_xl_power_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl6_c.xl_hm_mode)
-  {
+  switch (ctrl6_c.xl_hm_mode) {
     case LSM6DSM_XL_HIGH_PERFORMANCE:
       *val = LSM6DSM_XL_HIGH_PERFORMANCE;
       break;
@@ -674,15 +671,15 @@ int32_t lsm6dsm_xl_power_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Source register rounding function on WAKE_UP_SRC (1Bh),
-  *         TAP_SRC (1Ch), D6D_SRC (1Dh), STATUS_REG (1Eh) and
-  *         FUNC_SRC1 (53h) registers in the primary interface.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of rounding_status in reg CTRL7_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Source register rounding function on WAKE_UP_SRC (1Bh),
+ *         TAP_SRC (1Ch), D6D_SRC (1Dh), STATUS_REG (1Eh) and
+ *         FUNC_SRC1 (53h) registers in the primary interface.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of rounding_status in reg CTRL7_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_rounding_on_status_set(const stmdev_ctx_t *ctx,
                                        lsm6dsm_rounding_status_t val)
 {
@@ -691,8 +688,7 @@ int32_t lsm6dsm_rounding_on_status_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl7_g.rounding_status = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
   }
@@ -701,15 +697,15 @@ int32_t lsm6dsm_rounding_on_status_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Source register rounding function on WAKE_UP_SRC (1Bh),
-  *         TAP_SRC (1Ch), D6D_SRC (1Dh), STATUS_REG (1Eh) and
-  *         FUNC_SRC1 (53h) registers in the primary interface.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of rounding_status in reg CTRL7_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Source register rounding function on WAKE_UP_SRC (1Bh),
+ *         TAP_SRC (1Ch), D6D_SRC (1Dh), STATUS_REG (1Eh) and
+ *         FUNC_SRC1 (53h) registers in the primary interface.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of rounding_status in reg CTRL7_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_rounding_on_status_get(const stmdev_ctx_t *ctx,
                                        lsm6dsm_rounding_status_t *val)
 {
@@ -718,10 +714,11 @@ int32_t lsm6dsm_rounding_on_status_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl7_g.rounding_status)
-  {
+  switch (ctrl7_g.rounding_status) {
     case LSM6DSM_STAT_RND_DISABLE:
       *val = LSM6DSM_STAT_RND_DISABLE;
       break;
@@ -739,13 +736,13 @@ int32_t lsm6dsm_rounding_on_status_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  High-performance operating mode disable for gyroscope.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of g_hm_mode in reg CTRL7_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  High-performance operating mode disable for gyroscope.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of g_hm_mode in reg CTRL7_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_power_mode_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_g_hm_mode_t val)
 {
@@ -754,8 +751,7 @@ int32_t lsm6dsm_gy_power_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl7_g.g_hm_mode = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
   }
@@ -764,13 +760,13 @@ int32_t lsm6dsm_gy_power_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  High-performance operating mode disable for gyroscope.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of g_hm_mode in reg CTRL7_G
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  High-performance operating mode disable for gyroscope.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of g_hm_mode in reg CTRL7_G
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_power_mode_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_g_hm_mode_t *val)
 {
@@ -779,10 +775,11 @@ int32_t lsm6dsm_gy_power_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl7_g.g_hm_mode)
-  {
+  switch (ctrl7_g.g_hm_mode) {
     case LSM6DSM_GY_HIGH_PERFORMANCE:
       *val = LSM6DSM_GY_HIGH_PERFORMANCE;
       break;
@@ -800,66 +797,58 @@ int32_t lsm6dsm_gy_power_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Read all the interrupt/status flag of the device.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    WAKE_UP_SRC, TAP_SRC, D6D_SRC, STATUS_REG,
-  *                FUNC_SRC1, FUNC_SRC2, WRIST_TILT_IA, A_WRIST_TILT_Mask
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Read all the interrupt/status flag of the device.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    WAKE_UP_SRC, TAP_SRC, D6D_SRC, STATUS_REG,
+ *                FUNC_SRC1, FUNC_SRC2, WRIST_TILT_IA, A_WRIST_TILT_Mask
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_all_sources_get(const stmdev_ctx_t *ctx,
                                 lsm6dsm_all_sources_t *val)
 {
   int32_t ret;
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_SRC,
-                         (uint8_t *) & (val->wake_up_src), 1);
+                         (uint8_t *) &(val->wake_up_src), 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_SRC,
-                           (uint8_t *) & (val->tap_src), 1);
+                           (uint8_t *) &(val->tap_src), 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_D6D_SRC,
-                           (uint8_t *) & (val->d6d_src), 1);
+                           (uint8_t *) &(val->d6d_src), 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_REG,
-                           (uint8_t *) & (val->status_reg), 1);
+                           (uint8_t *) &(val->status_reg), 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_FUNC_SRC1,
-                           (uint8_t *) & (val->func_src1), 1);
+                           (uint8_t *) &(val->func_src1), 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_FUNC_SRC2,
-                           (uint8_t *) & (val->func_src2), 1);
+                           (uint8_t *) &(val->func_src2), 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_WRIST_TILT_IA,
-                           (uint8_t *) & (val->wrist_tilt_ia), 1);
+                           (uint8_t *) &(val->wrist_tilt_ia), 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_A_WRIST_TILT_MASK,
-                             (uint8_t *) & (val->a_wrist_tilt_mask), 1);
+                             (uint8_t *) &(val->a_wrist_tilt_mask), 1);
     }
 
     ret += lsm6dsm_mem_bank_set(ctx, LSM6DSM_USER_BANK);
@@ -868,13 +857,13 @@ int32_t lsm6dsm_all_sources_get(const stmdev_ctx_t *ctx,
   return ret;
 }
 /**
-  * @brief  The STATUS_REG register is read by the primary interface[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Registers STATUS_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  The STATUS_REG register is read by the primary interface[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Registers STATUS_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_status_reg_get(const stmdev_ctx_t *ctx,
                                lsm6dsm_status_reg_t *val)
 {
@@ -886,13 +875,13 @@ int32_t lsm6dsm_status_reg_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer new data available.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of xlda in reg STATUS_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer new data available.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of xlda in reg STATUS_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
@@ -902,7 +891,9 @@ int32_t lsm6dsm_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = status_reg.xlda;
 
@@ -910,13 +901,13 @@ int32_t lsm6dsm_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Gyroscope new data available.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of gda in reg STATUS_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope new data available.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of gda in reg STATUS_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
@@ -926,7 +917,9 @@ int32_t lsm6dsm_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = status_reg.gda;
 
@@ -934,13 +927,13 @@ int32_t lsm6dsm_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Temperature new data available.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tda in reg STATUS_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Temperature new data available.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tda in reg STATUS_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
@@ -950,7 +943,9 @@ int32_t lsm6dsm_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_REG,
                          (uint8_t *)&status_reg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = status_reg.tda;
 
@@ -958,15 +953,15 @@ int32_t lsm6dsm_temp_flag_data_ready_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer axis user offset correction expressed in two's
-  *         complement, weight depends on USR_OFF_W in CTRL6_C.
-  *         The value must be in the range [-127 127].[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that contains data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer axis user offset correction expressed in two's
+ *         complement, weight depends on USR_OFF_W in CTRL6_C.
+ *         The value must be in the range [-127 127].[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that contains data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
@@ -977,15 +972,15 @@ int32_t lsm6dsm_xl_usr_offset_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Accelerometer axis user offset correction xpressed in two's
-  *         complement, weight depends on USR_OFF_W in CTRL6_C.
-  *         The value must be in the range [-127 127].[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer axis user offset correction xpressed in two's
+ *         complement, weight depends on USR_OFF_W in CTRL6_C.
+ *         The value must be in the range [-127 127].[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
@@ -996,27 +991,27 @@ int32_t lsm6dsm_xl_usr_offset_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Timestamp
-  * @brief       This section groups all the functions that manage the
-  *              timestamp generation.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Timestamp
+ * @brief       This section groups all the functions that manage the
+ *              timestamp generation.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enable timestamp count. The count is saved in TIMESTAMP0_REG (40h),
-  *         TIMESTAMP1_REG (41h) and TIMESTAMP2_REG (42h).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of timer_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable timestamp count. The count is saved in TIMESTAMP0_REG (40h),
+ *         TIMESTAMP1_REG (41h) and TIMESTAMP2_REG (42h).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of timer_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -1024,12 +1019,10 @@ int32_t lsm6dsm_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.timer_en = val;
 
-    if (val != 0x00U)
-    {
+    if (val != 0x00U) {
       ctrl10_c.func_en = val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
     }
@@ -1039,14 +1032,14 @@ int32_t lsm6dsm_timestamp_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable timestamp count. The count is saved in TIMESTAMP0_REG (40h),
-  *         TIMESTAMP1_REG (41h) and TIMESTAMP2_REG (42h).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of timer_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable timestamp count. The count is saved in TIMESTAMP0_REG (40h),
+ *         TIMESTAMP1_REG (41h) and TIMESTAMP2_REG (42h).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of timer_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -1054,7 +1047,9 @@ int32_t lsm6dsm_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl10_c.timer_en;
 
@@ -1062,18 +1057,18 @@ int32_t lsm6dsm_timestamp_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Timestamp register resolution setting.
-  *         Configuration of this bit affects
-  *         TIMESTAMP0_REG(40h), TIMESTAMP1_REG(41h),
-  *         TIMESTAMP2_REG(42h), STEP_TIMESTAMP_L(49h),
-  *         STEP_TIMESTAMP_H(4Ah) and
-  *         STEP_COUNT_DELTA(15h) registers.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of timer_hr in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Timestamp register resolution setting.
+ *         Configuration of this bit affects
+ *         TIMESTAMP0_REG(40h), TIMESTAMP1_REG(41h),
+ *         TIMESTAMP2_REG(42h), STEP_TIMESTAMP_L(49h),
+ *         STEP_TIMESTAMP_H(4Ah) and
+ *         STEP_COUNT_DELTA(15h) registers.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of timer_hr in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_timestamp_res_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_timer_hr_t val)
 {
@@ -1083,8 +1078,7 @@ int32_t lsm6dsm_timestamp_res_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                          (uint8_t *)&wake_up_dur, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     wake_up_dur.timer_hr = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
@@ -1094,18 +1088,18 @@ int32_t lsm6dsm_timestamp_res_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Timestamp register resolution setting.
-  *         Configuration of this bit affects
-  *         TIMESTAMP0_REG(40h), TIMESTAMP1_REG(41h),
-  *         TIMESTAMP2_REG(42h), STEP_TIMESTAMP_L(49h),
-  *         STEP_TIMESTAMP_H(4Ah) and
-  *         STEP_COUNT_DELTA(15h) registers.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of timer_hr in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Timestamp register resolution setting.
+ *         Configuration of this bit affects
+ *         TIMESTAMP0_REG(40h), TIMESTAMP1_REG(41h),
+ *         TIMESTAMP2_REG(42h), STEP_TIMESTAMP_L(49h),
+ *         STEP_TIMESTAMP_H(4Ah) and
+ *         STEP_COUNT_DELTA(15h) registers.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of timer_hr in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_timestamp_res_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_timer_hr_t *val)
 {
@@ -1115,10 +1109,11 @@ int32_t lsm6dsm_timestamp_res_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                          (uint8_t *)&wake_up_dur, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (wake_up_dur.timer_hr)
-  {
+  switch (wake_up_dur.timer_hr) {
     case LSM6DSM_LSB_6ms4:
       *val = LSM6DSM_LSB_6ms4;
       break;
@@ -1136,26 +1131,26 @@ int32_t lsm6dsm_timestamp_res_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Dataoutput
-  * @brief       This section groups all the data output functions.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Dataoutput
+ * @brief       This section groups all the data output functions.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Circular burst-mode (rounding) read from output registers
-  *         through the primary interface.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of rounding in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Circular burst-mode (rounding) read from output registers
+ *         through the primary interface.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of rounding in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_rounding_mode_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_rounding_t val)
 {
@@ -1164,8 +1159,7 @@ int32_t lsm6dsm_rounding_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl5_c.rounding = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
   }
@@ -1174,14 +1168,14 @@ int32_t lsm6dsm_rounding_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Circular burst-mode (rounding) read from output registers
-  *         through the primary interface.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of rounding in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Circular burst-mode (rounding) read from output registers
+ *         through the primary interface.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of rounding in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_rounding_mode_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_rounding_t *val)
 {
@@ -1190,10 +1184,11 @@ int32_t lsm6dsm_rounding_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl5_c.rounding)
-  {
+  switch (ctrl5_c.rounding) {
     case LSM6DSM_ROUND_DISABLE:
       *val = LSM6DSM_ROUND_DISABLE;
       break;
@@ -1235,14 +1230,14 @@ int32_t lsm6dsm_rounding_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Temperature data output register (r). L and H registers together
-  *         express a 16-bit word in two's complement.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Temperature data output register (r). L and H registers together
+ *         express a 16-bit word in two's complement.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[2];
@@ -1250,7 +1245,9 @@ int32_t lsm6dsm_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_OUT_TEMP_L, buff, 2);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -1259,14 +1256,14 @@ int32_t lsm6dsm_temperature_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 }
 
 /**
-  * @brief  Angular rate sensor. The value is expressed as a 16-bit word in
-  *         two's complement.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Angular rate sensor. The value is expressed as a 16-bit word in
+ *         two's complement.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
@@ -1274,7 +1271,9 @@ int32_t lsm6dsm_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_OUTX_L_G, buff, 6);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -1287,14 +1286,14 @@ int32_t lsm6dsm_angular_rate_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 }
 
 /**
-  * @brief  Linear acceleration output register. The value is expressed
-  *         as a 16-bit word in two's complement.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Linear acceleration output register. The value is expressed
+ *         as a 16-bit word in two's complement.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
@@ -1302,7 +1301,9 @@ int32_t lsm6dsm_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_OUTX_L_XL, buff, 6);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -1315,13 +1316,13 @@ int32_t lsm6dsm_acceleration_raw_get(const stmdev_ctx_t *ctx, int16_t *val)
 }
 
 /**
-  * @brief  External magnetometer raw data.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  External magnetometer raw data.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_calibrated_raw_get(const stmdev_ctx_t *ctx,
                                        int16_t *val)
 {
@@ -1330,7 +1331,9 @@ int32_t lsm6dsm_mag_calibrated_raw_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_OUT_MAG_RAW_X_L, buff, 6);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   val[0] = (int16_t)buff[1];
   val[0] = (val[0] * 256) + (int16_t)buff[0];
@@ -1343,14 +1346,14 @@ int32_t lsm6dsm_mag_calibrated_raw_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Read data in FIFO.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buffer Data buffer to store FIFO data.
-  * @param  len    Number of data to read from FIFO.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Read data in FIFO.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buffer Data buffer to store FIFO data.
+ * @param  len    Number of data to read from FIFO.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_raw_data_get(const stmdev_ctx_t *ctx, uint8_t *buffer,
                                   uint8_t len)
 {
@@ -1362,26 +1365,26 @@ int32_t lsm6dsm_fifo_raw_data_get(const stmdev_ctx_t *ctx, uint8_t *buffer,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_common
-  * @brief       This section groups common useful functions.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_common
+ * @brief       This section groups common useful functions.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enable access to the embedded functions/sensor hub
-  *         configuration registers[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of func_cfg_en in reg FUNC_CFG_ACCESS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable access to the embedded functions/sensor hub
+ *         configuration registers[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of func_cfg_en in reg FUNC_CFG_ACCESS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mem_bank_set(const stmdev_ctx_t *ctx,
                              lsm6dsm_func_cfg_en_t val)
 {
@@ -1391,8 +1394,7 @@ int32_t lsm6dsm_mem_bank_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FUNC_CFG_ACCESS,
                          (uint8_t *)&func_cfg_access, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     func_cfg_access.func_cfg_en = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FUNC_CFG_ACCESS,
                             (uint8_t *)&func_cfg_access, 1);
@@ -1402,14 +1404,14 @@ int32_t lsm6dsm_mem_bank_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable access to the embedded functions/sensor hub configuration
-  *         registers[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of func_cfg_en in reg FUNC_CFG_ACCESS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable access to the embedded functions/sensor hub configuration
+ *         registers[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of func_cfg_en in reg FUNC_CFG_ACCESS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mem_bank_get(const stmdev_ctx_t *ctx,
                              lsm6dsm_func_cfg_en_t *val)
 {
@@ -1419,10 +1421,11 @@ int32_t lsm6dsm_mem_bank_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FUNC_CFG_ACCESS,
                          (uint8_t *)&func_cfg_access, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (func_cfg_access.func_cfg_en)
-  {
+  switch (func_cfg_access.func_cfg_en) {
     case LSM6DSM_USER_BANK:
       *val = LSM6DSM_USER_BANK;
       break;
@@ -1440,13 +1443,13 @@ int32_t lsm6dsm_mem_bank_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Data-ready pulsed / letched mode[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of drdy_pulsed in reg DRDY_PULSE_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Data-ready pulsed / letched mode[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of drdy_pulsed in reg DRDY_PULSE_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_data_ready_mode_set(const stmdev_ctx_t *ctx,
                                     lsm6dsm_drdy_pulsed_g_t val)
 {
@@ -1456,8 +1459,7 @@ int32_t lsm6dsm_data_ready_mode_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_DRDY_PULSE_CFG,
                          (uint8_t *)&drdy_pulse_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     drdy_pulse_cfg.drdy_pulsed = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_DRDY_PULSE_CFG,
                             (uint8_t *)&drdy_pulse_cfg, 1);
@@ -1467,13 +1469,13 @@ int32_t lsm6dsm_data_ready_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Data-ready pulsed / letched mode[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of drdy_pulsed in reg DRDY_PULSE_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Data-ready pulsed / letched mode[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of drdy_pulsed in reg DRDY_PULSE_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_data_ready_mode_get(const stmdev_ctx_t *ctx,
                                     lsm6dsm_drdy_pulsed_g_t *val)
 {
@@ -1483,10 +1485,11 @@ int32_t lsm6dsm_data_ready_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_DRDY_PULSE_CFG,
                          (uint8_t *)&drdy_pulse_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (drdy_pulse_cfg.drdy_pulsed)
-  {
+  switch (drdy_pulse_cfg.drdy_pulsed) {
     case LSM6DSM_DRDY_LATCHED:
       *val = LSM6DSM_DRDY_LATCHED;
       break;
@@ -1504,13 +1507,13 @@ int32_t lsm6dsm_data_ready_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  DeviceWhoamI.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DeviceWhoamI.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
@@ -1521,13 +1524,13 @@ int32_t lsm6dsm_device_id_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Software reset. Restore the default values in user registers[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sw_reset in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Software reset. Restore the default values in user registers[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sw_reset in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1535,8 +1538,7 @@ int32_t lsm6dsm_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.sw_reset = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -1545,13 +1547,13 @@ int32_t lsm6dsm_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Software reset. Restore the default values in user registers[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sw_reset in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Software reset. Restore the default values in user registers[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sw_reset in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1559,7 +1561,9 @@ int32_t lsm6dsm_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl3_c.sw_reset;
 
@@ -1567,13 +1571,13 @@ int32_t lsm6dsm_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Big/Little Endian Data selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of ble in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Big/Little Endian Data selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of ble in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_data_format_set(const stmdev_ctx_t *ctx, lsm6dsm_ble_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1581,8 +1585,7 @@ int32_t lsm6dsm_data_format_set(const stmdev_ctx_t *ctx, lsm6dsm_ble_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.ble = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -1591,13 +1594,13 @@ int32_t lsm6dsm_data_format_set(const stmdev_ctx_t *ctx, lsm6dsm_ble_t val)
 }
 
 /**
-  * @brief  Big/Little Endian Data selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of ble in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Big/Little Endian Data selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of ble in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_data_format_get(const stmdev_ctx_t *ctx, lsm6dsm_ble_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1605,10 +1608,11 @@ int32_t lsm6dsm_data_format_get(const stmdev_ctx_t *ctx, lsm6dsm_ble_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_c.ble)
-  {
+  switch (ctrl3_c.ble) {
     case LSM6DSM_LSB_AT_LOW_ADD:
       *val = LSM6DSM_LSB_AT_LOW_ADD;
       break;
@@ -1626,14 +1630,14 @@ int32_t lsm6dsm_data_format_get(const stmdev_ctx_t *ctx, lsm6dsm_ble_t *val)
 }
 
 /**
-  * @brief  Register address automatically incremented during a multiple byte
-  *         access with a serial interface.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of if_inc in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Register address automatically incremented during a multiple byte
+ *         access with a serial interface.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of if_inc in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1641,8 +1645,7 @@ int32_t lsm6dsm_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.if_inc = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -1651,14 +1654,14 @@ int32_t lsm6dsm_auto_increment_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Register address automatically incremented during a multiple byte
-  *         access with a serial interface.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of if_inc in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Register address automatically incremented during a multiple byte
+ *         access with a serial interface.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of if_inc in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1666,7 +1669,9 @@ int32_t lsm6dsm_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl3_c.if_inc;
 
@@ -1674,13 +1679,13 @@ int32_t lsm6dsm_auto_increment_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Reboot memory content. Reload the calibration parameters.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of boot in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Reboot memory content. Reload the calibration parameters.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of boot in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1688,8 +1693,7 @@ int32_t lsm6dsm_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.boot = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -1698,13 +1702,13 @@ int32_t lsm6dsm_boot_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Reboot memory content. Reload the calibration parameters.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of boot in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Reboot memory content. Reload the calibration parameters.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of boot in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -1712,7 +1716,9 @@ int32_t lsm6dsm_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl3_c.boot;
 
@@ -1720,13 +1726,13 @@ int32_t lsm6dsm_boot_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Linear acceleration sensor self-test enable.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of st_xl in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Linear acceleration sensor self-test enable.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of st_xl in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_self_test_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_st_xl_t val)
 {
@@ -1735,8 +1741,7 @@ int32_t lsm6dsm_xl_self_test_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl5_c.st_xl = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
   }
@@ -1745,13 +1750,13 @@ int32_t lsm6dsm_xl_self_test_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Linear acceleration sensor self-test enable.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of st_xl in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Linear acceleration sensor self-test enable.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of st_xl in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_self_test_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_st_xl_t *val)
 {
@@ -1760,10 +1765,11 @@ int32_t lsm6dsm_xl_self_test_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl5_c.st_xl)
-  {
+  switch (ctrl5_c.st_xl) {
     case LSM6DSM_XL_ST_DISABLE:
       *val = LSM6DSM_XL_ST_DISABLE;
       break;
@@ -1785,13 +1791,13 @@ int32_t lsm6dsm_xl_self_test_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Angular rate sensor self-test enable.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of st_g in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Angular rate sensor self-test enable.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of st_g in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_self_test_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_st_g_t val)
 {
@@ -1800,8 +1806,7 @@ int32_t lsm6dsm_gy_self_test_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl5_c.st_g = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
   }
@@ -1810,13 +1815,13 @@ int32_t lsm6dsm_gy_self_test_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Angular rate sensor self-test enable.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of st_g in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Angular rate sensor self-test enable.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of st_g in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_self_test_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_st_g_t *val)
 {
@@ -1825,10 +1830,11 @@ int32_t lsm6dsm_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl5_c.st_g)
-  {
+  switch (ctrl5_c.st_g) {
     case LSM6DSM_GY_ST_DISABLE:
       *val = LSM6DSM_GY_ST_DISABLE;
       break;
@@ -1850,27 +1856,27 @@ int32_t lsm6dsm_gy_self_test_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_filters
-  * @brief       This section group all the functions concerning the filters
-  *              configuration that impact both accelerometer and gyro.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_filters
+ * @brief       This section group all the functions concerning the filters
+ *              configuration that impact both accelerometer and gyro.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Mask DRDY on pin (both XL & Gyro) until filter settling ends
-  *         (XL and Gyro independently masked).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of drdy_mask in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Mask DRDY on pin (both XL & Gyro) until filter settling ends
+ *         (XL and Gyro independently masked).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of drdy_mask in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_filter_settling_mask_set(const stmdev_ctx_t *ctx,
                                          uint8_t val)
 {
@@ -1879,8 +1885,7 @@ int32_t lsm6dsm_filter_settling_mask_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl4_c.drdy_mask = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   }
@@ -1889,14 +1894,14 @@ int32_t lsm6dsm_filter_settling_mask_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Mask DRDY on pin (both XL & Gyro) until filter settling ends
-  *         (XL and Gyro independently masked).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of drdy_mask in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Mask DRDY on pin (both XL & Gyro) until filter settling ends
+ *         (XL and Gyro independently masked).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of drdy_mask in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_filter_settling_mask_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
@@ -1905,7 +1910,9 @@ int32_t lsm6dsm_filter_settling_mask_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl4_c.drdy_mask;
 
@@ -1913,14 +1920,14 @@ int32_t lsm6dsm_filter_settling_mask_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  HPF or SLOPE filter selection on wake-up and Activity/Inactivity
-  *         functions.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of slope_fds in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  HPF or SLOPE filter selection on wake-up and Activity/Inactivity
+ *         functions.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of slope_fds in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
                                         lsm6dsm_slope_fds_t val)
 {
@@ -1929,8 +1936,7 @@ int32_t lsm6dsm_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_cfg.slope_fds = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
@@ -1939,14 +1945,14 @@ int32_t lsm6dsm_xl_hp_path_internal_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  HPF or SLOPE filter selection on wake-up and Activity/Inactivity
-  *         functions.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of slope_fds in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  HPF or SLOPE filter selection on wake-up and Activity/Inactivity
+ *         functions.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of slope_fds in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
                                         lsm6dsm_slope_fds_t *val)
 {
@@ -1955,10 +1961,11 @@ int32_t lsm6dsm_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (tap_cfg.slope_fds)
-  {
+  switch (tap_cfg.slope_fds) {
     case LSM6DSM_USE_SLOPE:
       *val = LSM6DSM_USE_SLOPE;
       break;
@@ -1976,27 +1983,27 @@ int32_t lsm6dsm_xl_hp_path_internal_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_accelerometer_filters
-  * @brief       This section group all the functions concerning the filters
-  *              configuration that impact accelerometer in every mode.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_accelerometer_filters
+ * @brief       This section group all the functions concerning the filters
+ *              configuration that impact accelerometer in every mode.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Accelerometer analog chain bandwidth selection (only for
-  *         accelerometer ODR ≥ 1.67 kHz).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of bw0_xl in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer analog chain bandwidth selection (only for
+ *         accelerometer ODR ≥ 1.67 kHz).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of bw0_xl in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_filter_analog_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_bw0_xl_t val)
 {
@@ -2005,8 +2012,7 @@ int32_t lsm6dsm_xl_filter_analog_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_xl.bw0_xl = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   }
@@ -2015,14 +2021,14 @@ int32_t lsm6dsm_xl_filter_analog_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer analog chain bandwidth selection (only for
-  *         accelerometer ODR ≥ 1.67 kHz).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of bw0_xl in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer analog chain bandwidth selection (only for
+ *         accelerometer ODR ≥ 1.67 kHz).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of bw0_xl in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_filter_analog_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_bw0_xl_t *val)
 {
@@ -2031,10 +2037,11 @@ int32_t lsm6dsm_xl_filter_analog_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl1_xl.bw0_xl)
-  {
+  switch (ctrl1_xl.bw0_xl) {
     case LSM6DSM_XL_ANA_BW_1k5Hz:
       *val = LSM6DSM_XL_ANA_BW_1k5Hz;
       break;
@@ -2052,28 +2059,28 @@ int32_t lsm6dsm_xl_filter_analog_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_accelerometer_filters_mode:1,2,3
-  * @brief       This section group all the functions concerning the filters
-  *              configuration that impact accelerometer mode 1, 2, 3
-  *              (accelerometer on aux interface disable).
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_accelerometer_filters_mode:1,2,3
+ * @brief       This section group all the functions concerning the filters
+ *              configuration that impact accelerometer mode 1, 2, 3
+ *              (accelerometer on aux interface disable).
+ * @{
+ *
+ */
 
 /**
-  * @brief  Accelerometer digital LPF (LPF1) bandwidth selection LPF2 is
-  *         not used.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of lpf1_bw_sel in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer digital LPF (LPF1) bandwidth selection LPF2 is
+ *         not used.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of lpf1_bw_sel in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_lpf1_bw_sel_t val)
 {
@@ -2083,17 +2090,14 @@ int32_t lsm6dsm_xl_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_xl.lpf1_bw_sel = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ctrl8_xl.lpf2_xl_en = 0;
         ctrl8_xl.hp_slope_xl_en = 0;
         ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
@@ -2105,14 +2109,14 @@ int32_t lsm6dsm_xl_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Accelerometer digital LPF (LPF1) bandwidth selection LPF2
-  *         is not used.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of lpf1_bw_sel in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Accelerometer digital LPF (LPF1) bandwidth selection LPF2
+ *         is not used.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of lpf1_bw_sel in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_lpf1_bw_sel_t *val)
 {
@@ -2122,22 +2126,15 @@ int32_t lsm6dsm_xl_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
-    if ((ctrl8_xl.lpf2_xl_en != 0x00U) ||
-        (ctrl8_xl.hp_slope_xl_en != 0x00U))
-    {
+  if (ret == 0) {
+    if ((ctrl8_xl.lpf2_xl_en != 0x00U)
+        || (ctrl8_xl.hp_slope_xl_en != 0x00U)) {
       *val = LSM6DSM_XL_LP1_NA;
-    }
-
-    else
-    {
+    } else {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-      if (ret == 0)
-      {
-        switch (ctrl1_xl.lpf1_bw_sel)
-        {
+      if (ret == 0) {
+        switch (ctrl1_xl.lpf1_bw_sel) {
           case LSM6DSM_XL_LP1_ODR_DIV_2:
             *val = LSM6DSM_XL_LP1_ODR_DIV_2;
             break;
@@ -2158,13 +2155,13 @@ int32_t lsm6dsm_xl_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  LPF2 on outputs[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of input_composite in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  LPF2 on outputs[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of input_composite in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_input_composite_t val)
 {
@@ -2173,8 +2170,7 @@ int32_t lsm6dsm_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl8_xl.input_composite = ((uint8_t) val & 0x10U) >> 4;
     ctrl8_xl.hpcf_xl = (uint8_t) val & 0x03U;
     ctrl8_xl.lpf2_xl_en = 1;
@@ -2186,13 +2182,13 @@ int32_t lsm6dsm_xl_lp2_bandwidth_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  LPF2 on outputs[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of input_composite in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  LPF2 on outputs[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of input_composite in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_input_composite_t *val)
 {
@@ -2201,18 +2197,12 @@ int32_t lsm6dsm_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
-    if ((ctrl8_xl.lpf2_xl_en == 0x00U) ||
-        (ctrl8_xl.hp_slope_xl_en != 0x00U))
-    {
+  if (ret == 0) {
+    if ((ctrl8_xl.lpf2_xl_en == 0x00U)
+        || (ctrl8_xl.hp_slope_xl_en != 0x00U)) {
       *val = LSM6DSM_XL_LP_NA;
-    }
-
-    else
-    {
-      switch ((ctrl8_xl.input_composite << 4) + ctrl8_xl.hpcf_xl)
-      {
+    } else {
+      switch ((ctrl8_xl.input_composite << 4) + ctrl8_xl.hpcf_xl) {
         case LSM6DSM_XL_LOW_LAT_LP_ODR_DIV_50:
           *val = LSM6DSM_XL_LOW_LAT_LP_ODR_DIV_50;
           break;
@@ -2256,13 +2246,13 @@ int32_t lsm6dsm_xl_lp2_bandwidth_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable HP filter reference mode.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of hp_ref_mode in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable HP filter reference mode.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of hp_ref_mode in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_reference_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl8_xl_t ctrl8_xl;
@@ -2270,8 +2260,7 @@ int32_t lsm6dsm_xl_reference_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl8_xl.hp_ref_mode = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   }
@@ -2280,13 +2269,13 @@ int32_t lsm6dsm_xl_reference_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable HP filter reference mode.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of hp_ref_mode in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable HP filter reference mode.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of hp_ref_mode in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_reference_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl8_xl_t ctrl8_xl;
@@ -2294,7 +2283,9 @@ int32_t lsm6dsm_xl_reference_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl8_xl.hp_ref_mode;
 
@@ -2302,13 +2293,13 @@ int32_t lsm6dsm_xl_reference_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  High pass/Slope on outputs.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of hpcf_xl in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  High pass/Slope on outputs.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of hpcf_xl in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_hp_bandwidth_set(const stmdev_ctx_t *ctx,
                                     lsm6dsm_hpcf_xl_t val)
 {
@@ -2317,8 +2308,7 @@ int32_t lsm6dsm_xl_hp_bandwidth_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl8_xl.input_composite = 0;
     ctrl8_xl.hpcf_xl = (uint8_t)val & 0x03U;
     ctrl8_xl.hp_slope_xl_en = 1;
@@ -2329,13 +2319,13 @@ int32_t lsm6dsm_xl_hp_bandwidth_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  High pass/Slope on outputs.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of hpcf_xl in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  High pass/Slope on outputs.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of hpcf_xl in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
                                     lsm6dsm_hpcf_xl_t *val)
 {
@@ -2344,15 +2334,15 @@ int32_t lsm6dsm_xl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  if (ctrl8_xl.hp_slope_xl_en == 0x00U)
-  {
+  if (ctrl8_xl.hp_slope_xl_en == 0x00U) {
     *val = LSM6DSM_XL_HP_NA;
   }
 
-  switch (ctrl8_xl.hpcf_xl)
-  {
+  switch (ctrl8_xl.hpcf_xl) {
     case LSM6DSM_XL_HP_ODR_DIV_4:
       *val = LSM6DSM_XL_HP_ODR_DIV_4;
       break;
@@ -2378,28 +2368,28 @@ int32_t lsm6dsm_xl_hp_bandwidth_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_accelerometer_filters_mode:4
-  * @brief       This section group all the functions concerning the filters
-  *              configuration that impact accelerometer when mode 4
-  *              (accelerometer on aux interface enable).
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_accelerometer_filters_mode:4
+ * @brief       This section group all the functions concerning the filters
+ *              configuration that impact accelerometer when mode 4
+ *              (accelerometer on aux interface enable).
+ * @{
+ *
+ */
 
 /**
-  * @brief   Accelerometer digital LPF (LPF1) bandwidth selection.
-  *          Only for mode 4.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of lpf1_bw_sel in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Accelerometer digital LPF (LPF1) bandwidth selection.
+ *          Only for mode 4.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of lpf1_bw_sel in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_ui_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
                                         lsm6dsm_ui_lpf1_bw_sel_t val)
 {
@@ -2409,19 +2399,16 @@ int32_t lsm6dsm_xl_ui_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_xl.lpf1_bw_sel = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl8_xl.hp_slope_xl_en = 0x00U;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   }
@@ -2430,14 +2417,14 @@ int32_t lsm6dsm_xl_ui_lp1_bandwidth_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Accelerometer digital LPF (LPF1) bandwidth selection.
-  *          Only for mode 4.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of lpf1_bw_sel in reg CTRL1_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Accelerometer digital LPF (LPF1) bandwidth selection.
+ *          Only for mode 4.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of lpf1_bw_sel in reg CTRL1_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_ui_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
                                         lsm6dsm_ui_lpf1_bw_sel_t *val)
 {
@@ -2447,21 +2434,14 @@ int32_t lsm6dsm_xl_ui_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
-    if (ctrl8_xl.hp_slope_xl_en != PROPERTY_DISABLE)
-    {
+  if (ret == 0) {
+    if (ctrl8_xl.hp_slope_xl_en != PROPERTY_DISABLE) {
       *val = LSM6DSM_XL_UI_LP1_NA;
-    }
-
-    else
-    {
+    } else {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_XL, (uint8_t *)&ctrl1_xl, 1);
 
-      if (ret == 0)
-      {
-        switch (ctrl1_xl.lpf1_bw_sel)
-        {
+      if (ret == 0) {
+        switch (ctrl1_xl.lpf1_bw_sel) {
           case LSM6DSM_XL_UI_LP1_ODR_DIV_2:
             *val = LSM6DSM_XL_UI_LP1_ODR_DIV_2;
             break;
@@ -2482,13 +2462,13 @@ int32_t lsm6dsm_xl_ui_lp1_bandwidth_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Slope filter on outputs.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of hp_slope_xl_en in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Slope filter on outputs.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of hp_slope_xl_en in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_ui_slope_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl8_xl_t ctrl8_xl;
@@ -2496,8 +2476,7 @@ int32_t lsm6dsm_xl_ui_slope_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl8_xl.hp_slope_xl_en = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   }
@@ -2506,21 +2485,23 @@ int32_t lsm6dsm_xl_ui_slope_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Slope filter on outputs.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of hp_slope_xl_en in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
-int32_t lsm6dsm_xl_ui_slope_get(const stmdev_ctx_t *ctx,  uint8_t *val)
+ * @brief  Slope filter on outputs.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of hp_slope_xl_en in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
+int32_t lsm6dsm_xl_ui_slope_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl8_xl_t ctrl8_xl;
   int32_t ret;
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl8_xl.hp_slope_xl_en;
 
@@ -2528,26 +2509,26 @@ int32_t lsm6dsm_xl_ui_slope_get(const stmdev_ctx_t *ctx,  uint8_t *val)
 }
 
 /**
-  * @brief  accelerometer auxiliary low pass bandwidth.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of filter_xl_conf_ois in reg CTRL3_OIS
-  *
-  * Cut off feq [ODR_UI = 0 / ODR UI ≥ 1600 Hz]
-  * LIGHT      636   Hz  2.96°
-  * NORMAL     295   Hz  5.12°
-  * STRONG     140   Hz  9.39°
-  * AGGRESSIVE  68.2 Hz 17.6°
-  *
-  * Cut off feq [ODR UI ≤ 800 Hz ]
-  * LIGHT      329   Hz  5.08°
-  * NORMAL     222   Hz  7.23°
-  * STRONG     128   Hz 11.5°
-  * AGGRESSIVE  66.5 Hz 19.7°
-  *
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  accelerometer auxiliary low pass bandwidth.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of filter_xl_conf_ois in reg CTRL3_OIS
+ *
+ * Cut off feq [ODR_UI = 0 / ODR UI ≥ 1600 Hz]
+ * LIGHT      636   Hz  2.96°
+ * NORMAL     295   Hz  5.12°
+ * STRONG     140   Hz  9.39°
+ * AGGRESSIVE  68.2 Hz 17.6°
+ *
+ * Cut off feq [ODR UI ≤ 800 Hz ]
+ * LIGHT      329   Hz  5.08°
+ * NORMAL     222   Hz  7.23°
+ * STRONG     128   Hz 11.5°
+ * AGGRESSIVE  66.5 Hz 19.7°
+ *
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_aux_lp_bandwidth_set(const stmdev_ctx_t *ctx,
                                         lsm6dsm_filter_xl_conf_ois_t val)
 {
@@ -2556,8 +2537,7 @@ int32_t lsm6dsm_xl_aux_lp_bandwidth_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_ois.filter_xl_conf_ois = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
   }
@@ -2566,26 +2546,26 @@ int32_t lsm6dsm_xl_aux_lp_bandwidth_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  accelerometer auxiliary low pass bandwidth.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of filter_xl_conf_ois in reg CTRL3_OIS
-  *
-  * Cut off feq [ODR_UI = 0 / ODR UI ≥ 1600 Hz]
-  * LIGHT      636   Hz  2.96°
-  * NORMAL     295   Hz  5.12°
-  * STRONG     140   Hz  9.39°
-  * AGGRESSIVE  68.2 Hz 17.6°
-  *
-  * Cut off feq [ODR UI ≤ 800 Hz ]
-  * LIGHT      329   Hz  5.08°
-  * NORMAL     222   Hz  7.23°
-  * STRONG     128   Hz 11.5°
-  * AGGRESSIVE  66.5 Hz 19.7°
-  *
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  accelerometer auxiliary low pass bandwidth.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of filter_xl_conf_ois in reg CTRL3_OIS
+ *
+ * Cut off feq [ODR_UI = 0 / ODR UI ≥ 1600 Hz]
+ * LIGHT      636   Hz  2.96°
+ * NORMAL     295   Hz  5.12°
+ * STRONG     140   Hz  9.39°
+ * AGGRESSIVE  68.2 Hz 17.6°
+ *
+ * Cut off feq [ODR UI ≤ 800 Hz ]
+ * LIGHT      329   Hz  5.08°
+ * NORMAL     222   Hz  7.23°
+ * STRONG     128   Hz 11.5°
+ * AGGRESSIVE  66.5 Hz 19.7°
+ *
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_xl_aux_lp_bandwidth_get(const stmdev_ctx_t *ctx,
                                         lsm6dsm_filter_xl_conf_ois_t *val)
 {
@@ -2594,10 +2574,11 @@ int32_t lsm6dsm_xl_aux_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_ois.filter_xl_conf_ois)
-  {
+  switch (ctrl3_ois.filter_xl_conf_ois) {
     case LSM6DSM_AUX_LP_LIGHT:
       *val = LSM6DSM_AUX_LP_LIGHT;
       break;
@@ -2623,27 +2604,27 @@ int32_t lsm6dsm_xl_aux_lp_bandwidth_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_gyroscope_filters_mode:1,2
-  * @brief       This section group all the functions concerning the filters
-  *              configuration that impact gyroscope mode 1, 2
-  *              (gyroscope on aux interface disable).
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_gyroscope_filters_mode:1,2
+ * @brief       This section group all the functions concerning the filters
+ *              configuration that impact gyroscope mode 1, 2
+ *              (gyroscope on aux interface disable).
+ * @{
+ *
+ */
 
 /**
-  * @brief  Gyroscope low pass path bandwidth.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    gyroscope filtering chain configuration.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope low pass path bandwidth.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    gyroscope filtering chain configuration.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_band_pass_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_lpf1_sel_g_t val)
 {
@@ -2654,28 +2635,23 @@ int32_t lsm6dsm_gy_band_pass_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl7_g.hpm_g  = ((uint8_t)val & 0x30U) >> 4;
     ctrl7_g.hp_en_g = ((uint8_t)val & 0x80U) >> 7;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ctrl6_c.ftype = (uint8_t)val & 0x03U;
         ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-        if (ret == 0)
-        {
+        if (ret == 0) {
           ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C,
                                  (uint8_t *)&ctrl4_c, 1);
 
-          if (ret == 0)
-          {
+          if (ret == 0) {
             ctrl4_c.lpf1_sel_g = ((uint8_t)val & 0x08U) >> 3;
             ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C,
                                     (uint8_t *)&ctrl4_c, 1);
@@ -2689,13 +2665,13 @@ int32_t lsm6dsm_gy_band_pass_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Gyroscope low pass path bandwidth.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    gyroscope filtering chain
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Gyroscope low pass path bandwidth.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    gyroscope filtering chain
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_band_pass_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_lpf1_sel_g_t *val)
 {
@@ -2708,9 +2684,8 @@ int32_t lsm6dsm_gy_band_pass_get(const stmdev_ctx_t *ctx,
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  switch ((ctrl7_g.hp_en_g << 7) + (ctrl7_g.hpm_g << 4) +
-          (ctrl4_c.lpf1_sel_g << 3) + ctrl6_c.ftype)
-  {
+  switch ((ctrl7_g.hp_en_g << 7) + (ctrl7_g.hpm_g << 4)
+          + (ctrl4_c.lpf1_sel_g << 3) + ctrl6_c.ftype) {
     case LSM6DSM_HP_16mHz_LP2:
       *val = LSM6DSM_HP_16mHz_LP2;
       break;
@@ -2768,28 +2743,28 @@ int32_t lsm6dsm_gy_band_pass_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_gyroscope_filters_mode:3,4
-  * @brief   This section group all the functions concerning the filters
-  *          configuration that impact gyroscope when mode 3, 4
-  *          (gyroscope on aux interface enable).
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_gyroscope_filters_mode:3,4
+ * @brief   This section group all the functions concerning the filters
+ *          configuration that impact gyroscope when mode 3, 4
+ *          (gyroscope on aux interface enable).
+ * @{
+ *
+ */
 
 /**
-  * @brief  HPF is available on gyroscope's OIS chain only if HP_EN_G
-  *         in CTRL7_G (16h) is set to '0'.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    gyroscope ui filtering chain configuration in Mode: 3, 4.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  HPF is available on gyroscope's IS chain only if HP_EN_G
+ *         in CTRL7_G (16h) is set to '0'.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    gyroscope ui filtering chain configuration in Mode: 3, 4.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_ui_high_pass_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl7_g_t ctrl7_g;
@@ -2797,8 +2772,7 @@ int32_t lsm6dsm_gy_ui_high_pass_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl7_g.hp_en_g = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
   }
@@ -2807,14 +2781,14 @@ int32_t lsm6dsm_gy_ui_high_pass_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  HPF is available on gyroscope's OIS chain only if HP_EN_G
-  *         in CTRL7_G (16h) is set to '0'.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    gyroscope ui filtering chain configuration in Mode: 3, 4.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  HPF is available on gyroscope's IS chain only if HP_EN_G
+ *         in CTRL7_G (16h) is set to '0'.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    gyroscope ui filtering chain configuration in Mode: 3, 4.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_ui_high_pass_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl7_g_t ctrl7_g;
@@ -2822,24 +2796,25 @@ int32_t lsm6dsm_gy_ui_high_pass_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl7_g.hp_en_g;
 
   return ret;
 }
 
-
 /**
-  * @brief  HPF is available on gyroscope's OIS chain only if HP_EN_G
-  *         in CTRL7_G (16h) is set to '0'.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    gyroscope aux (ois) filtering chain configuration in
-  *                Mode: 3, 4.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  HPF is available on gyroscope's IS chain only if HP_EN_G
+ *         in CTRL7_G (16h) is set to '0'.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    gyroscope aux (is) filtering chain configuration in
+ *                Mode: 3, 4.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_aux_bandwidth_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_hp_en_ois_t val)
 {
@@ -2849,19 +2824,16 @@ int32_t lsm6dsm_gy_aux_bandwidth_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl7_g.hp_en_g = 0x00U;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL7_G, (uint8_t *)&ctrl7_g, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL2_OIS, (uint8_t *)&ctrl2_ois, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl2_ois.ftype_ois = (uint8_t)val & 0x03U;
     ctrl2_ois.hp_en_ois = ((uint8_t)val & 0x80U) >> 7;
     ctrl2_ois.hpm_ois = ((uint8_t)val & 0x30U) >> 4;
@@ -2872,15 +2844,15 @@ int32_t lsm6dsm_gy_aux_bandwidth_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  HPF is available on gyroscope's OIS chain only if HP_EN_G
-  *         in CTRL7_G (16h) is set to '0'.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    gyroscope aux (ois) filtering chain configuration in
-  *                Mode: 3, 4.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  HPF is available on gyroscope's IS chain only if HP_EN_G
+ *         in CTRL7_G (16h) is set to '0'.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    gyroscope aux (is) filtering chain configuration in
+ *                Mode: 3, 4.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_aux_bandwidth_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_hp_en_ois_t *val)
 {
@@ -2889,11 +2861,12 @@ int32_t lsm6dsm_gy_aux_bandwidth_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL2_OIS, (uint8_t *)&ctrl2_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   switch (((ctrl2_ois.hp_en_ois << 7) + (ctrl2_ois.hpm_ois << 4)
-           + ctrl2_ois.ftype_ois))
-  {
+           + ctrl2_ois.ftype_ois)) {
     case LSM6DSM_HP_DISABLE_LP_173Hz:
       *val = LSM6DSM_HP_DISABLE_LP_173Hz;
       break;
@@ -2935,26 +2908,26 @@ int32_t lsm6dsm_gy_aux_bandwidth_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Auxiliary_interface
-  * @brief       This section groups all the functions concerning
-  *              auxiliary interface.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Auxiliary_interface
+ * @brief       This section groups all the functions concerning
+ *              auxiliary interface.
+ * @{
+ *
+ */
 
 /**
-  * @brief  The STATUS_SPIAux register is read by the auxiliary SPI.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    registers STATUS_SPIAUX.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  The STATUS_SPIAux register is read by the auxiliary SPI.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    registers STATUS_SPIAUX.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_status_reg_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_status_spiaux_t *val)
 {
@@ -2966,13 +2939,13 @@ int32_t lsm6dsm_aux_status_reg_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  AUX accelerometer data available.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of xlda in reg STATUS_SPIAUX
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  AUX accelerometer data available.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of xlda in reg STATUS_SPIAUX
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val)
 {
@@ -2982,7 +2955,9 @@ int32_t lsm6dsm_aux_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_SPIAUX,
                          (uint8_t *)&status_spiaux, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = status_spiaux.xlda;
 
@@ -2990,13 +2965,13 @@ int32_t lsm6dsm_aux_xl_flag_data_ready_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  AUX gyroscope data available.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of gda in reg STATUS_SPIAUX
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  AUX gyroscope data available.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of gda in reg STATUS_SPIAUX
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val)
 {
@@ -3006,7 +2981,9 @@ int32_t lsm6dsm_aux_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_SPIAUX,
                          (uint8_t *)&status_spiaux, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = status_spiaux.gda;
 
@@ -3014,13 +2991,13 @@ int32_t lsm6dsm_aux_gy_flag_data_ready_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   High when the gyroscope output is in the settling phase.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of gyro_settling in reg STATUS_SPIAUX
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   High when the gyroscope output is in the settling phase.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of gyro_settling in reg STATUS_SPIAUX
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_flag_settling_get(const stmdev_ctx_t *ctx,
                                          uint8_t *val)
 {
@@ -3030,7 +3007,9 @@ int32_t lsm6dsm_aux_gy_flag_settling_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_STATUS_SPIAUX,
                          (uint8_t *)&status_spiaux, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = status_spiaux.gyro_settling;
 
@@ -3038,13 +3017,13 @@ int32_t lsm6dsm_aux_gy_flag_settling_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure DEN mode on the OIS chain.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of lvl2_ois in reg INT_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure DEN mode on the IS chain.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of lvl2_ois in reg INT_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_den_mode_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_lvl_ois_t val)
 {
@@ -3054,20 +3033,17 @@ int32_t lsm6dsm_aux_den_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_OIS, (uint8_t *)&int_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int_ois.lvl2_ois = (uint8_t)val & 0x01U;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT_OIS, (uint8_t *)&int_ois, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
     ctrl1_ois.lvl1_ois = ((uint8_t)val & 0x02U) >> 1;
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
   }
 
@@ -3075,13 +3051,13 @@ int32_t lsm6dsm_aux_den_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure DEN mode on the OIS chain.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of lvl2_ois in reg INT_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure DEN mode on the IS chain.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of lvl2_ois in reg INT_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_den_mode_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_lvl_ois_t *val)
 {
@@ -3092,10 +3068,8 @@ int32_t lsm6dsm_aux_den_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_OIS, (uint8_t *)&int_ois, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret == 0)
-  {
-    switch ((ctrl1_ois.lvl1_ois << 1) + int_ois.lvl2_ois)
-    {
+  if (ret == 0) {
+    switch ((ctrl1_ois.lvl1_ois << 1) + int_ois.lvl2_ois) {
       case LSM6DSM_AUX_DEN_DISABLE:
         *val = LSM6DSM_AUX_DEN_DISABLE;
         break;
@@ -3118,14 +3092,14 @@ int32_t lsm6dsm_aux_den_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enables/Disable OIS chain DRDY on INT2 pin. This setting
-  *         has priority over all other INT2 settings.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of int2_drdy_ois in reg INT_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enables/Disable IS chain DRDY on INT2 pin. This setting
+ *         has priority over all other INT2 settings.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of int2_drdy_ois in reg INT_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_drdy_on_int2_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_int_ois_t int_ois;
@@ -3133,8 +3107,7 @@ int32_t lsm6dsm_aux_drdy_on_int2_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_OIS, (uint8_t *)&int_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int_ois.int2_drdy_ois = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT_OIS, (uint8_t *)&int_ois, 1);
   }
@@ -3143,14 +3116,14 @@ int32_t lsm6dsm_aux_drdy_on_int2_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enables/Disable OIS chain DRDY on INT2 pin. This setting
-  *         has priority over all other INT2 settings.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of int2_drdy_ois in reg INT_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enables/Disable IS chain DRDY on INT2 pin. This setting
+ *         has priority over all other INT2 settings.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of int2_drdy_ois in reg INT_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_drdy_on_int2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_int_ois_t int_ois;
@@ -3158,7 +3131,9 @@ int32_t lsm6dsm_aux_drdy_on_int2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_OIS, (uint8_t *)&int_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = int_ois.int2_drdy_ois;
 
@@ -3166,20 +3141,20 @@ int32_t lsm6dsm_aux_drdy_on_int2_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Enables OIS chain data processing for gyro
-  *         in Mode 3 and Mode 4 (mode4_en = 1) and
-  *         accelerometer data in and Mode 4 (mode4_en = 1).
-  *         When the OIS chain is enabled, the OIS outputs are
-  *         available through the SPI2 in registers
-  *         OUTX_L_G(22h) through OUTZ_H_G(27h) and
-  *         STATUS_REG(1Eh) / STATUS_SPIAux, and LPF1 is
-  *         dedicated to this chain.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of ois_en_spi2 in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enables IS chain data processing for gyro
+ *         in Mode 3 and Mode 4 (mode4_en = 1) and
+ *         accelerometer data in and Mode 4 (mode4_en = 1).
+ *         When the IS chain is enabled, the IS outputs are
+ *         available through the SPI2 in registers
+ *         OUTX_L_G(22h) through OUTZ_H_G(27h) and
+ *         STATUS_REG(1Eh) / STATUS_SPIAux, and LPF1 is
+ *         dedicated to this chain.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of ois_en_spi2 in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_mode_set(const stmdev_ctx_t *ctx,
                              lsm6dsm_ois_en_spi2_t val)
 {
@@ -3188,8 +3163,7 @@ int32_t lsm6dsm_aux_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_ois.ois_en_spi2 = (uint8_t)val & 0x01U;
     ctrl1_ois.mode4_en = ((uint8_t)val & 0x02U) >> 1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
@@ -3199,20 +3173,20 @@ int32_t lsm6dsm_aux_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enables OIS chain data processing for gyro
-  *         in Mode 3 and Mode 4 (mode4_en = 1) and
-  *         accelerometer data in and Mode 4 (mode4_en = 1).
-  *         When the OIS chain is enabled, the OIS outputs
-  *         are available through the SPI2 in registers
-  *         OUTX_L_G(22h) through OUTZ_H_G(27h) and
-  *         STATUS_REG(1Eh) / STATUS_SPIAux, and LPF1 is
-  *         dedicated to this chain.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of ois_en_spi2 in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enables IS chain data processing for gyro
+ *         in Mode 3 and Mode 4 (mode4_en = 1) and
+ *         accelerometer data in and Mode 4 (mode4_en = 1).
+ *         When the IS chain is enabled, the IS outputs
+ *         are available through the SPI2 in registers
+ *         OUTX_L_G(22h) through OUTZ_H_G(27h) and
+ *         STATUS_REG(1Eh) / STATUS_SPIAux, and LPF1 is
+ *         dedicated to this chain.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of ois_en_spi2 in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_mode_get(const stmdev_ctx_t *ctx,
                              lsm6dsm_ois_en_spi2_t *val)
 {
@@ -3221,10 +3195,11 @@ int32_t lsm6dsm_aux_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch ((ctrl1_ois.mode4_en << 1) + ctrl1_ois.ois_en_spi2)
-  {
+  switch ((ctrl1_ois.mode4_en << 1) + ctrl1_ois.ois_en_spi2) {
     case LSM6DSM_AUX_DISABLE:
       *val = LSM6DSM_AUX_DISABLE;
       break;
@@ -3246,13 +3221,13 @@ int32_t lsm6dsm_aux_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects gyroscope OIS chain full-scale.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of fs_g_ois in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects gyroscope IS chain full-scale.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of fs_g_ois in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_full_scale_set(const stmdev_ctx_t *ctx,
                                       lsm6dsm_fs_g_ois_t val)
 {
@@ -3261,8 +3236,7 @@ int32_t lsm6dsm_aux_gy_full_scale_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_ois.fs_g_ois = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
   }
@@ -3271,13 +3245,13 @@ int32_t lsm6dsm_aux_gy_full_scale_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects gyroscope OIS chain full-scale.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of fs_g_ois in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects gyroscope IS chain full-scale.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of fs_g_ois in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_full_scale_get(const stmdev_ctx_t *ctx,
                                       lsm6dsm_fs_g_ois_t *val)
 {
@@ -3286,10 +3260,11 @@ int32_t lsm6dsm_aux_gy_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl1_ois.fs_g_ois)
-  {
+  switch (ctrl1_ois.fs_g_ois) {
     case LSM6DSM_250dps_AUX:
       *val = LSM6DSM_250dps_AUX;
       break;
@@ -3319,13 +3294,13 @@ int32_t lsm6dsm_aux_gy_full_scale_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  SPI2 3- or 4-wire interface.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of sim_ois in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  SPI2 3- or 4-wire interface.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of sim_ois in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_spi_mode_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sim_ois_t val)
 {
@@ -3334,8 +3309,7 @@ int32_t lsm6dsm_aux_spi_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_ois.sim_ois = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
   }
@@ -3344,13 +3318,13 @@ int32_t lsm6dsm_aux_spi_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  SPI2 3- or 4-wire interface.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of sim_ois in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  SPI2 3- or 4-wire interface.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of sim_ois in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_spi_mode_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sim_ois_t *val)
 {
@@ -3359,10 +3333,11 @@ int32_t lsm6dsm_aux_spi_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl1_ois.sim_ois)
-  {
+  switch (ctrl1_ois.sim_ois) {
     case LSM6DSM_AUX_SPI_4_WIRE:
       *val = LSM6DSM_AUX_SPI_4_WIRE;
       break;
@@ -3380,13 +3355,13 @@ int32_t lsm6dsm_aux_spi_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Big/Little Endian Data selection on aux interface.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of ble_ois in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Big/Little Endian Data selection on aux interface.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of ble_ois in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_data_format_set(const stmdev_ctx_t *ctx,
                                     lsm6dsm_ble_ois_t val)
 {
@@ -3395,8 +3370,7 @@ int32_t lsm6dsm_aux_data_format_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl1_ois.ble_ois = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
   }
@@ -3405,13 +3379,13 @@ int32_t lsm6dsm_aux_data_format_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Big/Little Endian Data selection on aux interface.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of ble_ois in reg CTRL1_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Big/Little Endian Data selection on aux interface.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of ble_ois in reg CTRL1_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_data_format_get(const stmdev_ctx_t *ctx,
                                     lsm6dsm_ble_ois_t *val)
 {
@@ -3420,10 +3394,11 @@ int32_t lsm6dsm_aux_data_format_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL1_OIS, (uint8_t *)&ctrl1_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl1_ois.ble_ois)
-  {
+  switch (ctrl1_ois.ble_ois) {
     case LSM6DSM_AUX_LSB_AT_LOW_ADD:
       *val = LSM6DSM_AUX_LSB_AT_LOW_ADD;
       break;
@@ -3441,17 +3416,17 @@ int32_t lsm6dsm_aux_data_format_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable / Disables OIS chain clamp.
-  *         Enable: All OIS chain outputs = 8000h
-  *         during self-test; Disable: OIS chain
-  *         self-test outputs dependent from the aux
-  *         gyro full scale selected.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of st_ois_clampdis in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable / Disables IS chain clamp.
+ *         Enable: All IS chain outputs = 8000h
+ *         during self-test; Disable: IS chain
+ *         self-test outputs dependent from the aux
+ *         gyro full scale selected.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of st_ois_clampdis in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_clamp_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_st_ois_clampdis_t val)
 {
@@ -3460,8 +3435,7 @@ int32_t lsm6dsm_aux_gy_clamp_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_ois.st_ois_clampdis = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
   }
@@ -3470,17 +3444,17 @@ int32_t lsm6dsm_aux_gy_clamp_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable / Disables OIS chain clamp.
-  *         Enable: All OIS chain outputs = 8000h
-  *         during self-test; Disable: OIS chain self-test
-  *         outputs dependent from the aux gyro full
-  *         scale selected.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of st_ois_clampdis in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable / Disables IS chain clamp.
+ *         Enable: All IS chain outputs = 8000h
+ *         during self-test; Disable: IS chain self-test
+ *         outputs dependent from the aux gyro full
+ *         scale selected.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of st_ois_clampdis in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_clamp_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_st_ois_clampdis_t *val)
 {
@@ -3489,10 +3463,11 @@ int32_t lsm6dsm_aux_gy_clamp_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_ois.st_ois_clampdis)
-  {
+  switch (ctrl3_ois.st_ois_clampdis) {
     case LSM6DSM_ENABLE_CLAMP:
       *val = LSM6DSM_ENABLE_CLAMP;
       break;
@@ -3510,13 +3485,13 @@ int32_t lsm6dsm_aux_gy_clamp_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects gyroscope OIS chain self-test.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of st_ois in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects gyroscope IS chain self-test.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of st_ois in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_self_test_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_st_ois_t val)
 {
@@ -3525,8 +3500,7 @@ int32_t lsm6dsm_aux_gy_self_test_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_ois.st_ois = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
   }
@@ -3535,13 +3509,13 @@ int32_t lsm6dsm_aux_gy_self_test_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects gyroscope OIS chain self-test.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of st_ois in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects gyroscope IS chain self-test.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of st_ois in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_gy_self_test_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_st_ois_t *val)
 {
@@ -3550,10 +3524,11 @@ int32_t lsm6dsm_aux_gy_self_test_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_ois.st_ois)
-  {
+  switch (ctrl3_ois.st_ois) {
     case LSM6DSM_AUX_GY_DISABLE:
       *val = LSM6DSM_AUX_GY_DISABLE;
       break;
@@ -3575,13 +3550,13 @@ int32_t lsm6dsm_aux_gy_self_test_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects accelerometer OIS channel full-scale.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of fs_xl_ois in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects accelerometer IS channel full-scale.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of fs_xl_ois in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_xl_full_scale_set(const stmdev_ctx_t *ctx,
                                       lsm6dsm_fs_xl_ois_t val)
 {
@@ -3590,8 +3565,7 @@ int32_t lsm6dsm_aux_xl_full_scale_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_ois.fs_xl_ois = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
   }
@@ -3600,13 +3574,13 @@ int32_t lsm6dsm_aux_xl_full_scale_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects accelerometer OIS channel full-scale.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of fs_xl_ois in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects accelerometer IS channel full-scale.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of fs_xl_ois in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_xl_full_scale_get(const stmdev_ctx_t *ctx,
                                       lsm6dsm_fs_xl_ois_t *val)
 {
@@ -3615,10 +3589,11 @@ int32_t lsm6dsm_aux_xl_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_ois.fs_xl_ois)
-  {
+  switch (ctrl3_ois.fs_xl_ois) {
     case LSM6DSM_AUX_2g:
       *val = LSM6DSM_AUX_2g;
       break;
@@ -3644,13 +3619,13 @@ int32_t lsm6dsm_aux_xl_full_scale_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Indicates polarity of DEN signal on OIS chain.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    change the values of den_lh_ois in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Indicates polarity of DEN signal on IS chain.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    change the values of den_lh_ois in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_den_polarity_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_den_lh_ois_t val)
 {
@@ -3659,8 +3634,7 @@ int32_t lsm6dsm_aux_den_polarity_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_ois.den_lh_ois = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
   }
@@ -3669,13 +3643,13 @@ int32_t lsm6dsm_aux_den_polarity_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Indicates polarity of DEN signal on OIS chain.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of den_lh_ois in reg CTRL3_OIS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Indicates polarity of DEN signal on IS chain.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of den_lh_ois in reg CTRL3_OIS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_aux_den_polarity_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_den_lh_ois_t *val)
 {
@@ -3684,10 +3658,11 @@ int32_t lsm6dsm_aux_den_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_OIS, (uint8_t *)&ctrl3_ois, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_ois.den_lh_ois)
-  {
+  switch (ctrl3_ois.den_lh_ois) {
     case LSM6DSM_AUX_DEN_ACTIVE_LOW:
       *val = LSM6DSM_AUX_DEN_ACTIVE_LOW;
       break;
@@ -3705,26 +3680,26 @@ int32_t lsm6dsm_aux_den_polarity_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM main serial_interface
-  * @brief       This section groups all the functions concerning serial
-  *              interface management
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM main serial_interface
+ * @brief       This section groups all the functions concerning serial
+ *              interface management
+ * @{
+ *
+ */
 
 /**
-  * @brief  SPI Serial Interface Mode selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sim in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  SPI Serial Interface Mode selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sim in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsm_sim_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -3732,8 +3707,7 @@ int32_t lsm6dsm_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsm_sim_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.sim = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -3742,13 +3716,13 @@ int32_t lsm6dsm_spi_mode_set(const stmdev_ctx_t *ctx, lsm6dsm_sim_t val)
 }
 
 /**
-  * @brief  SPI Serial Interface Mode selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of sim in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  SPI Serial Interface Mode selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of sim in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsm_sim_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -3756,10 +3730,11 @@ int32_t lsm6dsm_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsm_sim_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_c.sim)
-  {
+  switch (ctrl3_c.sim) {
     case LSM6DSM_SPI_4_WIRE:
       *val = LSM6DSM_SPI_4_WIRE;
       break;
@@ -3777,13 +3752,13 @@ int32_t lsm6dsm_spi_mode_get(const stmdev_ctx_t *ctx, lsm6dsm_sim_t *val)
 }
 
 /**
-  * @brief  Disable / Enable I2C interface.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of i2c_disable in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Disable / Enable I2C interface.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of i2c_disable in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_i2c_interface_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_i2c_disable_t val)
 {
@@ -3792,8 +3767,7 @@ int32_t lsm6dsm_i2c_interface_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl4_c.i2c_disable = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   }
@@ -3802,13 +3776,13 @@ int32_t lsm6dsm_i2c_interface_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Disable / Enable I2C interface.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of i2c_disable in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Disable / Enable I2C interface.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of i2c_disable in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_i2c_interface_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_i2c_disable_t *val)
 {
@@ -3817,10 +3791,11 @@ int32_t lsm6dsm_i2c_interface_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl4_c.i2c_disable)
-  {
+  switch (ctrl4_c.i2c_disable) {
     case LSM6DSM_I2C_ENABLE:
       *val = LSM6DSM_I2C_ENABLE;
       break;
@@ -3838,27 +3813,27 @@ int32_t lsm6dsm_i2c_interface_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_interrupt_pins
-  * @brief       This section groups all the functions that manage
-  *              interrupt pins
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_interrupt_pins
+ * @brief       This section groups all the functions that manage
+ *              interrupt pins
+ * @{
+ *
+ */
 
 /**
-  * @brief  Select the signal that need to route on int1 pad[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    configure INT1_CTRL, MD1_CFG, CTRL4_C(den_drdy_int1),
-  *                MASTER_CONFIG(drdy_on_int1)
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Select the signal that need to route on int1 pad[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    configure INT1_CTRL, MD1_CFG, CTRL4_C(den_drdy_int1),
+ *                MASTER_CONFIG(drdy_on_int1)
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_int1_route_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_int1_route_t val)
 {
@@ -3872,8 +3847,7 @@ int32_t lsm6dsm_pin_int1_route_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int1_ctrl.int1_drdy_xl        = val.int1_drdy_xl;
     int1_ctrl.int1_drdy_g         = val.int1_drdy_g;
     int1_ctrl.int1_boot           = val.int1_boot;
@@ -3885,18 +3859,15 @@ int32_t lsm6dsm_pin_int1_route_set(const stmdev_ctx_t *ctx,
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT1_CTRL, (uint8_t *)&int1_ctrl, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     md1_cfg.int1_timer           = val.int1_timer;
     md1_cfg.int1_tilt            = val.int1_tilt;
     md1_cfg.int1_6d              = val.int1_6d;
@@ -3908,58 +3879,48 @@ int32_t lsm6dsm_pin_int1_route_set(const stmdev_ctx_t *ctx,
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl4_c.den_drdy_int1 = val.den_drdy_int1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                            (uint8_t *)&master_config, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.drdy_on_int1   = val.den_drdy_int1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-    if ((val.int1_6d != 0x00U) ||
-        (val.int1_ff != 0x00U) ||
-        (val.int1_wu != 0x00U) ||
-        (val.int1_single_tap != 0x00U) ||
-        (val.int1_double_tap != 0x00U) ||
-        (val.int1_inact_state != 0x00U) ||
-        (md2_cfg.int2_6d != 0x00U) ||
-        (md2_cfg.int2_ff != 0x00U) ||
-        (md2_cfg.int2_wu != 0x00U) ||
-        (md2_cfg.int2_single_tap != 0x00U) ||
-        (md2_cfg.int2_double_tap != 0x00U) ||
-        (md2_cfg.int2_inact_state != 0x00U))
-    {
+    if ((val.int1_6d != 0x00U)
+        || (val.int1_ff != 0x00U)
+        || (val.int1_wu != 0x00U)
+        || (val.int1_single_tap != 0x00U)
+        || (val.int1_double_tap != 0x00U)
+        || (val.int1_inact_state != 0x00U)
+        || (md2_cfg.int2_6d != 0x00U)
+        || (md2_cfg.int2_ff != 0x00U)
+        || (md2_cfg.int2_wu != 0x00U)
+        || (md2_cfg.int2_single_tap != 0x00U)
+        || (md2_cfg.int2_double_tap != 0x00U)
+        || (md2_cfg.int2_inact_state != 0x00U)) {
       tap_cfg.interrupts_enable = PROPERTY_ENABLE;
-    }
-
-    else
-    {
+    } else {
       tap_cfg.interrupts_enable = PROPERTY_DISABLE;
     }
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
 
@@ -3967,14 +3928,14 @@ int32_t lsm6dsm_pin_int1_route_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Select the signal that need to route on int1 pad[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    read INT1_CTRL, MD1_CFG, CTRL4_C(den_drdy_int1),
-  *                MASTER_CONFIG(drdy_on_int1)
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Select the signal that need to route on int1 pad[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    read INT1_CTRL, MD1_CFG, CTRL4_C(den_drdy_int1),
+ *                MASTER_CONFIG(drdy_on_int1)
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_int1_route_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_int1_route_t *val)
 {
@@ -3988,10 +3949,9 @@ int32_t lsm6dsm_pin_int1_route_get(const stmdev_ctx_t *ctx,
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
-                         (uint8_t *)&master_config, 1);
+                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     val->int1_drdy_xl       = int1_ctrl.int1_drdy_xl;
     val->int1_drdy_g        = int1_ctrl.int1_drdy_g;
     val->int1_boot          = int1_ctrl.int1_boot;
@@ -3999,7 +3959,7 @@ int32_t lsm6dsm_pin_int1_route_get(const stmdev_ctx_t *ctx,
     val->int1_fifo_ovr      = int1_ctrl.int1_fifo_ovr;
     val->int1_full_flag     = int1_ctrl.int1_full_flag;
     val->int1_sign_mot      = int1_ctrl.int1_sign_mot;
-    val->int1_step_detector = int1_ctrl.int1_step_detector ;
+    val->int1_step_detector = int1_ctrl.int1_step_detector;
 
     val->int1_timer         = md1_cfg.int1_timer;
     val->int1_tilt          = md1_cfg.int1_tilt;
@@ -4019,13 +3979,13 @@ int32_t lsm6dsm_pin_int1_route_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Select the signal that need to route on int2 pad[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    INT2_CTRL, DRDY_PULSE_CFG(int2_wrist_tilt), MD2_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Select the signal that need to route on int2 pad[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    INT2_CTRL, DRDY_PULSE_CFG(int2_wrist_tilt), MD2_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_int2_route_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_int2_route_t val)
 {
@@ -4038,8 +3998,7 @@ int32_t lsm6dsm_pin_int2_route_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int2_ctrl.int2_drdy_xl        = val.int2_drdy_xl;
     int2_ctrl.int2_drdy_g         = val.int2_drdy_g;
     int2_ctrl.int2_drdy_temp      = val.int2_drdy_temp;
@@ -4051,18 +4010,15 @@ int32_t lsm6dsm_pin_int2_route_set(const stmdev_ctx_t *ctx,
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT2_CTRL, (uint8_t *)&int2_ctrl, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MD1_CFG, (uint8_t *)&md1_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     md2_cfg.int2_iron              = val.int2_iron;
     md2_cfg.int2_tilt              = val.int2_tilt;
     md2_cfg.int2_6d                = val.int2_6d;
@@ -4074,47 +4030,39 @@ int32_t lsm6dsm_pin_int2_route_set(const stmdev_ctx_t *ctx,
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MD2_CFG, (uint8_t *)&md2_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_DRDY_PULSE_CFG,
                            (uint8_t *)&drdy_pulse_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     drdy_pulse_cfg.int2_wrist_tilt = val.int2_wrist_tilt;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_DRDY_PULSE_CFG,
                             (uint8_t *)&drdy_pulse_cfg, 1);
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-    if ((md1_cfg.int1_6d != 0x00U) ||
-        (md1_cfg.int1_ff != 0x00U) ||
-        (md1_cfg.int1_wu != 0x00U) ||
-        (md1_cfg.int1_single_tap != 0x00U) ||
-        (md1_cfg.int1_double_tap != 0x00U) ||
-        (md1_cfg.int1_inact_state != 0x00U) ||
-        (val.int2_6d != 0x00U) ||
-        (val.int2_ff != 0x00U) ||
-        (val.int2_wu != 0x00U) ||
-        (val.int2_single_tap != 0x00U) ||
-        (val.int2_double_tap != 0x00U) ||
-        (val.int2_inact_state != 0x00U))
-    {
+    if ((md1_cfg.int1_6d != 0x00U)
+        || (md1_cfg.int1_ff != 0x00U)
+        || (md1_cfg.int1_wu != 0x00U)
+        || (md1_cfg.int1_single_tap != 0x00U)
+        || (md1_cfg.int1_double_tap != 0x00U)
+        || (md1_cfg.int1_inact_state != 0x00U)
+        || (val.int2_6d != 0x00U)
+        || (val.int2_ff != 0x00U)
+        || (val.int2_wu != 0x00U)
+        || (val.int2_single_tap != 0x00U)
+        || (val.int2_double_tap != 0x00U)
+        || (val.int2_inact_state != 0x00U)) {
       tap_cfg.interrupts_enable = PROPERTY_ENABLE;
-    }
-
-    else
-    {
+    } else {
       tap_cfg.interrupts_enable = PROPERTY_DISABLE;
     }
   }
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
 
@@ -4122,13 +4070,13 @@ int32_t lsm6dsm_pin_int2_route_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Select the signal that need to route on int2 pad[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    INT2_CTRL, DRDY_PULSE_CFG(int2_wrist_tilt), MD2_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Select the signal that need to route on int2 pad[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    INT2_CTRL, DRDY_PULSE_CFG(int2_wrist_tilt), MD2_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_int2_route_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_int2_route_t *val)
 {
@@ -4142,8 +4090,7 @@ int32_t lsm6dsm_pin_int2_route_get(const stmdev_ctx_t *ctx,
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_DRDY_PULSE_CFG,
                           (uint8_t *)&drdy_pulse_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     val->int2_drdy_xl         = int2_ctrl.int2_drdy_xl;
     val->int2_drdy_g          = int2_ctrl.int2_drdy_g;
     val->int2_drdy_temp       = int2_ctrl.int2_drdy_temp;
@@ -4169,13 +4116,13 @@ int32_t lsm6dsm_pin_int2_route_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Push-pull/open drain selection on interrupt pads.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pp_od in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Push-pull/open drain selection on interrupt pads.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pp_od in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_mode_set(const stmdev_ctx_t *ctx, lsm6dsm_pp_od_t val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -4183,8 +4130,7 @@ int32_t lsm6dsm_pin_mode_set(const stmdev_ctx_t *ctx, lsm6dsm_pp_od_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.pp_od = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -4193,13 +4139,13 @@ int32_t lsm6dsm_pin_mode_set(const stmdev_ctx_t *ctx, lsm6dsm_pp_od_t val)
 }
 
 /**
-  * @brief  Push-pull/open drain selection on interrupt pads.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of pp_od in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Push-pull/open drain selection on interrupt pads.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of pp_od in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_mode_get(const stmdev_ctx_t *ctx, lsm6dsm_pp_od_t *val)
 {
   lsm6dsm_ctrl3_c_t ctrl3_c;
@@ -4207,10 +4153,11 @@ int32_t lsm6dsm_pin_mode_get(const stmdev_ctx_t *ctx, lsm6dsm_pp_od_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_c.pp_od)
-  {
+  switch (ctrl3_c.pp_od) {
     case LSM6DSM_PUSH_PULL:
       *val = LSM6DSM_PUSH_PULL;
       break;
@@ -4228,13 +4175,13 @@ int32_t lsm6dsm_pin_mode_get(const stmdev_ctx_t *ctx, lsm6dsm_pp_od_t *val)
 }
 
 /**
-  * @brief  Interrupt active-high/low.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of h_lactive in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Interrupt active-high/low.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of h_lactive in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_polarity_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_h_lactive_t val)
 {
@@ -4243,8 +4190,7 @@ int32_t lsm6dsm_pin_polarity_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl3_c.h_lactive = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
   }
@@ -4253,13 +4199,13 @@ int32_t lsm6dsm_pin_polarity_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Interrupt active-high/low.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of h_lactive in reg CTRL3_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Interrupt active-high/low.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of h_lactive in reg CTRL3_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pin_polarity_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_h_lactive_t *val)
 {
@@ -4268,10 +4214,11 @@ int32_t lsm6dsm_pin_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL3_C, (uint8_t *)&ctrl3_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl3_c.h_lactive)
-  {
+  switch (ctrl3_c.h_lactive) {
     case LSM6DSM_ACTIVE_HIGH:
       *val = LSM6DSM_ACTIVE_HIGH;
       break;
@@ -4289,13 +4236,13 @@ int32_t lsm6dsm_pin_polarity_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  All interrupt signals become available on INT1 pin.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of int2_on_int1 in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  All interrupt signals become available on INT1 pin.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of int2_on_int1 in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl4_c_t ctrl4_c;
@@ -4303,8 +4250,7 @@ int32_t lsm6dsm_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl4_c.int2_on_int1 = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   }
@@ -4313,13 +4259,13 @@ int32_t lsm6dsm_all_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  All interrupt signals become available on INT1 pin.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of int2_on_int1 in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  All interrupt signals become available on INT1 pin.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of int2_on_int1 in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl4_c_t ctrl4_c;
@@ -4327,7 +4273,9 @@ int32_t lsm6dsm_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl4_c.int2_on_int1;
 
@@ -4335,13 +4283,13 @@ int32_t lsm6dsm_all_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Latched/pulsed interrupt.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of lir in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Latched/pulsed interrupt.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of lir in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_int_notification_set(const stmdev_ctx_t *ctx,
                                      lsm6dsm_lir_t val)
 {
@@ -4350,8 +4298,7 @@ int32_t lsm6dsm_int_notification_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_cfg.lir = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
@@ -4360,13 +4307,13 @@ int32_t lsm6dsm_int_notification_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Latched/pulsed interrupt.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of lir in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Latched/pulsed interrupt.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of lir in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_int_notification_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_lir_t *val)
 {
@@ -4375,10 +4322,11 @@ int32_t lsm6dsm_int_notification_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (tap_cfg.lir)
-  {
+  switch (tap_cfg.lir) {
     case LSM6DSM_INT_PULSED:
       *val = LSM6DSM_INT_PULSED;
       break;
@@ -4396,26 +4344,26 @@ int32_t lsm6dsm_int_notification_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Wake_Up_event
-  * @brief       This section groups all the functions that manage the
-  *              Wake Up event generation.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Wake_Up_event
+ * @brief       This section groups all the functions that manage the
+ *              Wake Up event generation.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Threshold for wakeup.1 LSB = FS_XL / 64.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of wk_ths in reg WAKE_UP_THS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Threshold for wakeup.1 LSB = FS_XL / 64.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of wk_ths in reg WAKE_UP_THS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_wake_up_ths_t wake_up_ths;
@@ -4424,8 +4372,7 @@ int32_t lsm6dsm_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_THS,
                          (uint8_t *)&wake_up_ths, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     wake_up_ths.wk_ths = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_WAKE_UP_THS,
                             (uint8_t *)&wake_up_ths, 1);
@@ -4435,13 +4382,13 @@ int32_t lsm6dsm_wkup_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Threshold for wakeup.1 LSB = FS_XL / 64.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of wk_ths in reg WAKE_UP_THS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Threshold for wakeup.1 LSB = FS_XL / 64.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of wk_ths in reg WAKE_UP_THS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_wake_up_ths_t wake_up_ths;
@@ -4450,7 +4397,9 @@ int32_t lsm6dsm_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_THS,
                          (uint8_t *)&wake_up_ths, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = wake_up_ths.wk_ths;
 
@@ -4458,13 +4407,13 @@ int32_t lsm6dsm_wkup_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Wake up duration event.1LSb = 1 / ODR[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of wake_dur in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Wake up duration event.1LSb = 1 / ODR[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of wake_dur in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_wake_up_dur_t wake_up_dur;
@@ -4473,8 +4422,7 @@ int32_t lsm6dsm_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                          (uint8_t *)&wake_up_dur, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     wake_up_dur.wake_dur = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
@@ -4484,13 +4432,13 @@ int32_t lsm6dsm_wkup_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Wake up duration event.1LSb = 1 / ODR[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of wake_dur in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Wake up duration event.1LSb = 1 / ODR[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of wake_dur in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_wake_up_dur_t wake_up_dur;
@@ -4499,7 +4447,9 @@ int32_t lsm6dsm_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                          (uint8_t *)&wake_up_dur, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = wake_up_dur.wake_dur;
 
@@ -4507,26 +4457,26 @@ int32_t lsm6dsm_wkup_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Activity/Inactivity_detection
-  * @brief       This section groups all the functions concerning
-  *              activity/inactivity detection.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Activity/Inactivity_detection
+ * @brief       This section groups all the functions concerning
+ *              activity/inactivity detection.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enables gyroscope Sleep mode.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sleep in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enables gyroscope Sleep mode.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sleep in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_sleep_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl4_c_t ctrl4_c;
@@ -4534,8 +4484,7 @@ int32_t lsm6dsm_gy_sleep_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl4_c.sleep = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   }
@@ -4544,13 +4493,13 @@ int32_t lsm6dsm_gy_sleep_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enables gyroscope Sleep mode.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sleep in reg CTRL4_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enables gyroscope Sleep mode.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sleep in reg CTRL4_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_gy_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl4_c_t ctrl4_c;
@@ -4558,7 +4507,9 @@ int32_t lsm6dsm_gy_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl4_c.sleep;
 
@@ -4566,13 +4517,13 @@ int32_t lsm6dsm_gy_sleep_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Enable inactivity function.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of inact_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable inactivity function.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of inact_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_act_mode_set(const stmdev_ctx_t *ctx,
                              lsm6dsm_inact_en_t val)
 {
@@ -4581,8 +4532,7 @@ int32_t lsm6dsm_act_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_cfg.inact_en = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
@@ -4591,13 +4541,13 @@ int32_t lsm6dsm_act_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable inactivity function.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of inact_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable inactivity function.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of inact_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_act_mode_get(const stmdev_ctx_t *ctx,
                              lsm6dsm_inact_en_t *val)
 {
@@ -4606,10 +4556,11 @@ int32_t lsm6dsm_act_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (tap_cfg.inact_en)
-  {
+  switch (tap_cfg.inact_en) {
     case LSM6DSM_PROPERTY_DISABLE:
       *val = LSM6DSM_PROPERTY_DISABLE;
       break;
@@ -4635,13 +4586,13 @@ int32_t lsm6dsm_act_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Duration to go in sleep mode.1 LSb = 512 / ODR[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sleep_dur in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Duration to go in sleep mode.1 LSb = 512 / ODR[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sleep_dur in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_wake_up_dur_t wake_up_dur;
@@ -4650,8 +4601,7 @@ int32_t lsm6dsm_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                          (uint8_t *)&wake_up_dur, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     wake_up_dur.sleep_dur = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                             (uint8_t *)&wake_up_dur, 1);
@@ -4661,13 +4611,13 @@ int32_t lsm6dsm_act_sleep_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Duration to go in sleep mode. 1 LSb = 512 / ODR[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sleep_dur in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Duration to go in sleep mode. 1 LSb = 512 / ODR[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sleep_dur in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_wake_up_dur_t wake_up_dur;
@@ -4676,7 +4626,9 @@ int32_t lsm6dsm_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                          (uint8_t *)&wake_up_dur, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = wake_up_dur.sleep_dur;
 
@@ -4684,26 +4636,26 @@ int32_t lsm6dsm_act_sleep_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_tap_generator
-  * @brief       This section groups all the functions that manage the
-  *              tap and double tap event generation.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_tap_generator
+ * @brief       This section groups all the functions that manage the
+ *              tap and double tap event generation.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Read the tap / double tap source register.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure of registers from TAP_SRC
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Read the tap / double tap source register.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure of registers from TAP_SRC
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_src_get(const stmdev_ctx_t *ctx, lsm6dsm_tap_src_t *val)
 {
   int32_t ret;
@@ -4714,12 +4666,12 @@ int32_t lsm6dsm_tap_src_get(const stmdev_ctx_t *ctx, lsm6dsm_tap_src_t *val)
 }
 
 /**
-  * @brief  Enable Z direction in tap recognition.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_z_en in reg TAP_CFG
-  *
-  */
+ * @brief  Enable Z direction in tap recognition.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_z_en in reg TAP_CFG
+ *
+ */
 int32_t lsm6dsm_tap_detection_on_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_tap_cfg_t tap_cfg;
@@ -4727,8 +4679,7 @@ int32_t lsm6dsm_tap_detection_on_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_cfg.tap_z_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
@@ -4737,13 +4688,13 @@ int32_t lsm6dsm_tap_detection_on_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable Z direction in tap recognition.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_z_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable Z direction in tap recognition.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_z_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
@@ -4752,7 +4703,9 @@ int32_t lsm6dsm_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = tap_cfg.tap_z_en;
 
@@ -4760,13 +4713,13 @@ int32_t lsm6dsm_tap_detection_on_z_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable Y direction in tap recognition.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_y_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable Y direction in tap recognition.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_y_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_detection_on_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_tap_cfg_t tap_cfg;
@@ -4774,8 +4727,7 @@ int32_t lsm6dsm_tap_detection_on_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_cfg.tap_y_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
@@ -4784,13 +4736,13 @@ int32_t lsm6dsm_tap_detection_on_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable Y direction in tap recognition.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_y_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable Y direction in tap recognition.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_y_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
@@ -4799,7 +4751,9 @@ int32_t lsm6dsm_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = tap_cfg.tap_y_en;
 
@@ -4807,13 +4761,13 @@ int32_t lsm6dsm_tap_detection_on_y_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable X direction in tap recognition.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_x_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable X direction in tap recognition.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_x_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_detection_on_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_tap_cfg_t tap_cfg;
@@ -4821,8 +4775,7 @@ int32_t lsm6dsm_tap_detection_on_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_cfg.tap_x_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
   }
@@ -4831,13 +4784,13 @@ int32_t lsm6dsm_tap_detection_on_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable X direction in tap recognition.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_x_en in reg TAP_CFG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable X direction in tap recognition.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_x_en in reg TAP_CFG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
@@ -4846,7 +4799,9 @@ int32_t lsm6dsm_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_CFG, (uint8_t *)&tap_cfg, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = tap_cfg.tap_x_en;
 
@@ -4854,13 +4809,13 @@ int32_t lsm6dsm_tap_detection_on_x_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Threshold for tap recognition.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_ths in reg TAP_THS_6D
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Threshold for tap recognition.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_ths in reg TAP_THS_6D
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_tap_ths_6d_t tap_ths_6d;
@@ -4869,8 +4824,7 @@ int32_t lsm6dsm_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_THS_6D,
                          (uint8_t *)&tap_ths_6d, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_ths_6d.tap_ths = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_THS_6D,
                             (uint8_t *)&tap_ths_6d, 1);
@@ -4880,13 +4834,13 @@ int32_t lsm6dsm_tap_threshold_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Threshold for tap recognition.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tap_ths in reg TAP_THS_6D
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Threshold for tap recognition.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tap_ths in reg TAP_THS_6D
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_tap_ths_6d_t tap_ths_6d;
@@ -4895,7 +4849,9 @@ int32_t lsm6dsm_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_THS_6D,
                          (uint8_t *)&tap_ths_6d, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = tap_ths_6d.tap_ths;
 
@@ -4903,18 +4859,18 @@ int32_t lsm6dsm_tap_threshold_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Maximum duration is the maximum time of an overthreshold signal
-  *         detection to be recognized as a tap event.
-  *         The default value of these bits is 00b which corresponds to
-  *         4*ODR_XL time.
-  *         If the SHOCK[1:0] bits are set to a different
-  *         value, 1LSB corresponds to 8*ODR_XL time.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of shock in reg INT_DUR2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Maximum duration is the maximum time of an overthreshold signal
+ *         detection to be recognized as a tap event.
+ *         The default value of these bits is 00b which corresponds to
+ *         4*ODR_XL time.
+ *         If the SHOCK[1:0] bits are set to a different
+ *         value, 1LSB corresponds to 8*ODR_XL time.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of shock in reg INT_DUR2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_int_dur2_t int_dur2;
@@ -4922,8 +4878,7 @@ int32_t lsm6dsm_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int_dur2.shock = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
   }
@@ -4932,18 +4887,18 @@ int32_t lsm6dsm_tap_shock_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Maximum duration is the maximum time of an overthreshold signal
-  *         detection to be recognized as a tap event.
-  *         The default value of these bits is 00b which corresponds to
-  *         4*ODR_XL time.
-  *         If the SHOCK[1:0] bits are set to a different value, 1LSB
-  *         corresponds to 8*ODR_XL time.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of shock in reg INT_DUR2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Maximum duration is the maximum time of an overthreshold signal
+ *         detection to be recognized as a tap event.
+ *         The default value of these bits is 00b which corresponds to
+ *         4*ODR_XL time.
+ *         If the SHOCK[1:0] bits are set to a different value, 1LSB
+ *         corresponds to 8*ODR_XL time.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of shock in reg INT_DUR2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_int_dur2_t int_dur2;
@@ -4951,7 +4906,9 @@ int32_t lsm6dsm_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = int_dur2.shock;
 
@@ -4959,18 +4916,18 @@ int32_t lsm6dsm_tap_shock_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Quiet time is the time after the first detected tap in which there
-  *         must not be any overthreshold event.
-  *         The default value of these bits is 00b which corresponds to
-  *         2*ODR_XL time.
-  *         If the QUIET[1:0] bits are set to a different value, 1LSB
-  *         corresponds to 4*ODR_XL time.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of quiet in reg INT_DUR2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Quiet time is the time after the first detected tap in which there
+ *         must not be any overthreshold event.
+ *         The default value of these bits is 00b which corresponds to
+ *         2*ODR_XL time.
+ *         If the QUIET[1:0] bits are set to a different value, 1LSB
+ *         corresponds to 4*ODR_XL time.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of quiet in reg INT_DUR2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_int_dur2_t int_dur2;
@@ -4978,8 +4935,7 @@ int32_t lsm6dsm_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int_dur2.quiet = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
   }
@@ -4988,18 +4944,18 @@ int32_t lsm6dsm_tap_quiet_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Quiet time is the time after the first detected tap in which there
-  *         must not be any overthreshold event.
-  *         The default value of these bits is 00b which corresponds to
-  *         2*ODR_XL time.
-  *         If the QUIET[1:0] bits are set to a different value, 1LSB
-  *         corresponds to 4*ODR_XL time.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of quiet in reg INT_DUR2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Quiet time is the time after the first detected tap in which there
+ *         must not be any overthreshold event.
+ *         The default value of these bits is 00b which corresponds to
+ *         2*ODR_XL time.
+ *         If the QUIET[1:0] bits are set to a different value, 1LSB
+ *         corresponds to 4*ODR_XL time.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of quiet in reg INT_DUR2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_int_dur2_t int_dur2;
@@ -5007,7 +4963,9 @@ int32_t lsm6dsm_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = int_dur2.quiet;
 
@@ -5015,19 +4973,19 @@ int32_t lsm6dsm_tap_quiet_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  When double tap recognition is enabled, this register expresses the
-  *         maximum time between two consecutive detected taps to determine a
-  *         double tap event.
-  *         The default value of these bits is 0000b which corresponds to
-  *         16*ODR_XL time.
-  *         If the DUR[3:0] bits are set to a different value,1LSB corresponds
-  *         to 32*ODR_XL time.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of dur in reg INT_DUR2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  When double tap recognition is enabled, this register expresses the
+ *         maximum time between two consecutive detected taps to determine a
+ *         double tap event.
+ *         The default value of these bits is 0000b which corresponds to
+ *         16*ODR_XL time.
+ *         If the DUR[3:0] bits are set to a different value,1LSB corresponds
+ *         to 32*ODR_XL time.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of dur in reg INT_DUR2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_int_dur2_t int_dur2;
@@ -5035,8 +4993,7 @@ int32_t lsm6dsm_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     int_dur2.dur = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
   }
@@ -5045,19 +5002,19 @@ int32_t lsm6dsm_tap_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  When double tap recognition is enabled, this register expresses the
-  *         maximum time between two consecutive detected taps to determine a
-  *         double tap event.
-  *         The default value of these bits is 0000b which corresponds to
-  *         16*ODR_XL time.
-  *         If the DUR[3:0] bits are set to a different value,1LSB corresponds
-  *         to 32*ODR_XL time.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of dur in reg INT_DUR2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  When double tap recognition is enabled, this register expresses the
+ *         maximum time between two consecutive detected taps to determine a
+ *         double tap event.
+ *         The default value of these bits is 0000b which corresponds to
+ *         16*ODR_XL time.
+ *         If the DUR[3:0] bits are set to a different value,1LSB corresponds
+ *         to 32*ODR_XL time.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of dur in reg INT_DUR2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_int_dur2_t int_dur2;
@@ -5065,7 +5022,9 @@ int32_t lsm6dsm_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_INT_DUR2, (uint8_t *)&int_dur2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = int_dur2.dur;
 
@@ -5073,14 +5032,14 @@ int32_t lsm6dsm_tap_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Single/double-tap event enable/disable.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of
-  *                                      single_double_tap in reg WAKE_UP_THS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Single/double-tap event enable/disable.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of
+ *                                      single_double_tap in reg WAKE_UP_THS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_mode_set(const stmdev_ctx_t *ctx,
                              lsm6dsm_single_double_tap_t val)
 {
@@ -5090,8 +5049,7 @@ int32_t lsm6dsm_tap_mode_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_THS,
                          (uint8_t *)&wake_up_ths, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     wake_up_ths.single_double_tap = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_WAKE_UP_THS,
                             (uint8_t *)&wake_up_ths, 1);
@@ -5101,14 +5059,14 @@ int32_t lsm6dsm_tap_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Single/double-tap event enable/disable.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of single_double_tap
-  *                                      in reg WAKE_UP_THS
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Single/double-tap event enable/disable.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of single_double_tap
+ *                                      in reg WAKE_UP_THS
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tap_mode_get(const stmdev_ctx_t *ctx,
                              lsm6dsm_single_double_tap_t *val)
 {
@@ -5118,10 +5076,11 @@ int32_t lsm6dsm_tap_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_THS,
                          (uint8_t *)&wake_up_ths, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (wake_up_ths.single_double_tap)
-  {
+  switch (wake_up_ths.single_double_tap) {
     case LSM6DSM_ONLY_SINGLE:
       *val = LSM6DSM_ONLY_SINGLE;
       break;
@@ -5139,27 +5098,27 @@ int32_t lsm6dsm_tap_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_ Six_position_detection(6D/4D)
-  * @brief       This section groups all the functions concerning six
-  *              position detection (6D).
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_ Six_position_detection(6D/4D)
+ * @brief       This section groups all the functions concerning six
+ *              position detection (6D).
+ * @{
+ *
+ */
 
 /**
-  * @brief  LPF2 feed 6D function selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of low_pass_on_6d in
-  *                                   reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  LPF2 feed 6D function selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of low_pass_on_6d in
+ *                                   reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_6d_feed_data_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_low_pass_on_6d_t val)
 {
@@ -5168,8 +5127,7 @@ int32_t lsm6dsm_6d_feed_data_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl8_xl.low_pass_on_6d = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
   }
@@ -5178,13 +5136,13 @@ int32_t lsm6dsm_6d_feed_data_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  LPF2 feed 6D function selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of low_pass_on_6d in reg CTRL8_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  LPF2 feed 6D function selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of low_pass_on_6d in reg CTRL8_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_6d_feed_data_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_low_pass_on_6d_t *val)
 {
@@ -5193,10 +5151,11 @@ int32_t lsm6dsm_6d_feed_data_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL8_XL, (uint8_t *)&ctrl8_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl8_xl.low_pass_on_6d)
-  {
+  switch (ctrl8_xl.low_pass_on_6d) {
     case LSM6DSM_ODR_DIV_2_FEED:
       *val = LSM6DSM_ODR_DIV_2_FEED;
       break;
@@ -5214,13 +5173,13 @@ int32_t lsm6dsm_6d_feed_data_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Threshold for 4D/6D function.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sixd_ths in reg TAP_THS_6D
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Threshold for 4D/6D function.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sixd_ths in reg TAP_THS_6D
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_6d_threshold_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sixd_ths_t val)
 {
@@ -5230,8 +5189,7 @@ int32_t lsm6dsm_6d_threshold_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_THS_6D,
                          (uint8_t *)&tap_ths_6d, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_ths_6d.sixd_ths = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_THS_6D,
                             (uint8_t *)&tap_ths_6d, 1);
@@ -5241,13 +5199,13 @@ int32_t lsm6dsm_6d_threshold_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Threshold for 4D/6D function.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of sixd_ths in reg TAP_THS_6D
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Threshold for 4D/6D function.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of sixd_ths in reg TAP_THS_6D
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_6d_threshold_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sixd_ths_t *val)
 {
@@ -5257,10 +5215,11 @@ int32_t lsm6dsm_6d_threshold_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_THS_6D,
                          (uint8_t *)&tap_ths_6d, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (tap_ths_6d.sixd_ths)
-  {
+  switch (tap_ths_6d.sixd_ths) {
     case LSM6DSM_DEG_80:
       *val = LSM6DSM_DEG_80;
       break;
@@ -5286,13 +5245,13 @@ int32_t lsm6dsm_6d_threshold_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  4D orientation detection enable.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of d4d_en in reg TAP_THS_6D
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  4D orientation detection enable.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of d4d_en in reg TAP_THS_6D
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_tap_ths_6d_t tap_ths_6d;
@@ -5301,8 +5260,7 @@ int32_t lsm6dsm_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_THS_6D,
                          (uint8_t *)&tap_ths_6d, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     tap_ths_6d.d4d_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_TAP_THS_6D,
                             (uint8_t *)&tap_ths_6d, 1);
@@ -5312,13 +5270,13 @@ int32_t lsm6dsm_4d_mode_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  4D orientation detection enable.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of d4d_en in reg TAP_THS_6D
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  4D orientation detection enable.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of d4d_en in reg TAP_THS_6D
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_tap_ths_6d_t tap_ths_6d;
@@ -5327,7 +5285,9 @@ int32_t lsm6dsm_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_TAP_THS_6D,
                          (uint8_t *)&tap_ths_6d, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = tap_ths_6d.d4d_en;
 
@@ -5335,26 +5295,26 @@ int32_t lsm6dsm_4d_mode_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_free_fall
-  * @brief       This section group all the functions concerning the free
-  *              fall detection.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_free_fall
+ * @brief       This section group all the functions concerning the free
+ *              fall detection.
+ * @{
+ *
+ */
 
 /**
-  * @brief Free-fall duration event. 1LSb = 1 / ODR[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of ff_dur in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief Free-fall duration event. 1LSb = 1 / ODR[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of ff_dur in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_wake_up_dur_t wake_up_dur;
@@ -5363,18 +5323,15 @@ int32_t lsm6dsm_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FREE_FALL, (uint8_t *)&free_fall, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     free_fall.ff_dur = (val & 0x1FU);
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FREE_FALL, (uint8_t *)&free_fall, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                              (uint8_t *)&wake_up_dur, 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         wake_up_dur.ff_dur = (val & 0x20U) >> 5;
         ret = lsm6dsm_write_reg(ctx, LSM6DSM_WAKE_UP_DUR,
                                 (uint8_t *)&wake_up_dur, 1);
@@ -5386,13 +5343,13 @@ int32_t lsm6dsm_ff_dur_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Free-fall duration event. 1LSb = 1 / ODR[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of ff_dur in reg WAKE_UP_DUR
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Free-fall duration event. 1LSb = 1 / ODR[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of ff_dur in reg WAKE_UP_DUR
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_wake_up_dur_t wake_up_dur;
@@ -5403,7 +5360,9 @@ int32_t lsm6dsm_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
                          (uint8_t *)&wake_up_dur, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_FREE_FALL, (uint8_t *)&free_fall, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = (wake_up_dur.ff_dur << 5) + free_fall.ff_dur;
 
@@ -5411,13 +5370,13 @@ int32_t lsm6dsm_ff_dur_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Free fall threshold setting.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of ff_ths in reg FREE_FALL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Free fall threshold setting.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of ff_ths in reg FREE_FALL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_ff_threshold_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_ff_ths_t val)
 {
@@ -5426,8 +5385,7 @@ int32_t lsm6dsm_ff_threshold_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FREE_FALL, (uint8_t *)&free_fall, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     free_fall.ff_ths = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FREE_FALL, (uint8_t *)&free_fall, 1);
   }
@@ -5436,13 +5394,13 @@ int32_t lsm6dsm_ff_threshold_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Free fall threshold setting.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of ff_ths in reg FREE_FALL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Free fall threshold setting.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of ff_ths in reg FREE_FALL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_ff_threshold_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_ff_ths_t *val)
 {
@@ -5451,10 +5409,11 @@ int32_t lsm6dsm_ff_threshold_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FREE_FALL, (uint8_t *)&free_fall, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (free_fall.ff_ths)
-  {
+  switch (free_fall.ff_ths) {
     case LSM6DSM_FF_TSH_156mg:
       *val = LSM6DSM_FF_TSH_156mg;
       break;
@@ -5496,26 +5455,26 @@ int32_t lsm6dsm_ff_threshold_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_fifo
-  * @brief       This section group all the functions concerning the
-  *              fifo usage
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_fifo
+ * @brief       This section group all the functions concerning the
+ *              fifo usage
+ * @{
+ *
+ */
 
 /**
-  * @brief  FIFO watermark level selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fth in reg FIFO_CTRL1
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO watermark level selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fth in reg FIFO_CTRL1
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
 {
   lsm6dsm_fifo_ctrl1_t fifo_ctrl1;
@@ -5525,15 +5484,13 @@ int32_t lsm6dsm_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl1.fth = (uint8_t)(0x00FFU & val);
     fifo_ctrl2.fth = (uint8_t)((0x0700U & val) >> 8);
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL1,
                             (uint8_t *)&fifo_ctrl1, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL2,
                               (uint8_t *)&fifo_ctrl2, 1);
     }
@@ -5543,13 +5500,13 @@ int32_t lsm6dsm_fifo_watermark_set(const stmdev_ctx_t *ctx, uint16_t val)
 }
 
 /**
-  * @brief  FIFO watermark level selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fth in reg FIFO_CTRL1
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO watermark level selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fth in reg FIFO_CTRL1
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   lsm6dsm_fifo_ctrl1_t fifo_ctrl1;
@@ -5559,9 +5516,11 @@ int32_t lsm6dsm_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL1,
                          (uint8_t *)&fifo_ctrl1, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
-                         (uint8_t *)&fifo_ctrl2, 1);
+                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ((uint16_t)fifo_ctrl2.fth << 8) + (uint16_t)fifo_ctrl1.fth;
 
@@ -5569,15 +5528,15 @@ int32_t lsm6dsm_fifo_watermark_get(const stmdev_ctx_t *ctx, uint16_t *val)
 }
 
 /**
-  * @brief  FIFO data level.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    get the values of diff_fifo in reg  FIFO_STATUS1 and
-  *                FIFO_STATUS2(diff_fifo), it is recommended to set the
-  *                BDU bit.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO data level.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    get the values of diff_fifo in reg  FIFO_STATUS1 and
+ *                FIFO_STATUS2(diff_fifo), it is recommended to set the
+ *                BDU bit.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   lsm6dsm_fifo_status1_t fifo_status1;
@@ -5587,25 +5546,24 @@ int32_t lsm6dsm_fifo_data_level_get(const stmdev_ctx_t *ctx, uint16_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_STATUS1,
                          (uint8_t *)&fifo_status1, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_STATUS2,
-                         (uint8_t *)&fifo_status2, 1);
+                          (uint8_t *)&fifo_status2, 1);
 
-  if (ret == 0)
-  {
-    *val = ((uint16_t) fifo_status2.diff_fifo << 8) +
-           (uint16_t) fifo_status1.diff_fifo;
+  if (ret == 0) {
+    *val = ((uint16_t) fifo_status2.diff_fifo << 8)
+           + (uint16_t) fifo_status1.diff_fifo;
   }
 
   return ret;
 }
 
 /**
-  * @brief  FIFO watermark.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    get the values of watermark in reg  FIFO_STATUS2 and
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO watermark.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    get the values of watermark in reg  FIFO_STATUS2 and
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_fifo_status2_t fifo_status2;
@@ -5614,7 +5572,9 @@ int32_t lsm6dsm_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_STATUS2,
                          (uint8_t *)&fifo_status2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = fifo_status2.waterm;
 
@@ -5622,13 +5582,13 @@ int32_t lsm6dsm_fifo_wtm_flag_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  FIFO over run.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    get the value of over run in reg  FIFO_STATUS2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO over run.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    get the value of over run in reg  FIFO_STATUS2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_over_run_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_fifo_status2_t fifo_status2;
@@ -5637,7 +5597,9 @@ int32_t lsm6dsm_fifo_over_run_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_STATUS2,
                          (uint8_t *)&fifo_status2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = fifo_status2.over_run;
 
@@ -5645,14 +5607,14 @@ int32_t lsm6dsm_fifo_over_run_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  FIFO pattern.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    get the values of fifo_pattern in reg  FIFO_STATUS3 and
-  *                FIFO_STATUS4, it is recommended to set the BDU bit
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO pattern.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    get the values of fifo_pattern in reg  FIFO_STATUS3 and
+ *                FIFO_STATUS4, it is recommended to set the BDU bit
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_pattern_get(const stmdev_ctx_t *ctx, uint16_t *val)
 {
   lsm6dsm_fifo_status3_t fifo_status3;
@@ -5662,25 +5624,24 @@ int32_t lsm6dsm_fifo_pattern_get(const stmdev_ctx_t *ctx, uint16_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_STATUS3,
                          (uint8_t *)&fifo_status3, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_STATUS4,
-                         (uint8_t *)&fifo_status4, 1);
+                          (uint8_t *)&fifo_status4, 1);
 
-  if (ret == 0)
-  {
-    *val = ((uint16_t)fifo_status4.fifo_pattern << 8) +
-           fifo_status3.fifo_pattern;
+  if (ret == 0) {
+    *val = ((uint16_t)fifo_status4.fifo_pattern << 8)
+           + fifo_status3.fifo_pattern;
   }
 
   return ret;
 }
 
 /**
-  * @brief  Batching of temperature data[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fifo_temp_en in reg FIFO_CTRL2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Batching of temperature data[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fifo_temp_en in reg FIFO_CTRL2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_temp_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_fifo_ctrl2_t fifo_ctrl2;
@@ -5689,8 +5650,7 @@ int32_t lsm6dsm_fifo_temp_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl2.fifo_temp_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL2,
                             (uint8_t *)&fifo_ctrl2, 1);
@@ -5700,13 +5660,13 @@ int32_t lsm6dsm_fifo_temp_batch_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Batching of temperature data[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fifo_temp_en in reg FIFO_CTRL2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Batching of temperature data[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fifo_temp_en in reg FIFO_CTRL2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_temp_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_fifo_ctrl2_t fifo_ctrl2;
@@ -5715,7 +5675,9 @@ int32_t lsm6dsm_fifo_temp_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = fifo_ctrl2.fifo_temp_en;
 
@@ -5723,14 +5685,14 @@ int32_t lsm6dsm_fifo_temp_batch_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Trigger signal for FIFO write operation.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    act on FIFO_CTRL2(timer_pedo_fifo_drdy)
-  *                and MASTER_CONFIG(data_valid_sel_fifo)
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Trigger signal for FIFO write operation.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    act on FIFO_CTRL2(timer_pedo_fifo_drdy)
+ *                and MASTER_CONFIG(data_valid_sel_fifo)
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_write_trigger_set(const stmdev_ctx_t *ctx,
                                        lsm6dsm_trigger_fifo_t val)
 {
@@ -5741,19 +5703,16 @@ int32_t lsm6dsm_fifo_write_trigger_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl2.timer_pedo_fifo_drdy = (uint8_t)val & 0x01U;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL2,
                             (uint8_t *)&fifo_ctrl2, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                              (uint8_t *)&master_config, 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         master_config.data_valid_sel_fifo = (((uint8_t)val & 0x02U) >> 1);
         ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                                 (uint8_t *)&master_config, 1);
@@ -5765,14 +5724,14 @@ int32_t lsm6dsm_fifo_write_trigger_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Trigger signal for FIFO write operation.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    act on FIFO_CTRL2(timer_pedo_fifo_drdy)
-  *                and MASTER_CONFIG(data_valid_sel_fifo)
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Trigger signal for FIFO write operation.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    act on FIFO_CTRL2(timer_pedo_fifo_drdy)
+ *                and MASTER_CONFIG(data_valid_sel_fifo)
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_write_trigger_get(const stmdev_ctx_t *ctx,
                                        lsm6dsm_trigger_fifo_t *val)
 {
@@ -5783,13 +5742,11 @@ int32_t lsm6dsm_fifo_write_trigger_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
-                         (uint8_t *)&master_config, 1);
+                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
-    switch ((master_config.data_valid_sel_fifo << 1) +
-            fifo_ctrl2.timer_pedo_fifo_drdy)
-    {
+  if (ret == 0) {
+    switch ((master_config.data_valid_sel_fifo << 1)
+            + fifo_ctrl2.timer_pedo_fifo_drdy) {
       case LSM6DSM_TRG_XL_GY_DRDY:
         *val = LSM6DSM_TRG_XL_GY_DRDY;
         break;
@@ -5812,14 +5769,14 @@ int32_t lsm6dsm_fifo_write_trigger_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Enable pedometer step counter and timestamp as 4th
-  *          FIFO data set.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of timer_pedo_fifo_en in reg FIFO_CTRL2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Enable pedometer step counter and timestamp as 4th
+ *          FIFO data set.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of timer_pedo_fifo_en in reg FIFO_CTRL2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_pedo_and_timestamp_batch_set(const stmdev_ctx_t *ctx,
                                                   uint8_t val)
 {
@@ -5829,8 +5786,7 @@ int32_t lsm6dsm_fifo_pedo_and_timestamp_batch_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl2.timer_pedo_fifo_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL2,
                             (uint8_t *)&fifo_ctrl2, 1);
@@ -5840,14 +5796,14 @@ int32_t lsm6dsm_fifo_pedo_and_timestamp_batch_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Enable pedometer step counter and timestamp as 4th
-  *         FIFO data set.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of timer_pedo_fifo_en in reg FIFO_CTRL2
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable pedometer step counter and timestamp as 4th
+ *         FIFO data set.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of timer_pedo_fifo_en in reg FIFO_CTRL2
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_pedo_and_timestamp_batch_get(const stmdev_ctx_t *ctx,
                                                   uint8_t *val)
 {
@@ -5857,7 +5813,9 @@ int32_t lsm6dsm_fifo_pedo_and_timestamp_batch_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL2,
                          (uint8_t *)&fifo_ctrl2, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = fifo_ctrl2.timer_pedo_fifo_en;
 
@@ -5865,14 +5823,14 @@ int32_t lsm6dsm_fifo_pedo_and_timestamp_batch_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects Batching Data Rate (writing frequency in FIFO) for
-  *         accelerometer data.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of dec_fifo_xl in reg FIFO_CTRL3
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects Batching Data Rate (writing frequency in FIFO) for
+ *         accelerometer data.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of dec_fifo_xl in reg FIFO_CTRL3
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_dec_fifo_xl_t val)
 {
@@ -5882,8 +5840,7 @@ int32_t lsm6dsm_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL3,
                          (uint8_t *)&fifo_ctrl3, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl3.dec_fifo_xl = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL3,
                             (uint8_t *)&fifo_ctrl3, 1);
@@ -5893,14 +5850,14 @@ int32_t lsm6dsm_fifo_xl_batch_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects Batching Data Rate (writing frequency in FIFO) for
-  *         accelerometer data.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of dec_fifo_xl in reg FIFO_CTRL3
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects Batching Data Rate (writing frequency in FIFO) for
+ *         accelerometer data.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of dec_fifo_xl in reg FIFO_CTRL3
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_dec_fifo_xl_t *val)
 {
@@ -5910,10 +5867,11 @@ int32_t lsm6dsm_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL3,
                          (uint8_t *)&fifo_ctrl3, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (fifo_ctrl3.dec_fifo_xl)
-  {
+  switch (fifo_ctrl3.dec_fifo_xl) {
     case LSM6DSM_FIFO_XL_DISABLE:
       *val = LSM6DSM_FIFO_XL_DISABLE;
       break;
@@ -5955,14 +5913,14 @@ int32_t lsm6dsm_fifo_xl_batch_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects Batching Data Rate (writing frequency in FIFO)
-  *         for gyroscope data.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of dec_fifo_gyro in reg FIFO_CTRL3
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects Batching Data Rate (writing frequency in FIFO)
+ *         for gyroscope data.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of dec_fifo_gyro in reg FIFO_CTRL3
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_dec_fifo_gyro_t val)
 {
@@ -5972,8 +5930,7 @@ int32_t lsm6dsm_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL3,
                          (uint8_t *)&fifo_ctrl3, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl3.dec_fifo_gyro = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL3,
                             (uint8_t *)&fifo_ctrl3, 1);
@@ -5983,14 +5940,14 @@ int32_t lsm6dsm_fifo_gy_batch_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Selects Batching Data Rate (writing frequency in FIFO)
-  *         for gyroscope data.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of dec_fifo_gyro in reg FIFO_CTRL3
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Selects Batching Data Rate (writing frequency in FIFO)
+ *         for gyroscope data.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of dec_fifo_gyro in reg FIFO_CTRL3
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_dec_fifo_gyro_t *val)
 {
@@ -6000,10 +5957,11 @@ int32_t lsm6dsm_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL3,
                          (uint8_t *)&fifo_ctrl3, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (fifo_ctrl3.dec_fifo_gyro)
-  {
+  switch (fifo_ctrl3.dec_fifo_gyro) {
     case LSM6DSM_FIFO_GY_DISABLE:
       *val = LSM6DSM_FIFO_GY_DISABLE;
       break;
@@ -6045,14 +6003,14 @@ int32_t lsm6dsm_fifo_gy_batch_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Selects Batching Data Rate (writing frequency in FIFO)
-  *          for third data set.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of dec_ds3_fifo in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Selects Batching Data Rate (writing frequency in FIFO)
+ *          for third data set.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of dec_ds3_fifo in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_dataset_3_batch_set(const stmdev_ctx_t *ctx,
                                          lsm6dsm_dec_ds3_fifo_t val)
 {
@@ -6062,8 +6020,7 @@ int32_t lsm6dsm_fifo_dataset_3_batch_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl4.dec_ds3_fifo = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
@@ -6073,14 +6030,14 @@ int32_t lsm6dsm_fifo_dataset_3_batch_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Selects Batching Data Rate (writing frequency in FIFO)
-  *          for third data set.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of dec_ds3_fifo in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Selects Batching Data Rate (writing frequency in FIFO)
+ *          for third data set.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of dec_ds3_fifo in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_dataset_3_batch_get(const stmdev_ctx_t *ctx,
                                          lsm6dsm_dec_ds3_fifo_t *val)
 {
@@ -6090,10 +6047,11 @@ int32_t lsm6dsm_fifo_dataset_3_batch_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (fifo_ctrl4.dec_ds3_fifo)
-  {
+  switch (fifo_ctrl4.dec_ds3_fifo) {
     case LSM6DSM_FIFO_DS3_DISABLE:
       *val = LSM6DSM_FIFO_DS3_DISABLE;
       break;
@@ -6135,14 +6093,14 @@ int32_t lsm6dsm_fifo_dataset_3_batch_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Selects Batching Data Rate (writing frequency in FIFO)
-  *          for fourth data set.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of dec_ds4_fifo in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Selects Batching Data Rate (writing frequency in FIFO)
+ *          for fourth data set.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of dec_ds4_fifo in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_dataset_4_batch_set(const stmdev_ctx_t *ctx,
                                          lsm6dsm_dec_ds4_fifo_t val)
 {
@@ -6152,8 +6110,7 @@ int32_t lsm6dsm_fifo_dataset_4_batch_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl4.dec_ds4_fifo = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
@@ -6163,14 +6120,14 @@ int32_t lsm6dsm_fifo_dataset_4_batch_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Selects Batching Data Rate (writing frequency in FIFO) for
-  *          fourth data set.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of dec_ds4_fifo in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Selects Batching Data Rate (writing frequency in FIFO) for
+ *          fourth data set.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of dec_ds4_fifo in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_dataset_4_batch_get(const stmdev_ctx_t *ctx,
                                          lsm6dsm_dec_ds4_fifo_t *val)
 {
@@ -6180,10 +6137,11 @@ int32_t lsm6dsm_fifo_dataset_4_batch_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (fifo_ctrl4.dec_ds4_fifo)
-  {
+  switch (fifo_ctrl4.dec_ds4_fifo) {
     case LSM6DSM_FIFO_DS4_DISABLE:
       *val = LSM6DSM_FIFO_DS4_DISABLE;
       break;
@@ -6225,13 +6183,13 @@ int32_t lsm6dsm_fifo_dataset_4_batch_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   8-bit data storage in FIFO.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of only_high_data in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   8-bit data storage in FIFO.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of only_high_data in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_xl_gy_8bit_format_set(const stmdev_ctx_t *ctx,
                                            uint8_t val)
 {
@@ -6241,8 +6199,7 @@ int32_t lsm6dsm_fifo_xl_gy_8bit_format_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl4.only_high_data = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
@@ -6252,13 +6209,13 @@ int32_t lsm6dsm_fifo_xl_gy_8bit_format_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  8-bit data storage in FIFO.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of only_high_data in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  8-bit data storage in FIFO.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of only_high_data in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_xl_gy_8bit_format_get(const stmdev_ctx_t *ctx,
                                            uint8_t *val)
 {
@@ -6268,7 +6225,9 @@ int32_t lsm6dsm_fifo_xl_gy_8bit_format_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = fifo_ctrl4.only_high_data;
 
@@ -6276,14 +6235,14 @@ int32_t lsm6dsm_fifo_xl_gy_8bit_format_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Sensing chain FIFO stop values memorization at threshold
-  *         level.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of stop_on_fth in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensing chain FIFO stop values memorization at threshold
+ *         level.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of stop_on_fth in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_fifo_ctrl4_t fifo_ctrl4;
@@ -6292,8 +6251,7 @@ int32_t lsm6dsm_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl4.stop_on_fth = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL4,
                             (uint8_t *)&fifo_ctrl4, 1);
@@ -6303,14 +6261,14 @@ int32_t lsm6dsm_fifo_stop_on_wtm_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Sensing chain FIFO stop values memorization at threshold
-  *         level.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of stop_on_fth in reg FIFO_CTRL4
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensing chain FIFO stop values memorization at threshold
+ *         level.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of stop_on_fth in reg FIFO_CTRL4
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_fifo_ctrl4_t fifo_ctrl4;
@@ -6319,7 +6277,9 @@ int32_t lsm6dsm_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL4,
                          (uint8_t *)&fifo_ctrl4, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = fifo_ctrl4.stop_on_fth;
 
@@ -6327,13 +6287,13 @@ int32_t lsm6dsm_fifo_stop_on_wtm_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  FIFO mode selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of fifo_mode in reg FIFO_CTRL5
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO mode selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of fifo_mode in reg FIFO_CTRL5
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_mode_set(const stmdev_ctx_t *ctx,
                               lsm6dsm_fifo_mode_t val)
 {
@@ -6343,8 +6303,7 @@ int32_t lsm6dsm_fifo_mode_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL5,
                          (uint8_t *)&fifo_ctrl5, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl5.fifo_mode = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL5,
                             (uint8_t *)&fifo_ctrl5, 1);
@@ -6354,13 +6313,13 @@ int32_t lsm6dsm_fifo_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  FIFO mode selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of fifo_mode in reg FIFO_CTRL5
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO mode selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of fifo_mode in reg FIFO_CTRL5
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_mode_get(const stmdev_ctx_t *ctx,
                               lsm6dsm_fifo_mode_t *val)
 {
@@ -6370,10 +6329,11 @@ int32_t lsm6dsm_fifo_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL5,
                          (uint8_t *)&fifo_ctrl5, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (fifo_ctrl5.fifo_mode)
-  {
+  switch (fifo_ctrl5.fifo_mode) {
     case LSM6DSM_BYPASS_MODE:
       *val = LSM6DSM_BYPASS_MODE;
       break;
@@ -6403,13 +6363,13 @@ int32_t lsm6dsm_fifo_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  FIFO ODR selection, setting FIFO_MODE also.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of odr_fifo in reg FIFO_CTRL5
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO ODR selection, setting FIFO_MODE also.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of odr_fifo in reg FIFO_CTRL5
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_data_rate_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_odr_fifo_t val)
 {
@@ -6419,8 +6379,7 @@ int32_t lsm6dsm_fifo_data_rate_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL5,
                          (uint8_t *)&fifo_ctrl5, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     fifo_ctrl5.odr_fifo = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_FIFO_CTRL5,
                             (uint8_t *)&fifo_ctrl5, 1);
@@ -6430,13 +6389,13 @@ int32_t lsm6dsm_fifo_data_rate_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  FIFO ODR selection, setting FIFO_MODE also.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of odr_fifo in reg FIFO_CTRL5
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  FIFO ODR selection, setting FIFO_MODE also.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of odr_fifo in reg FIFO_CTRL5
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_fifo_data_rate_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_odr_fifo_t *val)
 {
@@ -6446,10 +6405,11 @@ int32_t lsm6dsm_fifo_data_rate_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_FIFO_CTRL5,
                          (uint8_t *)&fifo_ctrl5, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (fifo_ctrl5.odr_fifo)
-  {
+  switch (fifo_ctrl5.odr_fifo) {
     case LSM6DSM_FIFO_DISABLE:
       *val = LSM6DSM_FIFO_DISABLE;
       break;
@@ -6503,26 +6463,26 @@ int32_t lsm6dsm_fifo_data_rate_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_DEN_functionality
-  * @brief       This section groups all the functions concerning DEN
-  *              functionality.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_DEN_functionality
+ * @brief       This section groups all the functions concerning DEN
+ *              functionality.
+ * @{
+ *
+ */
 
 /**
-  * @brief  DEN active level configuration.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_lh in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN active level configuration.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_lh in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_polarity_set(const stmdev_ctx_t *ctx,
                                  lsm6dsm_den_lh_t val)
 {
@@ -6531,8 +6491,7 @@ int32_t lsm6dsm_den_polarity_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl5_c.den_lh = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
   }
@@ -6541,13 +6500,13 @@ int32_t lsm6dsm_den_polarity_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  DEN active level configuration.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of den_lh in reg CTRL5_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN active level configuration.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of den_lh in reg CTRL5_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_polarity_get(const stmdev_ctx_t *ctx,
                                  lsm6dsm_den_lh_t *val)
 {
@@ -6556,10 +6515,11 @@ int32_t lsm6dsm_den_polarity_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL5_C, (uint8_t *)&ctrl5_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl5_c.den_lh)
-  {
+  switch (ctrl5_c.den_lh) {
     case LSM6DSM_DEN_ACT_LOW:
       *val = LSM6DSM_DEN_ACT_LOW;
       break;
@@ -6577,13 +6537,13 @@ int32_t lsm6dsm_den_polarity_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  DEN functionality marking mode[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_mode in reg CTRL6_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN functionality marking mode[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_mode in reg CTRL6_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mode_set(const stmdev_ctx_t *ctx,
                              lsm6dsm_den_mode_t val)
 {
@@ -6592,8 +6552,7 @@ int32_t lsm6dsm_den_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl6_c.den_mode = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
   }
@@ -6602,13 +6561,13 @@ int32_t lsm6dsm_den_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  DEN functionality marking mode[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_mode in reg CTRL6_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN functionality marking mode[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_mode in reg CTRL6_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mode_get(const stmdev_ctx_t *ctx,
                              lsm6dsm_den_mode_t *val)
 {
@@ -6617,10 +6576,11 @@ int32_t lsm6dsm_den_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL6_C, (uint8_t *)&ctrl6_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (ctrl6_c.den_mode)
-  {
+  switch (ctrl6_c.den_mode) {
     case LSM6DSM_DEN_DISABLE:
       *val = LSM6DSM_DEN_DISABLE;
       break;
@@ -6646,14 +6606,14 @@ int32_t lsm6dsm_den_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Extend DEN functionality to accelerometer sensor.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_xl_g in reg CTRL9_XL
-  *                             and den_xl_en in CTRL4_C.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Extend DEN functionality to accelerometer sensor.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_xl_g in reg CTRL9_XL
+ *                             and den_xl_en in CTRL4_C.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_enable_set(const stmdev_ctx_t *ctx,
                                lsm6dsm_den_xl_en_t val)
 {
@@ -6663,17 +6623,14 @@ int32_t lsm6dsm_den_enable_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl9_xl.den_xl_g = (uint8_t)val & 0x01U;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ctrl4_c.den_xl_en = (uint8_t)val & 0x02U;
         ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
       }
@@ -6684,14 +6641,14 @@ int32_t lsm6dsm_den_enable_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Extend DEN functionality to accelerometer sensor. [get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of den_xl_g in reg CTRL9_XL
-  *                             and den_xl_en in CTRL4_C.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Extend DEN functionality to accelerometer sensor. [get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of den_xl_g in reg CTRL9_XL
+ *                             and den_xl_en in CTRL4_C.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_enable_get(const stmdev_ctx_t *ctx,
                                lsm6dsm_den_xl_en_t *val)
 {
@@ -6702,10 +6659,8 @@ int32_t lsm6dsm_den_enable_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL4_C, (uint8_t *)&ctrl4_c, 1);
   ret += lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret == 0)
-  {
-    switch ((ctrl4_c.den_xl_en << 1) + ctrl9_xl.den_xl_g)
-    {
+  if (ret == 0) {
+    switch ((ctrl4_c.den_xl_en << 1) + ctrl9_xl.den_xl_g) {
       case LSM6DSM_STAMP_IN_GY_DATA:
         *val = LSM6DSM_STAMP_IN_GY_DATA;
         break;
@@ -6728,13 +6683,13 @@ int32_t lsm6dsm_den_enable_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  DEN value stored in LSB of Z-axis.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_z in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN value stored in LSB of Z-axis.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_z in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mark_axis_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -6742,8 +6697,7 @@ int32_t lsm6dsm_den_mark_axis_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl9_xl.den_z = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   }
@@ -6752,13 +6706,13 @@ int32_t lsm6dsm_den_mark_axis_z_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  DEN value stored in LSB of Z-axis.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_z in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN value stored in LSB of Z-axis.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_z in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -6766,7 +6720,9 @@ int32_t lsm6dsm_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl9_xl.den_z;
 
@@ -6774,13 +6730,13 @@ int32_t lsm6dsm_den_mark_axis_z_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  DEN value stored in LSB of Y-axis.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_y in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN value stored in LSB of Y-axis.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_y in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mark_axis_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -6788,8 +6744,7 @@ int32_t lsm6dsm_den_mark_axis_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl9_xl.den_y = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   }
@@ -6798,13 +6753,13 @@ int32_t lsm6dsm_den_mark_axis_y_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  DEN value stored in LSB of Y-axis.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_y in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN value stored in LSB of Y-axis.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_y in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -6812,7 +6767,9 @@ int32_t lsm6dsm_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl9_xl.den_y;
 
@@ -6820,13 +6777,13 @@ int32_t lsm6dsm_den_mark_axis_y_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  DEN value stored in LSB of X-axis.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_x in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN value stored in LSB of X-axis.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_x in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mark_axis_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -6834,8 +6791,7 @@ int32_t lsm6dsm_den_mark_axis_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl9_xl.den_x = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   }
@@ -6844,13 +6800,13 @@ int32_t lsm6dsm_den_mark_axis_x_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  DEN value stored in LSB of X-axis.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of den_x in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  DEN value stored in LSB of X-axis.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of den_x in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -6858,7 +6814,9 @@ int32_t lsm6dsm_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl9_xl.den_x;
 
@@ -6866,25 +6824,25 @@ int32_t lsm6dsm_den_mark_axis_x_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Pedometer
-  * @brief       This section groups all the functions that manage pedometer.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Pedometer
+ * @brief       This section groups all the functions that manage pedometer.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Reset pedometer step counter.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pedo_rst_step in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Reset pedometer step counter.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pedo_rst_step in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_step_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -6892,8 +6850,7 @@ int32_t lsm6dsm_pedo_step_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.pedo_rst_step = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
   }
@@ -6902,13 +6859,13 @@ int32_t lsm6dsm_pedo_step_reset_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Reset pedometer step counter.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pedo_rst_step in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Reset pedometer step counter.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pedo_rst_step in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_step_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -6916,7 +6873,9 @@ int32_t lsm6dsm_pedo_step_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl10_c.pedo_rst_step;
 
@@ -6924,13 +6883,13 @@ int32_t lsm6dsm_pedo_step_reset_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Enable pedometer algorithm.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pedo_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable pedometer algorithm.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pedo_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -6938,12 +6897,10 @@ int32_t lsm6dsm_pedo_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.pedo_en = val;
 
-    if (val != 0x00U)
-    {
+    if (val != 0x00U) {
       ctrl10_c.func_en = val;
     }
 
@@ -6954,13 +6911,13 @@ int32_t lsm6dsm_pedo_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  pedo_sens:   Enable pedometer algorithm.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pedo_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  pedo_sens:   Enable pedometer algorithm.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pedo_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -6968,7 +6925,9 @@ int32_t lsm6dsm_pedo_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl10_c.pedo_en;
 
@@ -6976,14 +6935,14 @@ int32_t lsm6dsm_pedo_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Minimum threshold to detect a peak. Default is 10h.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of ths_min in reg
-  *                      CONFIG_PEDO_THS_MIN
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Minimum threshold to detect a peak. Default is 10h.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of ths_min in reg
+ *                      CONFIG_PEDO_THS_MIN
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_config_pedo_ths_min_t config_pedo_ths_min;
@@ -6991,13 +6950,11 @@ int32_t lsm6dsm_pedo_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CONFIG_PEDO_THS_MIN,
                            (uint8_t *)&config_pedo_ths_min, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       config_pedo_ths_min.ths_min = val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_CONFIG_PEDO_THS_MIN,
                               (uint8_t *)&config_pedo_ths_min, 1);
@@ -7010,13 +6967,13 @@ int32_t lsm6dsm_pedo_threshold_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Minimum threshold to detect a peak. Default is 10h.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of ths_min in reg  CONFIG_PEDO_THS_MIN
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Minimum threshold to detect a peak. Default is 10h.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of ths_min in reg  CONFIG_PEDO_THS_MIN
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_config_pedo_ths_min_t config_pedo_ths_min;
@@ -7024,13 +6981,11 @@ int32_t lsm6dsm_pedo_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CONFIG_PEDO_THS_MIN,
                            (uint8_t *)&config_pedo_ths_min, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       *val =  config_pedo_ths_min.ths_min;
     }
   }
@@ -7041,14 +6996,14 @@ int32_t lsm6dsm_pedo_threshold_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  pedo_full_scale:   Pedometer data range.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pedo_fs in
-  *                            reg CONFIG_PEDO_THS_MIN
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  pedo_full_scale:   Pedometer data range.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pedo_fs in
+ *                            reg CONFIG_PEDO_THS_MIN
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_full_scale_set(const stmdev_ctx_t *ctx,
                                     lsm6dsm_pedo_fs_t val)
 {
@@ -7057,13 +7012,11 @@ int32_t lsm6dsm_pedo_full_scale_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CONFIG_PEDO_THS_MIN,
                            (uint8_t *)&config_pedo_ths_min, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       config_pedo_ths_min.pedo_fs = (uint8_t) val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_CONFIG_PEDO_THS_MIN,
                               (uint8_t *)&config_pedo_ths_min, 1);
@@ -7076,14 +7029,14 @@ int32_t lsm6dsm_pedo_full_scale_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Pedometer data range.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of pedo_fs in
-  *                            reg CONFIG_PEDO_THS_MIN
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Pedometer data range.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of pedo_fs in
+ *                            reg CONFIG_PEDO_THS_MIN
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_full_scale_get(const stmdev_ctx_t *ctx,
                                     lsm6dsm_pedo_fs_t *val)
 {
@@ -7092,15 +7045,12 @@ int32_t lsm6dsm_pedo_full_scale_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_CONFIG_PEDO_THS_MIN,
                            (uint8_t *)&config_pedo_ths_min, 1);
 
-    if (ret == 0)
-    {
-      switch (config_pedo_ths_min.pedo_fs)
-      {
+    if (ret == 0) {
+      switch (config_pedo_ths_min.pedo_fs) {
         case LSM6DSM_PEDO_AT_2g:
           *val = LSM6DSM_PEDO_AT_2g;
           break;
@@ -7122,13 +7072,13 @@ int32_t lsm6dsm_pedo_full_scale_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Pedometer debounce configuration register (r/w).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of deb_step in reg PEDO_DEB_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Pedometer debounce configuration register (r/w).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of deb_step in reg PEDO_DEB_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_debounce_steps_set(const stmdev_ctx_t *ctx,
                                         uint8_t val)
 {
@@ -7137,13 +7087,11 @@ int32_t lsm6dsm_pedo_debounce_steps_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_PEDO_DEB_REG,
                            (uint8_t *)&pedo_deb_reg, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       pedo_deb_reg.deb_step = val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_PEDO_DEB_REG,
                               (uint8_t *)&pedo_deb_reg, 1);
@@ -7156,13 +7104,13 @@ int32_t lsm6dsm_pedo_debounce_steps_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Pedometer debounce configuration register (r/w).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of deb_step in reg PEDO_DEB_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Pedometer debounce configuration register (r/w).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of deb_step in reg PEDO_DEB_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_debounce_steps_get(const stmdev_ctx_t *ctx,
                                         uint8_t *val)
 {
@@ -7171,13 +7119,11 @@ int32_t lsm6dsm_pedo_debounce_steps_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_PEDO_DEB_REG,
                            (uint8_t *)&pedo_deb_reg, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       *val = pedo_deb_reg.deb_step;
     }
   }
@@ -7188,15 +7134,15 @@ int32_t lsm6dsm_pedo_debounce_steps_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Debounce time. If the time between two consecutive steps is
-  *         greater than  DEB_TIME*80ms, the debouncer is reactivated.
-  *         Default value: 01101[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of deb_time in reg PEDO_DEB_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Debounce time. If the time between two consecutive steps is
+ *         greater than  DEB_TIME*80ms, the debouncer is reactivated.
+ *         Default value: 01101[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of deb_time in reg PEDO_DEB_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_timeout_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_pedo_deb_reg_t pedo_deb_reg;
@@ -7204,13 +7150,11 @@ int32_t lsm6dsm_pedo_timeout_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_PEDO_DEB_REG,
                            (uint8_t *)&pedo_deb_reg, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       pedo_deb_reg.deb_time = val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_PEDO_DEB_REG,
                               (uint8_t *)&pedo_deb_reg, 1);
@@ -7223,15 +7167,15 @@ int32_t lsm6dsm_pedo_timeout_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Debounce time. If the time between two consecutive steps is
-  *         greater than  DEB_TIME*80ms, the debouncer is reactivated.
-  *         Default value: 01101[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of deb_time in reg PEDO_DEB_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Debounce time. If the time between two consecutive steps is
+ *         greater than  DEB_TIME*80ms, the debouncer is reactivated.
+ *         Default value: 01101[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of deb_time in reg PEDO_DEB_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_pedo_deb_reg_t pedo_deb_reg;
@@ -7239,13 +7183,11 @@ int32_t lsm6dsm_pedo_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_PEDO_DEB_REG,
                            (uint8_t *)&pedo_deb_reg, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       *val = pedo_deb_reg.deb_time;
     }
   }
@@ -7256,13 +7198,13 @@ int32_t lsm6dsm_pedo_timeout_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Time period register for step detection on delta time (r/w).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that contains data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Time period register for step detection on delta time (r/w).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that contains data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_steps_period_set(const stmdev_ctx_t *ctx,
                                       uint8_t *buff)
 {
@@ -7270,8 +7212,7 @@ int32_t lsm6dsm_pedo_steps_period_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_STEP_COUNT_DELTA, buff, 1);
   }
 
@@ -7281,13 +7222,13 @@ int32_t lsm6dsm_pedo_steps_period_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Time period register for step detection on delta time (r/w).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Time period register for step detection on delta time (r/w).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_pedo_steps_period_get(const stmdev_ctx_t *ctx,
                                       uint8_t *buff)
 {
@@ -7295,8 +7236,7 @@ int32_t lsm6dsm_pedo_steps_period_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_STEP_COUNT_DELTA, buff, 1);
   }
 
@@ -7306,26 +7246,26 @@ int32_t lsm6dsm_pedo_steps_period_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_significant_motion
-  * @brief       This section groups all the functions that manage the
-  *              significant motion detection.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_significant_motion
+ * @brief       This section groups all the functions that manage the
+ *              significant motion detection.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enable significant motion detection function.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sign_motion_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable significant motion detection function.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sign_motion_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_motion_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7333,12 +7273,10 @@ int32_t lsm6dsm_motion_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.sign_motion_en = val;
 
-    if (val != 0x00U)
-    {
+    if (val != 0x00U) {
       ctrl10_c.func_en = val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
     }
@@ -7348,13 +7286,13 @@ int32_t lsm6dsm_motion_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable significant motion detection function.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of sign_motion_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable significant motion detection function.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of sign_motion_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_motion_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7362,7 +7300,9 @@ int32_t lsm6dsm_motion_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl10_c.sign_motion_en;
 
@@ -7370,21 +7310,20 @@ int32_t lsm6dsm_motion_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Significant motion threshold.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that store significant motion threshold.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Significant motion threshold.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that store significant motion threshold.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_motion_threshold_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SM_THS, buff, 1);
   }
 
@@ -7394,21 +7333,20 @@ int32_t lsm6dsm_motion_threshold_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Significant motion threshold.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that store significant motion threshold.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Significant motion threshold.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that store significant motion threshold.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_motion_threshold_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SM_THS, buff, 1);
   }
 
@@ -7418,26 +7356,26 @@ int32_t lsm6dsm_motion_threshold_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_tilt_detection
-  * @brief       This section groups all the functions that manage the tilt
-  *              event detection.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_tilt_detection
+ * @brief       This section groups all the functions that manage the tilt
+ *              event detection.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enable tilt calculation.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tilt_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable tilt calculation.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tilt_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7445,12 +7383,10 @@ int32_t lsm6dsm_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.tilt_en = val;
 
-    if (val != 0x00U)
-    {
+    if (val != 0x00U) {
       ctrl10_c.func_en = val;
     }
 
@@ -7461,13 +7397,13 @@ int32_t lsm6dsm_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable tilt calculation.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tilt_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable tilt calculation.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tilt_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7475,7 +7411,9 @@ int32_t lsm6dsm_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl10_c.tilt_en;
 
@@ -7483,13 +7421,13 @@ int32_t lsm6dsm_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Enable tilt calculation.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tilt_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable tilt calculation.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tilt_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_wrist_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7497,12 +7435,10 @@ int32_t lsm6dsm_wrist_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.wrist_tilt_en = val;
 
-    if (val != 0x00U)
-    {
+    if (val != 0x00U) {
       ctrl10_c.func_en = val;
     }
 
@@ -7513,13 +7449,13 @@ int32_t lsm6dsm_wrist_tilt_sens_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable tilt calculation.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tilt_en in reg CTRL10_C
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable tilt calculation.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tilt_en in reg CTRL10_C
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_wrist_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7527,7 +7463,9 @@ int32_t lsm6dsm_wrist_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl10_c.wrist_tilt_en;
 
@@ -7535,23 +7473,22 @@ int32_t lsm6dsm_wrist_tilt_sens_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Absolute Wrist Tilt latency register (r/w).
-  *         Absolute wrist tilt latency parameters.
-  *         1 LSB = 40 ms. Default value: 0Fh (600 ms).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that contains data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Absolute Wrist Tilt latency register (r/w).
+ *         Absolute wrist tilt latency parameters.
+ *         1 LSB = 40 ms. Default value: 0Fh (600 ms).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that contains data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_latency_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_A_WRIST_TILT_LAT, buff, 1);
   }
 
@@ -7561,23 +7498,22 @@ int32_t lsm6dsm_tilt_latency_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Absolute Wrist Tilt latency register (r/w).
-  *         Absolute wrist tilt latency parameters.
-  *         1 LSB = 40 ms. Default value: 0Fh (600 ms).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Absolute Wrist Tilt latency register (r/w).
+ *         Absolute wrist tilt latency parameters.
+ *         1 LSB = 40 ms. Default value: 0Fh (600 ms).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_latency_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_A_WRIST_TILT_LAT, buff, 1);
   }
 
@@ -7587,23 +7523,22 @@ int32_t lsm6dsm_tilt_latency_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Absolute Wrist Tilt threshold register(r/w).
-  *         Absolute wrist tilt threshold parameters.
-  *         1 LSB = 15.625 mg.Default value: 20h (500 mg).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that contains data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Absolute Wrist Tilt threshold register(r/w).
+ *         Absolute wrist tilt threshold parameters.
+ *         1 LSB = 15.625 mg.Default value: 20h (500 mg).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that contains data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_threshold_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_A_WRIST_TILT_THS, buff, 1);
   }
 
@@ -7613,23 +7548,22 @@ int32_t lsm6dsm_tilt_threshold_set(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Absolute Wrist Tilt threshold register(r/w).
-  *         Absolute wrist tilt threshold parameters.
-  *         1 LSB = 15.625 mg.Default value: 20h (500 mg).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Absolute Wrist Tilt threshold register(r/w).
+ *         Absolute wrist tilt threshold parameters.
+ *         1 LSB = 15.625 mg.Default value: 20h (500 mg).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_threshold_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 {
   int32_t ret;
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_A_WRIST_TILT_THS, buff, 1);
   }
 
@@ -7639,13 +7573,13 @@ int32_t lsm6dsm_tilt_threshold_get(const stmdev_ctx_t *ctx, uint8_t *buff)
 }
 
 /**
-  * @brief  Absolute Wrist Tilt mask register (r/w).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Registers A_WRIST_TILT_MASK
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Absolute Wrist Tilt mask register (r/w).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Registers A_WRIST_TILT_MASK
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_src_set(const stmdev_ctx_t *ctx,
                              lsm6dsm_a_wrist_tilt_mask_t *val)
 {
@@ -7653,8 +7587,7 @@ int32_t lsm6dsm_tilt_src_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_A_WRIST_TILT_MASK,
                             (uint8_t *) val, 1);
   }
@@ -7665,13 +7598,13 @@ int32_t lsm6dsm_tilt_src_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Absolute Wrist Tilt mask register (r/w).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Registers A_WRIST_TILT_MASK
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Absolute Wrist Tilt mask register (r/w).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Registers A_WRIST_TILT_MASK
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_tilt_src_get(const stmdev_ctx_t *ctx,
                              lsm6dsm_a_wrist_tilt_mask_t *val)
 {
@@ -7679,8 +7612,7 @@ int32_t lsm6dsm_tilt_src_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_B);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_A_WRIST_TILT_MASK,
                            (uint8_t *) val, 1);
   }
@@ -7691,26 +7623,26 @@ int32_t lsm6dsm_tilt_src_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_ magnetometer_sensor
-  * @brief       This section groups all the functions that manage additional
-  *              magnetometer sensor.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_ magnetometer_sensor
+ * @brief       This section groups all the functions that manage additional
+ *              magnetometer sensor.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enable soft-iron correction algorithm for magnetometer.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of soft_en in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable soft-iron correction algorithm for magnetometer.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of soft_en in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_soft_iron_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -7718,8 +7650,7 @@ int32_t lsm6dsm_mag_soft_iron_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl9_xl.soft_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
   }
@@ -7728,13 +7659,13 @@ int32_t lsm6dsm_mag_soft_iron_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable soft-iron correction algorithm for magnetometer.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of soft_en in reg CTRL9_XL
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable soft-iron correction algorithm for magnetometer.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of soft_en in reg CTRL9_XL
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_soft_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_ctrl9_xl_t ctrl9_xl;
@@ -7742,7 +7673,9 @@ int32_t lsm6dsm_mag_soft_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL9_XL, (uint8_t *)&ctrl9_xl, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = ctrl9_xl.soft_en;
 
@@ -7750,13 +7683,13 @@ int32_t lsm6dsm_mag_soft_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Enable hard-iron correction algorithm for magnetometer.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of iron_en in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable hard-iron correction algorithm for magnetometer.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of iron_en in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_hard_iron_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_master_config_t master_config;
@@ -7766,20 +7699,16 @@ int32_t lsm6dsm_mag_hard_iron_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.iron_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-      if (ret == 0)
-      {
-        if (val != 0x00U)
-        {
+      if (ret == 0) {
+        if (val != 0x00U) {
           ctrl10_c.func_en = val;
         }
 
@@ -7793,13 +7722,13 @@ int32_t lsm6dsm_mag_hard_iron_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Enable hard-iron correction algorithm for magnetometer.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of iron_en in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable hard-iron correction algorithm for magnetometer.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of iron_en in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_hard_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_master_config_t master_config;
@@ -7808,7 +7737,9 @@ int32_t lsm6dsm_mag_hard_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = master_config.iron_en;
 
@@ -7816,14 +7747,14 @@ int32_t lsm6dsm_mag_hard_iron_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Soft iron 3x3 matrix. Value are expressed in sign-module format.
-  *         (Es. SVVVVVVVb where S is the sign 0/+1/- and V is the value).[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that contains data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Soft iron 3x3 matrix. Value are expressed in sign-module format.
+ *         (Es. SVVVVVVVb where S is the sign 0/+1/- and V is the value).[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that contains data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_soft_iron_mat_set(const stmdev_ctx_t *ctx,
                                       uint8_t *buff)
 {
@@ -7831,8 +7762,7 @@ int32_t lsm6dsm_mag_soft_iron_mat_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MAG_SI_XX, buff, 9);
   }
 
@@ -7842,14 +7772,14 @@ int32_t lsm6dsm_mag_soft_iron_mat_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Soft iron 3x3 matrix. Value are expressed in sign-module format.
-  *         (Es. SVVVVVVVb where S is the sign 0/+1/- and V is the value).[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Soft iron 3x3 matrix. Value are expressed in sign-module format.
+ *         (Es. SVVVVVVVb where S is the sign 0/+1/- and V is the value).[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_soft_iron_mat_get(const stmdev_ctx_t *ctx,
                                       uint8_t *buff)
 {
@@ -7857,8 +7787,7 @@ int32_t lsm6dsm_mag_soft_iron_mat_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MAG_SI_XX, buff, 9);
   }
 
@@ -7868,14 +7797,14 @@ int32_t lsm6dsm_mag_soft_iron_mat_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Offset for hard-iron compensation register (r/w). The value is
-  *         expressed as a 16-bit word in two's complement.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that contains data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Offset for hard-iron compensation register (r/w). The value is
+ *         expressed as a 16-bit word in two's complement.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that contains data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
@@ -7883,8 +7812,7 @@ int32_t lsm6dsm_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     buff[1] = (uint8_t)((uint16_t)val[0] / 256U);
     buff[0] = (uint8_t)((uint16_t)val[0] - (buff[1] * 256U));
     buff[3] = (uint8_t)((uint16_t)val[1] / 256U);
@@ -7900,14 +7828,14 @@ int32_t lsm6dsm_mag_offset_set(const stmdev_ctx_t *ctx, int16_t *val)
 }
 
 /**
-  * @brief  Offset for hard-iron compensation register(r/w).
-  *         The value is expressed as a 16-bit word in two's complement.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  buff   Buffer that stores data read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Offset for hard-iron compensation register(r/w).
+ *         The value is expressed as a 16-bit word in two's complement.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  buff   Buffer that stores data read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
 {
   uint8_t buff[6];
@@ -7915,12 +7843,10 @@ int32_t lsm6dsm_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_MAG_OFFX_L, buff, 6);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       val[0] = (int16_t)buff[1];
       val[0] = (val[0] * 256) + (int16_t)buff[0];
       val[1] = (int16_t)buff[3];
@@ -7936,26 +7862,26 @@ int32_t lsm6dsm_mag_offset_get(const stmdev_ctx_t *ctx, int16_t *val)
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @defgroup    LSM6DSM_Sensor_hub
-  * @brief       This section groups all the functions that manage the sensor
-  *              hub functionality.
-  * @{
-  *
-  */
+ * @defgroup    LSM6DSM_Sensor_hub
+ * @brief       This section groups all the functions that manage the sensor
+ *              hub functionality.
+ * @{
+ *
+ */
 
 /**
-  * @brief  Enable function.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values func_en
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Enable function.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values func_en
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_func_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_ctrl10_c_t ctrl10_c;
@@ -7963,8 +7889,7 @@ int32_t lsm6dsm_func_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ctrl10_c.func_en = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_CTRL10_C, (uint8_t *)&ctrl10_c, 1);
   }
@@ -7973,14 +7898,14 @@ int32_t lsm6dsm_func_en_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Sensor synchronization time frame with the step of 500 ms and
-  *         full range of 5s. Unsigned 8-bit.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tph in reg SENSOR_SYNC_TIME_FRAME
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor synchronization time frame with the step of 500 ms and
+ *         full range of 5s. Unsigned 8-bit.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tph in reg SENSOR_SYNC_TIME_FRAME
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_sync_sens_frame_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_sensor_sync_time_frame_t sensor_sync_time_frame;
@@ -7989,8 +7914,7 @@ int32_t lsm6dsm_sh_sync_sens_frame_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENSOR_SYNC_TIME_FRAME,
                          (uint8_t *)&sensor_sync_time_frame, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     sensor_sync_time_frame.tph = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SENSOR_SYNC_TIME_FRAME,
                             (uint8_t *)&sensor_sync_time_frame, 1);
@@ -8000,14 +7924,14 @@ int32_t lsm6dsm_sh_sync_sens_frame_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Sensor synchronization time frame with the step of 500 ms and
-  *         full range of 5s. Unsigned 8-bit.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of tph in reg  SENSOR_SYNC_TIME_FRAME
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor synchronization time frame with the step of 500 ms and
+ *         full range of 5s. Unsigned 8-bit.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of tph in reg  SENSOR_SYNC_TIME_FRAME
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_sync_sens_frame_get(const stmdev_ctx_t *ctx,
                                        uint8_t *val)
 {
@@ -8017,7 +7941,9 @@ int32_t lsm6dsm_sh_sync_sens_frame_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENSOR_SYNC_TIME_FRAME,
                          (uint8_t *)&sensor_sync_time_frame, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val =  sensor_sync_time_frame.tph;
 
@@ -8025,13 +7951,13 @@ int32_t lsm6dsm_sh_sync_sens_frame_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Resolution ratio of error code for sensor synchronization.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of rr in reg  SENSOR_SYNC_RES_RATIO
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Resolution ratio of error code for sensor synchronization.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of rr in reg  SENSOR_SYNC_RES_RATIO
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_sync_sens_ratio_set(const stmdev_ctx_t *ctx,
                                        lsm6dsm_rr_t val)
 {
@@ -8041,8 +7967,7 @@ int32_t lsm6dsm_sh_sync_sens_ratio_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENSOR_SYNC_RES_RATIO,
                          (uint8_t *)&sensor_sync_res_ratio, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     sensor_sync_res_ratio.rr = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SENSOR_SYNC_RES_RATIO,
                             (uint8_t *)&sensor_sync_res_ratio, 1);
@@ -8052,13 +7977,13 @@ int32_t lsm6dsm_sh_sync_sens_ratio_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Resolution ratio of error code for sensor synchronization.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of rr in reg  SENSOR_SYNC_RES_RATIO
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Resolution ratio of error code for sensor synchronization.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of rr in reg  SENSOR_SYNC_RES_RATIO
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_sync_sens_ratio_get(const stmdev_ctx_t *ctx,
                                        lsm6dsm_rr_t *val)
 {
@@ -8068,10 +7993,11 @@ int32_t lsm6dsm_sh_sync_sens_ratio_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENSOR_SYNC_RES_RATIO,
                          (uint8_t *)&sensor_sync_res_ratio, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (sensor_sync_res_ratio.rr)
-  {
+  switch (sensor_sync_res_ratio.rr) {
     case LSM6DSM_RES_RATIO_2_11:
       *val = LSM6DSM_RES_RATIO_2_11;
       break;
@@ -8097,13 +8023,13 @@ int32_t lsm6dsm_sh_sync_sens_ratio_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Sensor hub I2C master enable.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of master_on in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor hub I2C master enable.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of master_on in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_master_config_t master_config;
@@ -8112,8 +8038,7 @@ int32_t lsm6dsm_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.master_on = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
@@ -8123,13 +8048,13 @@ int32_t lsm6dsm_sh_master_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Sensor hub I2C master enable.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of master_on in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor hub I2C master enable.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of master_on in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_master_config_t master_config;
@@ -8138,7 +8063,9 @@ int32_t lsm6dsm_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = master_config.master_on;
 
@@ -8146,13 +8073,13 @@ int32_t lsm6dsm_sh_master_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  I2C interface pass-through.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pass_through_mode in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  I2C interface pass-through.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pass_through_mode in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_master_config_t master_config;
@@ -8161,8 +8088,7 @@ int32_t lsm6dsm_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.pass_through_mode = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
@@ -8172,13 +8098,13 @@ int32_t lsm6dsm_sh_pass_through_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  I2C interface pass-through.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pass_through_mode in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  I2C interface pass-through.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pass_through_mode in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_master_config_t master_config;
@@ -8187,7 +8113,9 @@ int32_t lsm6dsm_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = master_config.pass_through_mode;
 
@@ -8195,13 +8123,13 @@ int32_t lsm6dsm_sh_pass_through_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Master I2C pull-up enable/disable.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of pull_up_en in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Master I2C pull-up enable/disable.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of pull_up_en in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_pin_mode_set(const stmdev_ctx_t *ctx,
                                 lsm6dsm_pull_up_en_t val)
 {
@@ -8211,8 +8139,7 @@ int32_t lsm6dsm_sh_pin_mode_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.pull_up_en = (uint8_t) val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
@@ -8222,13 +8149,13 @@ int32_t lsm6dsm_sh_pin_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Master I2C pull-up enable/disable.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of pull_up_en in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Master I2C pull-up enable/disable.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of pull_up_en in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_pin_mode_get(const stmdev_ctx_t *ctx,
                                 lsm6dsm_pull_up_en_t *val)
 {
@@ -8238,10 +8165,11 @@ int32_t lsm6dsm_sh_pin_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (master_config.pull_up_en)
-  {
+  switch (master_config.pull_up_en) {
     case LSM6DSM_EXT_PULL_UP:
       *val = LSM6DSM_EXT_PULL_UP;
       break;
@@ -8259,13 +8187,13 @@ int32_t lsm6dsm_sh_pin_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Sensor hub trigger signal selection.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of start_config in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor hub trigger signal selection.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of start_config in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_start_config_t val)
 {
@@ -8275,8 +8203,7 @@ int32_t lsm6dsm_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.start_config = (uint8_t)val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
@@ -8286,13 +8213,13 @@ int32_t lsm6dsm_sh_syncro_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Sensor hub trigger signal selection.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of start_config in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor hub trigger signal selection.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of start_config in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_start_config_t *val)
 {
@@ -8302,10 +8229,11 @@ int32_t lsm6dsm_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
-  switch (master_config.start_config)
-  {
+  switch (master_config.start_config) {
     case LSM6DSM_XL_GY_DRDY:
       *val = LSM6DSM_XL_GY_DRDY;
       break;
@@ -8323,13 +8251,13 @@ int32_t lsm6dsm_sh_syncro_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Manage the Master DRDY signal on INT1 pad.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of drdy_on_int1 in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Manage the Master DRDY signal on INT1 pad.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of drdy_on_int1 in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_drdy_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_master_config_t master_config;
@@ -8338,8 +8266,7 @@ int32_t lsm6dsm_sh_drdy_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_config.drdy_on_int1 = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CONFIG,
                             (uint8_t *)&master_config, 1);
@@ -8349,13 +8276,13 @@ int32_t lsm6dsm_sh_drdy_on_int1_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Manage the Master DRDY signal on INT1 pad.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of drdy_on_int1 in reg MASTER_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Manage the Master DRDY signal on INT1 pad.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of drdy_on_int1 in reg MASTER_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_drdy_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_master_config_t master_config;
@@ -8364,7 +8291,9 @@ int32_t lsm6dsm_sh_drdy_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CONFIG,
                          (uint8_t *)&master_config, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = master_config.drdy_on_int1;
 
@@ -8372,39 +8301,38 @@ int32_t lsm6dsm_sh_drdy_on_int1_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Sensor hub output registers.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure of registers from SENSORHUB1_REG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Sensor hub output registers.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure of registers from SENSORHUB1_REG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_read_data_raw_get(const stmdev_ctx_t *ctx,
                                      lsm6dsm_emb_sh_read_t *val)
 {
   int32_t ret;
 
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENSORHUB1_REG,
-                         (uint8_t *) & (val->sh_byte_1), 12);
+                         (uint8_t *) &(val->sh_byte_1), 12);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENSORHUB13_REG,
-                           (uint8_t *) & (val->sh_byte_13), 6);
+                           (uint8_t *) &(val->sh_byte_13), 6);
   }
 
   return ret;
 }
 
 /**
-  * @brief  Master command code used for stamping for sensor sync.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of master_cmd_code in
-  *                reg MASTER_CMD_CODE
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Master command code used for stamping for sensor sync.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of master_cmd_code in
+ *                reg MASTER_CMD_CODE
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_cmd_sens_sync_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_master_cmd_code_t master_cmd_code;
@@ -8413,8 +8341,7 @@ int32_t lsm6dsm_sh_cmd_sens_sync_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CMD_CODE,
                          (uint8_t *)&master_cmd_code, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     master_cmd_code.master_cmd_code = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_MASTER_CMD_CODE,
                             (uint8_t *)&master_cmd_code, 1);
@@ -8424,14 +8351,14 @@ int32_t lsm6dsm_sh_cmd_sens_sync_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Master command code used for stamping for sensor sync.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of master_cmd_code in
-  *                reg MASTER_CMD_CODE
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Master command code used for stamping for sensor sync.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of master_cmd_code in
+ *                reg MASTER_CMD_CODE
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_cmd_sens_sync_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_master_cmd_code_t master_cmd_code;
@@ -8440,7 +8367,9 @@ int32_t lsm6dsm_sh_cmd_sens_sync_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_MASTER_CMD_CODE,
                          (uint8_t *)&master_cmd_code, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val = master_cmd_code.master_cmd_code;
 
@@ -8448,14 +8377,14 @@ int32_t lsm6dsm_sh_cmd_sens_sync_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief  Error code used for sensor synchronization.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of error_code in
-  *                reg SENS_SYNC_SPI_ERROR_CODE.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Error code used for sensor synchronization.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of error_code in
+ *                reg SENS_SYNC_SPI_ERROR_CODE.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_spi_sync_error_set(const stmdev_ctx_t *ctx, uint8_t val)
 {
   lsm6dsm_sens_sync_spi_error_code_t sens_sync_spi_error_code;
@@ -8464,8 +8393,7 @@ int32_t lsm6dsm_sh_spi_sync_error_set(const stmdev_ctx_t *ctx, uint8_t val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENS_SYNC_SPI_ERROR_CODE,
                          (uint8_t *)&sens_sync_spi_error_code, 1);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     sens_sync_spi_error_code.error_code = val;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SENS_SYNC_SPI_ERROR_CODE,
                             (uint8_t *)&sens_sync_spi_error_code, 1);
@@ -8475,14 +8403,14 @@ int32_t lsm6dsm_sh_spi_sync_error_set(const stmdev_ctx_t *ctx, uint8_t val)
 }
 
 /**
-  * @brief  Error code used for sensor synchronization.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of error_code in
-  *                reg SENS_SYNC_SPI_ERROR_CODE.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Error code used for sensor synchronization.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of error_code in
+ *                reg SENS_SYNC_SPI_ERROR_CODE.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_spi_sync_error_get(const stmdev_ctx_t *ctx, uint8_t *val)
 {
   lsm6dsm_sens_sync_spi_error_code_t sens_sync_spi_error_code;
@@ -8491,7 +8419,9 @@ int32_t lsm6dsm_sh_spi_sync_error_get(const stmdev_ctx_t *ctx, uint8_t *val)
   ret = lsm6dsm_read_reg(ctx, LSM6DSM_SENS_SYNC_SPI_ERROR_CODE,
                          (uint8_t *)&sens_sync_spi_error_code, 1);
 
-  if (ret != 0) { return ret; }
+  if (ret != 0) {
+    return ret;
+  }
 
   *val =  sens_sync_spi_error_code.error_code;
 
@@ -8499,13 +8429,13 @@ int32_t lsm6dsm_sh_spi_sync_error_get(const stmdev_ctx_t *ctx, uint8_t *val)
 }
 
 /**
-  * @brief   Number of external sensors to be read by the sensor hub.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of aux_sens_on in reg SLAVE0_CONFIG.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Number of external sensors to be read by the sensor hub.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of aux_sens_on in reg SLAVE0_CONFIG.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_num_of_dev_connected_set(const stmdev_ctx_t *ctx,
                                             lsm6dsm_aux_sens_on_t val)
 {
@@ -8514,13 +8444,11 @@ int32_t lsm6dsm_sh_num_of_dev_connected_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                            (uint8_t *)&slave0_config, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       slave0_config.aux_sens_on = (uint8_t) val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                               (uint8_t *)&slave0_config, 1);
@@ -8533,13 +8461,13 @@ int32_t lsm6dsm_sh_num_of_dev_connected_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief   Number of external sensors to be read by the sensor hub.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of aux_sens_on in reg SLAVE0_CONFIG.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief   Number of external sensors to be read by the sensor hub.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of aux_sens_on in reg SLAVE0_CONFIG.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_num_of_dev_connected_get(const stmdev_ctx_t *ctx,
                                             lsm6dsm_aux_sens_on_t *val)
 {
@@ -8548,15 +8476,12 @@ int32_t lsm6dsm_sh_num_of_dev_connected_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                            (uint8_t *)&slave0_config, 1);
 
-    if (ret == 0)
-    {
-      switch (slave0_config.aux_sens_on)
-      {
+    if (ret == 0) {
+      switch (slave0_config.aux_sens_on) {
         case LSM6DSM_SLV_0:
           *val = LSM6DSM_SLV_0;
           break;
@@ -8586,16 +8511,16 @@ int32_t lsm6dsm_sh_num_of_dev_connected_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure slave 0 for perform a write.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure that contain:
-  *                  - uint8_t slv_add;    8 bit i2c device address
-  *                  - uint8_t slv_subadd; 8 bit register device address
-  *                  - uint8_t slv_data;   8 bit data to write
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure slave 0 for perform a write.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure that contain:
+ *                  - uint8_t slv_add;    8 bit i2c device address
+ *                  - uint8_t slv_subadd; 8 bit register device address
+ *                  - uint8_t slv_data;   8 bit data to write
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_cfg_write(const stmdev_ctx_t *ctx,
                              lsm6dsm_sh_cfg_write_t *val)
 {
@@ -8604,19 +8529,16 @@ int32_t lsm6dsm_sh_cfg_write(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     slv0_add.slave0_add = (uint8_t)(val->slv0_add >> 1);
     slv0_add.rw_0 = 0;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV0_ADD, (uint8_t *)&slv0_add, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV0_SUBADD,
                               &(val->slv0_subadd), 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ret = lsm6dsm_write_reg(ctx, LSM6DSM_DATAWRITE_SRC_MODE_SUB_SLV0,
                                 &(val->slv0_data), 1);
       }
@@ -8629,16 +8551,16 @@ int32_t lsm6dsm_sh_cfg_write(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure slave 0 for perform a read.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure that contain:
-  *                  - uint8_t slv_add;    8 bit i2c device address
-  *                  - uint8_t slv_subadd; 8 bit register device address
-  *                  - uint8_t slv_len;    num of bit to read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure slave 0 for perform a read.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure that contain:
+ *                  - uint8_t slv_add;    8 bit i2c device address
+ *                  - uint8_t slv_subadd; 8 bit register device address
+ *                  - uint8_t slv_len;    num of bit to read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sh_cfg_read_t *val)
 {
@@ -8648,25 +8570,21 @@ int32_t lsm6dsm_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     slv0_add.slave0_add = (uint8_t)(val->slv_add >> 1);
     slv0_add.rw_0 = 1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV0_ADD, (uint8_t *)&slv0_add, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV0_SUBADD,
                               &(val->slv_subadd), 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                                (uint8_t *)&slave0_config, 1);
         slave0_config.slave0_numop = val->slv_len;
 
-        if (ret == 0)
-        {
+        if (ret == 0) {
           ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                                   (uint8_t *)&slave0_config, 1);
         }
@@ -8680,16 +8598,16 @@ int32_t lsm6dsm_sh_slv0_cfg_read(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure slave 1 for perform a read.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure that contain:
-  *                  - uint8_t slv_add;    8 bit i2c device address
-  *                  - uint8_t slv_subadd; 8 bit register device address
-  *                  - uint8_t slv_len;    num of bit to read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure slave 1 for perform a read.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure that contain:
+ *                  - uint8_t slv_add;    8 bit i2c device address
+ *                  - uint8_t slv_subadd; 8 bit register device address
+ *                  - uint8_t slv_len;    num of bit to read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sh_cfg_read_t *val)
 {
@@ -8699,25 +8617,21 @@ int32_t lsm6dsm_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     slv1_add.slave1_add  = (uint8_t)(val->slv_add >> 1);
     slv1_add.r_1 = 1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV1_ADD, (uint8_t *)&slv1_add, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV1_SUBADD,
                               &(val->slv_subadd), 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                                (uint8_t *)&slave1_config, 1);
         slave1_config.slave1_numop = val->slv_len;
 
-        if (ret == 0)
-        {
+        if (ret == 0) {
           ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                                   (uint8_t *)&slave1_config, 1);
         }
@@ -8731,16 +8645,16 @@ int32_t lsm6dsm_sh_slv1_cfg_read(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure slave 2 for perform a read.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure that contain:
-  *                  - uint8_t slv_add;    8 bit i2c device address
-  *                  - uint8_t slv_subadd; 8 bit register device address
-  *                  - uint8_t slv_len;    num of bit to read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure slave 2 for perform a read.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure that contain:
+ *                  - uint8_t slv_add;    8 bit i2c device address
+ *                  - uint8_t slv_subadd; 8 bit register device address
+ *                  - uint8_t slv_len;    num of bit to read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sh_cfg_read_t *val)
 {
@@ -8750,24 +8664,20 @@ int32_t lsm6dsm_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     slv2_add.slave2_add  = (uint8_t)(val->slv_add >> 1);
     slv2_add.r_2 = 1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV2_ADD, (uint8_t *)&slv2_add, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV2_SUBADD,
                               &(val->slv_subadd), 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE2_CONFIG,
                                (uint8_t *)&slave2_config, 1);
 
-        if (ret == 0)
-        {
+        if (ret == 0) {
           slave2_config.slave2_numop = val->slv_len;
           ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE2_CONFIG,
                                   (uint8_t *)&slave2_config, 1);
@@ -8782,16 +8692,16 @@ int32_t lsm6dsm_sh_slv2_cfg_read(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Configure slave 3 for perform a read.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Structure that contain:
-  *                  - uint8_t slv_add;    8 bit i2c device address
-  *                  - uint8_t slv_subadd; 8 bit register device address
-  *                  - uint8_t slv_len;    num of bit to read
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Configure slave 3 for perform a read.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Structure that contain:
+ *                  - uint8_t slv_add;    8 bit i2c device address
+ *                  - uint8_t slv_subadd; 8 bit register device address
+ *                  - uint8_t slv_len;    num of bit to read
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
                                  lsm6dsm_sh_cfg_read_t *val)
 {
@@ -8801,24 +8711,20 @@ int32_t lsm6dsm_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     slv3_add.slave3_add  = (uint8_t)(val->slv_add >> 1);
     slv3_add.r_3 = 1;
     ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV3_ADD, (uint8_t *)&slv3_add, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLV3_SUBADD,
-                              (uint8_t *) & (val->slv_subadd), 1);
+                              (uint8_t *) &(val->slv_subadd), 1);
 
-      if (ret == 0)
-      {
+      if (ret == 0) {
         ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE3_CONFIG,
                                (uint8_t *)&slave3_config, 1);
 
-        if (ret == 0)
-        {
+        if (ret == 0) {
           slave3_config.slave3_numop = val->slv_len;
           ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE3_CONFIG,
                                   (uint8_t *)&slave3_config, 1);
@@ -8833,14 +8739,14 @@ int32_t lsm6dsm_sh_slv3_cfg_read(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 0 starting from the
-  *         sensor hub trigger.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of slave0_rate in reg SLAVE0_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 0 starting from the
+ *         sensor hub trigger.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of slave0_rate in reg SLAVE0_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_0_dec_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave0_rate_t val)
 {
@@ -8849,13 +8755,11 @@ int32_t lsm6dsm_sh_slave_0_dec_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                            (uint8_t *)&slave0_config, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       slave0_config.slave0_rate = (uint8_t) val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                               (uint8_t *)&slave0_config, 1);
@@ -8868,14 +8772,14 @@ int32_t lsm6dsm_sh_slave_0_dec_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 0 starting from the
-  *         sensor hub trigger.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of slave0_rate in reg SLAVE0_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 0 starting from the
+ *         sensor hub trigger.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of slave0_rate in reg SLAVE0_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_0_dec_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave0_rate_t *val)
 {
@@ -8884,15 +8788,12 @@ int32_t lsm6dsm_sh_slave_0_dec_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE0_CONFIG,
                            (uint8_t *)&slave0_config, 1);
 
-    if (ret == 0)
-    {
-      switch (slave0_config.slave0_rate)
-      {
+    if (ret == 0) {
+      switch (slave0_config.slave0_rate) {
         case LSM6DSM_SL0_NO_DEC:
           *val = LSM6DSM_SL0_NO_DEC;
           break;
@@ -8922,16 +8823,16 @@ int32_t lsm6dsm_sh_slave_0_dec_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Slave 0 write operation is performed only at the first sensor
-  *         hub cycle.
-  *         This is effective if the Aux_sens_on[1:0] field in
-  *         SLAVE0_CONFIG(04h) is set to a value other than 00.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of write_once in reg SLAVE1_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Slave 0 write operation is performed only at the first sensor
+ *         hub cycle.
+ *         This is effective if the Aux_sens_on[1:0] field in
+ *         SLAVE0_CONFIG(04h) is set to a value other than 00.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of write_once in reg SLAVE1_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_write_mode_set(const stmdev_ctx_t *ctx,
                                   lsm6dsm_write_once_t val)
 {
@@ -8940,14 +8841,12 @@ int32_t lsm6dsm_sh_write_mode_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                            (uint8_t *)&slave1_config, 1);
     slave1_config.write_once = (uint8_t) val;
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                               (uint8_t *)&slave1_config, 1);
     }
@@ -8959,16 +8858,16 @@ int32_t lsm6dsm_sh_write_mode_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Slave 0 write operation is performed only at the first sensor
-  *         hub cycle.
-  *         This is effective if the Aux_sens_on[1:0] field in
-  *         SLAVE0_CONFIG(04h) is set to a value other than 00.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of write_once in reg SLAVE1_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Slave 0 write operation is performed only at the first sensor
+ *         hub cycle.
+ *         This is effective if the Aux_sens_on[1:0] field in
+ *         SLAVE0_CONFIG(04h) is set to a value other than 00.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of write_once in reg SLAVE1_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_write_mode_get(const stmdev_ctx_t *ctx,
                                   lsm6dsm_write_once_t *val)
 {
@@ -8977,15 +8876,12 @@ int32_t lsm6dsm_sh_write_mode_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                            (uint8_t *)&slave1_config, 1);
 
-    if (ret == 0)
-    {
-      switch (slave1_config.write_once)
-      {
+    if (ret == 0) {
+      switch (slave1_config.write_once) {
         case LSM6DSM_EACH_SH_CYCLE:
           *val = LSM6DSM_EACH_SH_CYCLE;
           break;
@@ -9007,14 +8903,14 @@ int32_t lsm6dsm_sh_write_mode_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 1 starting from the
-  *         sensor hub trigger.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of slave1_rate in reg SLAVE1_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 1 starting from the
+ *         sensor hub trigger.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of slave1_rate in reg SLAVE1_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_1_dec_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave1_rate_t val)
 {
@@ -9023,13 +8919,11 @@ int32_t lsm6dsm_sh_slave_1_dec_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                            (uint8_t *)&slave1_config, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       slave1_config.slave1_rate = (uint8_t) val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                               (uint8_t *)&slave1_config, 1);
@@ -9042,13 +8936,13 @@ int32_t lsm6dsm_sh_slave_1_dec_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 1 starting from the
-  *         sensor hub trigger.[get]
-  *
-  * @param  ctx    Read / write interface definitions reg SLAVE1_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 1 starting from the
+ *         sensor hub trigger.[get]
+ *
+ * @param  ctx    Read / write interface definitions reg SLAVE1_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_1_dec_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave1_rate_t *val)
 {
@@ -9057,15 +8951,12 @@ int32_t lsm6dsm_sh_slave_1_dec_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE1_CONFIG,
                            (uint8_t *)&slave1_config, 1);
 
-    if (ret == 0)
-    {
-      switch (slave1_config.slave1_rate)
-      {
+    if (ret == 0) {
+      switch (slave1_config.slave1_rate) {
         case LSM6DSM_SL1_NO_DEC:
           *val = LSM6DSM_SL1_NO_DEC;
           break;
@@ -9095,14 +8986,14 @@ int32_t lsm6dsm_sh_slave_1_dec_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 2 starting from the
-  *         sensor hub trigger.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of slave2_rate in reg SLAVE2_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 2 starting from the
+ *         sensor hub trigger.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of slave2_rate in reg SLAVE2_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_2_dec_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave2_rate_t val)
 {
@@ -9111,13 +9002,11 @@ int32_t lsm6dsm_sh_slave_2_dec_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE2_CONFIG,
                            (uint8_t *)&slave2_config, 1);
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       slave2_config.slave2_rate = (uint8_t) val;
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE2_CONFIG,
                               (uint8_t *)&slave2_config, 1);
@@ -9130,14 +9019,14 @@ int32_t lsm6dsm_sh_slave_2_dec_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 2 starting from the
-  *         sensor hub trigger.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of slave2_rate in reg SLAVE2_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 2 starting from the
+ *         sensor hub trigger.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of slave2_rate in reg SLAVE2_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_2_dec_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave2_rate_t *val)
 {
@@ -9146,15 +9035,12 @@ int32_t lsm6dsm_sh_slave_2_dec_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE2_CONFIG,
                            (uint8_t *)&slave2_config, 1);
 
-    if (ret == 0)
-    {
-      switch (slave2_config.slave2_rate)
-      {
+    if (ret == 0) {
+      switch (slave2_config.slave2_rate) {
         case LSM6DSM_SL2_NO_DEC:
           *val = LSM6DSM_SL2_NO_DEC;
           break;
@@ -9184,14 +9070,14 @@ int32_t lsm6dsm_sh_slave_2_dec_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 3 starting from the
-  *         sensor hub trigger.[set]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Change the values of slave3_rate in reg SLAVE3_CONFIG
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 3 starting from the
+ *         sensor hub trigger.[set]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Change the values of slave3_rate in reg SLAVE3_CONFIG
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_3_dec_set(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave3_rate_t val)
 {
@@ -9200,14 +9086,12 @@ int32_t lsm6dsm_sh_slave_3_dec_set(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE3_CONFIG,
                            (uint8_t *)&slave3_config, 1);
     slave3_config.slave3_rate = (uint8_t)val;
 
-    if (ret == 0)
-    {
+    if (ret == 0) {
       ret = lsm6dsm_write_reg(ctx, LSM6DSM_SLAVE3_CONFIG,
                               (uint8_t *)&slave3_config, 1);
     }
@@ -9219,14 +9103,14 @@ int32_t lsm6dsm_sh_slave_3_dec_set(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @brief  Decimation of read operation on Slave 3 starting from the
-  *         sensor hub trigger.[get]
-  *
-  * @param  ctx    Read / write interface definitions
-  * @param  val    Get the values of slave3_rate in reg SLAVE3_CONFIG.
-  * @retval        Interface status (MANDATORY: return 0 -> no Error).
-  *
-  */
+ * @brief  Decimation of read operation on Slave 3 starting from the
+ *         sensor hub trigger.[get]
+ *
+ * @param  ctx    Read / write interface definitions
+ * @param  val    Get the values of slave3_rate in reg SLAVE3_CONFIG.
+ * @retval        Interface status (MANDATORY: return 0 -> no Error).
+ *
+ */
 int32_t lsm6dsm_sh_slave_3_dec_get(const stmdev_ctx_t *ctx,
                                    lsm6dsm_slave3_rate_t *val)
 {
@@ -9235,15 +9119,12 @@ int32_t lsm6dsm_sh_slave_3_dec_get(const stmdev_ctx_t *ctx,
 
   ret = lsm6dsm_mem_bank_set(ctx, LSM6DSM_BANK_A);
 
-  if (ret == 0)
-  {
+  if (ret == 0) {
     ret = lsm6dsm_read_reg(ctx, LSM6DSM_SLAVE3_CONFIG,
                            (uint8_t *)&slave3_config, 1);
 
-    if (ret == 0)
-    {
-      switch (slave3_config.slave3_rate)
-      {
+    if (ret == 0) {
+      switch (slave3_config.slave3_rate) {
         case LSM6DSM_SL3_NO_DEC:
           *val = LSM6DSM_SL3_NO_DEC;
           break;
@@ -9273,11 +9154,11 @@ int32_t lsm6dsm_sh_slave_3_dec_get(const stmdev_ctx_t *ctx,
 }
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */
 
 /**
-  * @}
-  *
-  */
+ * @}
+ *
+ */

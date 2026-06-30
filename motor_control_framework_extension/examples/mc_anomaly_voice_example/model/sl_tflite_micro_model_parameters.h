@@ -4,9 +4,9 @@
 
 // Definitions generated from "keyword_spotting_pacman_v3.tflite"'
 #define SL_TFLITE_MODEL_AVERAGE_WINDOW_DURATION_MS 300
-#define SL_TFLITE_MODEL_CLASSES {"left", "right", "up", "down", "stop", "go", "_unknown_"}
+#define SL_TFLITE_MODEL_CLASSES { "left", "right", "up", "down", "stop", "go", "_unknown_" }
 #define SL_TFLITE_MODEL_DATE "2023-03-01T20:30:54.940Z"
-#define SL_TFLITE_MODEL_DETECTION_THRESHOLD_LIST b'\xd8\x00\x00\x00\xd8\x00\x00'
+#define SL_TFLITE_MODEL_DETECTION_THRESHOLD_LIST b '\xd8\x00\x00\x00\xd8\x00\x00'
 #define SL_TFLITE_MODEL_FE_ACTIVITY_DETECTION_ALPHA_A 0.5f
 #define SL_TFLITE_MODEL_FE_ACTIVITY_DETECTION_ALPHA_B 0.800000011920929f
 #define SL_TFLITE_MODEL_FE_ACTIVITY_DETECTION_ARM_THRESHOLD 0.75f
@@ -44,6 +44,5 @@
 #define SL_TFLITE_MODEL_VERBOSE_MODEL_OUTPUT_LOGS false
 #define SL_TFLITE_MODEL_VERSION 1
 #define SL_TFLITE_MODEL_VOLUME_GAIN 0.0f
-
 
 #endif // SL_TFLITE_MICRO_MODEL_PARAMETERS_H

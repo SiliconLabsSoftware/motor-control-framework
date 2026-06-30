@@ -57,7 +57,7 @@ BLDCDriver6PWM *driver_p;
 HallSensor *sensor_p;
 Commander *command_p;
 
-bool auto_fail_safe=false;
+bool auto_fail_safe = false;
 
 static uint32_t g_anomaly_blanking_ms = ANOMALY_BLANKING_DEFAULT_MS;
 static float    g_target_step_thresh  = TARGET_STEP_THRESH_DEFAULT;
@@ -69,7 +69,6 @@ static bool g_blank_active = false;
 static float g_last_target = 0.0f;
 static bool  g_fault_latched_stop = false;
 
-
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
@@ -80,7 +79,6 @@ void faultShutOff(void);
 
 static inline void anomalyBlankingStart(void);
 static inline bool anomalyBlankingActive(void);
-
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -128,7 +126,6 @@ void motor_control_init(void)
   // rigorous example demonstration.
   EFM_ASSERT(xHandle != NULL);
 
-
   //init timer for control loop
   uint32_t timer_frequency;
   uint32_t timer_top = 0xFFFFFFFF;
@@ -151,7 +148,6 @@ void motor_control_init(void)
     }
   }
 
-
   sl_hal_timer_init_t timer_init = SL_HAL_TIMER_INIT_DEFAULT;
   timer_init.prescaler = (sl_hal_timer_prescaler_t)timer_prescaler;
 
@@ -161,13 +157,11 @@ void motor_control_init(void)
   sl_hal_timer_set_top((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, timer_top);
   sl_hal_timer_disable_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
   sl_hal_timer_clear_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
-
 }
 
 /*******************************************************************************
  * Hall Sensor Velocity 6PWM task.
  ******************************************************************************/
-
 static void motor_control_task(void *arg)
 {
   (void)&arg;
@@ -204,8 +198,8 @@ static void motor_control_task(void *arg)
   driver.enable();
 
   //disable driver chip select
-    // Configure PC8 as push-pull output, initial level high
-  GPIO_PinModeSet(DRV_SPI_CS_PORT,DRV_SPI_CS_PIN, gpioModePushPull, 1);
+  // Configure PC8 as push-pull output, initial level high
+  GPIO_PinModeSet(DRV_SPI_CS_PORT, DRV_SPI_CS_PIN, gpioModePushPull, 1);
   GPIO_PinOutSet(DRV_SPI_CS_PORT, DRV_SPI_CS_PIN);
 
   //sensor setup
@@ -247,9 +241,9 @@ static void motor_control_task(void *arg)
   // commander setup
   static Commander command(Serial);
   command_p = &command;
-    // add motor commands
+  // add motor commands
   command.add('M', doMotor, "motor");
-    // add anomaly keyword
+  // add anomaly keyword
   command.add('A', receiveCustomCommand, "anomaly");
 
   if (!motor.initFOC()) {
@@ -270,10 +264,9 @@ static void motor_control_task(void *arg)
   sl_hal_timer_start((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base);
 
   while (1) {
-
     //Check auto shutoff trigger
     faultShutOff();
-    
+
     // Motion control function
     // velocity, position or voltage (defined in motor.controller)
     // this function can be run at much lower frequency than loopFOC() function
@@ -303,28 +296,32 @@ void TIMER3_IRQHandler(void)
   SEGGER_SYSVIEW_RecordExitISR();
 }
 
-void receiveCustomCommand(char* data){
-
-    if (data[0] == 'O' && data[1] == 'F' && data[2] == 'F' ){ // Auto OFF feature
-      if(data[3] == '1') auto_fail_safe = true; //Enable auto fail safe
-      else if(data[3] == '0') auto_fail_safe = false; //Disable auto fail safe
-      else Serial.print("Wrong auto fail safe attribute!");
+void receiveCustomCommand(char* data)
+{
+  if (data[0] == 'O' && data[1] == 'F' && data[2] == 'F' ) {  // Auto OFF feature
+    if (data[3] == '1') {
+      auto_fail_safe = true;                    //Enable auto fail safe
+    } else if (data[3] == '0') {
+      auto_fail_safe = false;                         //Disable auto fail safe
+    } else {
+      Serial.print("Wrong auto fail safe attribute!");
     }
-    else     {
-      Serial.print("Wrong Anomaly data received:");
-      Serial.print(data[0]);
-      Serial.print(data[1]);
-      Serial.println(data[2]);
-    }
-
+  } else {
+    Serial.print("Wrong Anomaly data received:");
+    Serial.print(data[0]);
+    Serial.print(data[1]);
+    Serial.println(data[2]);
+  }
 }
 
-
-void faultShutOff(void){
-  float anomaly=0;
+void faultShutOff(void)
+{
+  float anomaly = 0;
 
   // If auto fail safe is not enabled, return immediately
-  if (!auto_fail_safe) return;
+  if (!auto_fail_safe) {
+    return;
+  }
 
   float tgt = motor_p->target;
 
@@ -344,20 +341,15 @@ void faultShutOff(void){
     }
   }
 
-
-
   // Skip anomaly shutoff during blanking window
   if (anomalyBlankingActive()) {
     return;
   }
 
-
-  
-  anomaly = getAnomaly()*100;
-  if(anomaly >FAIL_SAFE_ANOMALY_LEVEL){
-    motor_p->target=0;//stop
+  anomaly = getAnomaly() * 100;
+  if (anomaly > FAIL_SAFE_ANOMALY_LEVEL) {
+    motor_p->target = 0;//stop
   }
-
 }
 
 static inline void anomalyBlankingStart(void)

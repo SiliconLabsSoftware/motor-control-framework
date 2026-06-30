@@ -70,9 +70,9 @@ static void audio_classifier_task(void *arg);
 static void handle_result(int32_t current_time, int result, uint8_t score, bool is_new_command);
 
 /***************************************************************************//**
- * Run model inference 
- * 
- * Copies the currently available data from the feature_buffer into the input 
+ * Run model inference
+ *
+ * Copies the currently available data from the feature_buffer into the input
  * tensor and runs inference, updating the global output tensor.
  *
  * @return
@@ -82,7 +82,7 @@ static sl_status_t run_inference()
 {
   // Update model input tensor
   sl_status_t status = sl_ml_audio_feature_generation_fill_tensor(sl_tflite_interpreter->input(0));
-  if (status != SL_STATUS_OK){
+  if (status != SL_STATUS_OK) {
     return SL_STATUS_FAIL;
   }
   // Run the model on the spectrogram input and make sure it succeeds.
@@ -100,7 +100,8 @@ static sl_status_t run_inference()
  * @return
  *   SL_STATUS_OK on success, other value on failure.
  ******************************************************************************/
-static sl_status_t process_output(){
+static sl_status_t process_output()
+{
   // Determine whether a command was recognized based on the output of inference
   uint8_t result = 0;
   uint8_t score = 0;
@@ -113,7 +114,7 @@ static sl_status_t process_output(){
 
   // Process the latest result from the model output
   TfLiteStatus process_status = command_recognizer->ProcessLatestResults(
-      sl_tflite_interpreter->output(0), current_time_stamp, &result, &score, &is_new_command);
+    sl_tflite_interpreter->output(0), current_time_stamp, &result, &score, &is_new_command);
 
   if (process_status == kTfLiteOk) {
     // Take an action based on the new result/score
@@ -151,7 +152,7 @@ void audio_classifier_init(void)
 {
   // Initialize feature generation globally on first call
   audio_feature_generation_global_init();
-  
+
   deinit_requested = false;
   audio_task_handle = xTaskCreateStatic(audio_classifier_task,
                                         "audio classifier task",
@@ -173,10 +174,10 @@ void audio_classifier_deinit(void)
 
   Serial.println("Audio deinit: requesting shutdown");
   deinit_requested = true;
-  
+
   const uint32_t MAX_DEINIT_RETRIES = 10;
   const uint32_t DEINIT_RETRY_DELAY_MS = 50;
-  
+
   for (uint32_t retry = 0; retry < MAX_DEINIT_RETRIES; retry++) {
     if (audio_task_handle != NULL) {
       vTaskDelay(pdMS_TO_TICKS(DEINIT_RETRY_DELAY_MS));
@@ -201,9 +202,9 @@ void audio_classifier_deinit(void)
 
   sl_tflite_interpreter = nullptr;
   command_recognizer = nullptr;
-  
+
   ml_model_release(ML_MODEL_AUDIO);
-  
+
   detected_timeout = 0;
   activity_timestamp = 0;
   activity_toggle_timestamp = 0;
@@ -211,7 +212,7 @@ void audio_classifier_deinit(void)
   previous_score_timestamp = 0;
   previous_result = 0;
   target_speed = 15.0f;
-  
+
   Serial.println("Audio deinit: complete");
 }
 
@@ -241,7 +242,7 @@ static void audio_classifier_task(void *arg)
   }
 
   // Create op resolver (local instance for audio model)
-  static tflite::MicroMutableOpResolver<7> opcode_resolver;
+  static tflite::MicroMutableOpResolver < 7 > opcode_resolver;
   static bool resolver_initialized = false;
   if (!resolver_initialized) {
     opcode_resolver.AddConv2D();
@@ -271,9 +272,9 @@ static void audio_classifier_task(void *arg)
   }
   sl_tflite_interpreter = model_ctx.interpreter;
 
-  // Instantiate CommandRecognizer  
+  // Instantiate CommandRecognizer
   static RecognizeCommands static_recognizer(sl_tflite_micro_get_error_reporter(), SMOOTHING_WINDOW_DURATION_MS,
-      DETECTION_THRESHOLD, SUPPRESSION_TIME_MS, MINIMUM_DETECTION_COUNT, IGNORE_UNDERSCORE_LABELS);
+                                             DETECTION_THRESHOLD, SUPPRESSION_TIME_MS, MINIMUM_DETECTION_COUNT, IGNORE_UNDERSCORE_LABELS);
   command_recognizer = &static_recognizer;
 
   const TfLiteTensor* input = sl_tflite_interpreter->input(0);
@@ -306,7 +307,7 @@ static void audio_classifier_task(void *arg)
     return;
   }
 
-  // Add EM1 requirement to allow microphone sampling 
+  // Add EM1 requirement to allow microphone sampling
   sl_power_manager_add_em_requirement(SL_POWER_MANAGER_EM1);
   power_manager_em1_added = true;
 
@@ -317,7 +318,7 @@ static void audio_classifier_task(void *arg)
 
     // Delay task in order to do periodic inference
     #if SL_TFLITE_MICRO_MODEL_TYPE == SL_TFLITE_MICRO_MODEL_AUDIO_ENHANCED
-    vTaskDelay(pdMS_TO_TICKS(SL_TFLITE_MODEL_LATENCY_MS/2));
+    vTaskDelay(pdMS_TO_TICKS(SL_TFLITE_MODEL_LATENCY_MS / 2));
     #elif SL_TFLITE_MICRO_MODEL_TYPE == SL_TFLITE_MICRO_MODEL_AUDIO_BASE
     vTaskDelay(pdMS_TO_TICKS(100));
     #endif
@@ -341,7 +342,7 @@ static void audio_classifier_task(void *arg)
 /***************************************************************************//**
  * Handle inference result
  *
- * This function is called whenever we have a succesfull inference result.
+ * This function is called whenever we have a successful inference result.
  *
  * @param current_time timestamp of the inference result.
  * @param result classification result, this is number >= 0.
@@ -349,7 +350,8 @@ static void audio_classifier_task(void *arg)
  *   of the result classification.
  * @param is_new_command true if the result is a new command, false otherwise.
  ******************************************************************************/
-static void handle_result(int32_t current_time, int result, uint8_t score, bool is_new_command) {
+static void handle_result(int32_t current_time, int result, uint8_t score, bool is_new_command)
+{
   const char *label = get_category_label(result);
 
   if (is_new_command) {
@@ -370,7 +372,7 @@ static void handle_result(int32_t current_time, int result, uint8_t score, bool 
           break;
         case 0: // Start motor
           motor_p->target = 15.0f;  // Set to target speed
-        break;
+          break;
         default:
           break;
       }
@@ -388,8 +390,7 @@ static void handle_result(int32_t current_time, int result, uint8_t score, bool 
         case 3: // Decrease speed, and if running, set to target speed
           if (target_speed > 0.0f) {
             target_speed -= target_speed >= 5.0f ? 5.0f : 0;  // Decrease speed
-          }
-          else {
+          } else {
             target_speed += target_speed <= -5.0f ? 5.0f : 0;  // Increase speed
           }
           if (motor_p->target != 0.0f) {
@@ -399,15 +400,14 @@ static void handle_result(int32_t current_time, int result, uint8_t score, bool 
         case 2: // Increase speed, and if running, set to target speed
           if (target_speed > 0.0f) {
             target_speed += target_speed < 25.0f ? 5.0f : 0;  // Increase speed
-          }
-          else {
+          } else {
             target_speed -= target_speed >= -25.0f ? 5.0f : 0;  // Decrease speed
           }
           if (motor_p->target != 0.0f) {
             motor_p->target = target_speed;
           }
           break;
-        case 1: // Turn right 
+        case 1: // Turn right
           target_speed = POS(target_speed);
           if (motor_p->target != 0.0f) {
             motor_p->target = target_speed;
@@ -453,7 +453,7 @@ static void handle_result(int32_t current_time, int result, uint8_t score, bool 
     if (diff >= SENSITIVITY || (previous_result != result)) {
       previous_result = result;
       activity_timestamp = current_time + 500;
-    } else if(current_time >= activity_timestamp) {
+    } else if (current_time >= activity_timestamp) {
       activity_timestamp = 0;
     }
 
