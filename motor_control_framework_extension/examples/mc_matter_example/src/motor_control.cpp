@@ -20,12 +20,12 @@
  #include "motor_control.h"
  #include "sl_hal_timer.h"
  #include "sl_device_peripheral.h"
- 
+
  #include "SimpleFOC.h"
- //Needs to be moved here to avoid build error?
+//Needs to be moved here to avoid build error?
  #include "FreeRTOS.h"
  #include "task.h"
- //End of move
+//End of move
  #include "MXLEMMINGObserverSensor.h"
  #include "app_properties_config.h"
 
@@ -60,7 +60,7 @@
  #define MOTOR_VOLTAGE_LIMIT_V           12.0f     // [V]: Global voltage limit. Limits Q-axis voltage.
  #define MOTOR_CURRENT_LIMIT_A           4.0f      // [A]: Global current limit. Limits Q-axis current.
 
- //#define SENSORLESS_MODE
+//#define SENSORLESS_MODE
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
@@ -71,7 +71,6 @@ static BLDCDriver6PWM *driver_p;
 #ifndef SENSORLESS_MODE
 static HallSensor *sensor_p;
 #endif
-
 
 static float matter_target_speed = 0.0;
 
@@ -174,7 +173,6 @@ void motor_control_init(void)
   sl_hal_timer_set_top((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, timer_top);
   sl_hal_timer_disable_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
   sl_hal_timer_clear_interrupts((TIMER_TypeDef *)MC_TASK_TIMER_PERIPHERAL->base, _TIMER_IF_MASK);
-
 }
 
 /*******************************************************************************
@@ -216,10 +214,8 @@ static void motor_control_task(void *arg)
   sensor.enableInterrupts(doA, doB, doC);
   sensor_p = &sensor;
 
-
   motor.linkSensor(&sensor);
   #endif
-  
 
   // Motor setup
   motor.foc_modulation = FOCModulationType::SpaceVectorPWM;
@@ -259,34 +255,22 @@ static void motor_control_task(void *arg)
   static float current_target = 0;
 
   while (1) {
-    if (current_target!=matter_target_speed)
-    {
+    if (current_target != matter_target_speed) {
       const float step = 1;
-      if (abs(current_target-matter_target_speed)<step)
-      {
+      if (abs(current_target - matter_target_speed) < step) {
         current_target = matter_target_speed;
-      }
-      else 
-      {
-        if (matter_target_speed > current_target)
-        {
+      } else {
+        if (matter_target_speed > current_target) {
           current_target += step;
-        } 
-        else
-        {
+        } else {
           current_target -= step;
         }
       }
+    } else {
     }
-    else
-    {
-    }
-    if (abs(current_target)<30)
-    {
+    if (abs(current_target) < 30) {
       motor_p->disable();
-    }
-    else
-    {
+    } else {
       motor_p->enable();
       motor_p->move(current_target);
     }
@@ -297,8 +281,9 @@ static void motor_control_task(void *arg)
 void command_the_motor(uint8_t percent, chip::app::Clusters::FanControl::AirflowDirectionEnum direction)
 {
   matter_target_speed = 5.0 * percent;
-  if (direction == chip::app::Clusters::FanControl::AirflowDirectionEnum::kReverse)
+  if (direction == chip::app::Clusters::FanControl::AirflowDirectionEnum::kReverse) {
     matter_target_speed *= -1;
+  }
 }
 
 void TIMER3_IRQHandler(void)
@@ -313,5 +298,4 @@ void TIMER3_IRQHandler(void)
   #ifdef SL_CATALOG_SYSTEMVIEW_TRACE_PRESENT
   SEGGER_SYSVIEW_RecordExitISR();
   #endif
-
 }

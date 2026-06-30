@@ -21,20 +21,16 @@
 
 #include "BaseAppEvent.h"
 
-struct AppEvent : public BaseAppEvent
-{
-    enum AppEventTypes
-    {
-        kEventType_FanControl = BaseAppEvent::kEventType_Max + 1,
-        kEventType_Install,
-    };
+struct AppEvent : public BaseAppEvent {
+  enum AppEventTypes{
+    kEventType_FanControl = BaseAppEvent::kEventType_Max + 1,
+    kEventType_Install,
+  };
 
-    union
-    {
-        struct
-        {
-            uint8_t Action;
-            int32_t Actor;
-        } FanEvent;
-    };
+  union {
+    struct {
+      uint8_t Action;
+      int32_t Actor;
+    } FanEvent;
+  };
 };

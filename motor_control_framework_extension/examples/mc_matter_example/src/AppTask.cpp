@@ -67,84 +67,78 @@ AppTask AppTask::sAppTask;
 
 CHIP_ERROR AppTask::AppInit()
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
-    chip::DeviceLayer::Silabs::GetPlatform().SetButtonsCb(AppTask::ButtonEventHandler);
+  CHIP_ERROR err = CHIP_NO_ERROR;
+  chip::DeviceLayer::Silabs::GetPlatform().SetButtonsCb(AppTask::ButtonEventHandler);
 
 #ifdef DISPLAY_ENABLED
-    GetLCD().SetCustomUI(FanControlUI::DrawUI);
+  GetLCD().SetCustomUI(FanControlUI::DrawUI);
 #endif
 
-    err = FanControlMgr().Init();
-    if (err != CHIP_NO_ERROR)
-    {
-        ChipLogError(AppServer, "FanControlMgr::Init() failed");
-        appError(err);
-    }
-    // Update the LCD with the Stored value. Show QR Code if not provisioned
+  err = FanControlMgr().Init();
+  if (err != CHIP_NO_ERROR) {
+    ChipLogError(AppServer, "FanControlMgr::Init() failed");
+    appError(err);
+  }
+  // Update the LCD with the Stored value. Show QR Code if not provisioned
 #ifdef DISPLAY_ENABLED
-    GetLCD().WriteDemoUI(false);
+  GetLCD().WriteDemoUI(false);
 #ifdef QR_CODE_ENABLED
-    if (!BaseApplication::GetProvisionStatus())
-    {
-        GetLCD().ShowQRCode(true);
-    }
+  if (!BaseApplication::GetProvisionStatus()) {
+    GetLCD().ShowQRCode(true);
+  }
 #endif // QR_CODE_ENABLED
 #endif
 
-    return CHIP_NO_ERROR;
+  return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AppTask::StartAppTask()
 {
-    return BaseApplication::StartAppTask(AppTaskMain);
+  return BaseApplication::StartAppTask(AppTaskMain);
 }
 
 void AppTask::AppTaskMain(void * pvParameter)
 {
-    AppEvent event;
-    osMessageQueueId_t sAppEventQueue = *(static_cast<osMessageQueueId_t *>(pvParameter));
+  AppEvent event;
+  osMessageQueueId_t sAppEventQueue = *(static_cast < osMessageQueueId_t * > (pvParameter));
 
-    CHIP_ERROR err = sAppTask.Init();
-    if (err != CHIP_NO_ERROR)
-    {
-        ChipLogError(AppServer, "AppTask.Init() failed");
-        appError(err);
-    }
+  CHIP_ERROR err = sAppTask.Init();
+  if (err != CHIP_NO_ERROR) {
+    ChipLogError(AppServer, "AppTask.Init() failed");
+    appError(err);
+  }
 
 #if !(defined(CHIP_CONFIG_ENABLE_ICD_SERVER) && CHIP_CONFIG_ENABLE_ICD_SERVER)
-    sAppTask.StartStatusLEDTimer();
+  sAppTask.StartStatusLEDTimer();
 #endif
 
-    ChipLogProgress(AppServer, "App Task started");
+  ChipLogProgress(AppServer, "App Task started");
 
-    while (true)
-    {
-        osStatus_t eventReceived = osMessageQueueGet(sAppEventQueue, &event, NULL, osWaitForever);
-        while (eventReceived == osOK)
-        {
-            sAppTask.DispatchEvent(&event);
-            eventReceived = osMessageQueueGet(sAppEventQueue, &event, NULL, 0);
-        }
+  while (true) {
+    osStatus_t eventReceived = osMessageQueueGet(sAppEventQueue, &event, NULL, osWaitForever);
+    while (eventReceived == osOK) {
+      sAppTask.DispatchEvent(&event);
+      eventReceived = osMessageQueueGet(sAppEventQueue, &event, NULL, 0);
     }
+  }
 }
 
 void AppTask::UpdateFanControlUI()
 {
-    // Update the LCD with the Stored value. Show QR Code if not provisioned
+  // Update the LCD with the Stored value. Show QR Code if not provisioned
 #ifdef DISPLAY_ENABLED
-    GetLCD().WriteDemoUI(false);
+  GetLCD().WriteDemoUI(false);
 #endif // DISPLAY_ENABLED
 }
 
 void AppTask::ButtonEventHandler(uint8_t button, uint8_t btnAction)
 {
-    AppEvent button_event           = {};
-    button_event.Type               = AppEvent::kEventType_Button;
-    button_event.ButtonEvent.Action = btnAction;
+  AppEvent button_event           = {};
+  button_event.Type               = AppEvent::kEventType_Button;
+  button_event.ButtonEvent.Action = btnAction;
 
-    if (button == APP_FUNCTION_BUTTON)
-    {
-        button_event.Handler = BaseApplication::ButtonHandler;
-        AppTask::GetAppTask().PostEvent(&button_event);
-    }
+  if (button == APP_FUNCTION_BUTTON) {
+    button_event.Handler = BaseApplication::ButtonHandler;
+    AppTask::GetAppTask().PostEvent(&button_event);
+  }
 }

@@ -8,12 +8,12 @@ The example is extended with the Simple FOC motor controller Arduino library, ho
 
 ## Building the example
 
-Clone the repository to a folder, then open it with Simplicity Studio 6. 
+Clone the repository to a folder, then open it with Simplicity Studio 6.
 The solution can be built using Visual Studio Code, alternatively you can change the toolchain.
 
 ## Fan Control Application User Interface
 
-**LED 0** 
+**LED 0**
 
 Simulates the Fan. The following states are possible:
 
