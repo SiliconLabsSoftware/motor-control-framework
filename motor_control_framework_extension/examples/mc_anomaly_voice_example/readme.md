@@ -20,8 +20,7 @@ A safety feature ties the IMU model back to the motor: with the anomaly
 target to `0` (stop). A short *blanking* window after each setpoint change
 suppresses false trips caused by the speed transient itself.
 
-This example is a port of the `EW-demo/ai-demo-multi-model` proof-of-concept onto
-the Motor Control Framework extension example structure.
+![HW set-up](image/system_view.jpg)
 
 ## What it does
 
@@ -40,6 +39,7 @@ the Motor Control Framework extension example structure.
 | Radio board | **BRD4120A** (EFR32MG26) — pin map shipped as a framework overlay |
 | Motor driver | TI BOOSTXL-DRV8305 BoosterPack |
 | Motor | 3-phase BLDC with Hall sensors (`MOTOR_PP = 8`) |
+| Interface board | Connects Motor driver, Radio board and sensors - PVB9407A|
 | IMU | On-board ST LSM6DSM (SPI, EUSART `exp` instance, CS = PA6) |
 | Microphone | On-board I2S MEMS microphone |
 | Power | 24 V supply for the motor stage |
@@ -55,7 +55,7 @@ when you create the project for that board). The microphone I2S pins, IMU SPI
    board so the pin overlay is applied.
 2. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
    sensors.
-3. Build, flash, and open an RTT terminal (and/or connect over BLE).
+3. Build, flash, and open an RTT terminal or connect over BLE with web app: https://markwendler.github.io/motor-ble-controller/.
 4. On boot the **IMU-anomaly** model is active. Send a velocity target with the
    SimpleFOC `Commander` `M` command, e.g.:
 
