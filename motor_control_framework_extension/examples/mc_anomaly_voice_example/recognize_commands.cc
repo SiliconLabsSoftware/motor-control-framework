@@ -155,7 +155,7 @@ TfLiteStatus RecognizeCommands::ProcessLatestResults(
   time_since_last_top = current_time_ms - previous_top_label_time_;
 
   if ((current_top_score > detection_threshold_)
-      && (ignore_underscore_ && current_top_label[0] != '_')
+      && (!ignore_underscore_ || current_top_label[0] != '_')
       && (time_since_last_top > suppression_ms_)) {
     previous_top_label_index_ = current_top_index;
     previous_top_label_time_ = current_time_ms;
