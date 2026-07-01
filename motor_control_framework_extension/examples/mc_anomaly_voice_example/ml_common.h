@@ -59,7 +59,6 @@ inline sl_status_t ml_model_acquire(ml_model_id_t model_id,
 
   if ((state.active_model != ML_MODEL_NONE) && (state.active_model != model_id)) {
     if (state.interpreter != nullptr) {
-      state.interpreter->~MicroInterpreter();
       delete state.interpreter;
       state.interpreter = nullptr;
     }
@@ -68,7 +67,6 @@ inline sl_status_t ml_model_acquire(ml_model_id_t model_id,
 
   if (state.arena_size < arena_size) {
     if (state.interpreter != nullptr) {
-      state.interpreter->~MicroInterpreter();
       delete state.interpreter;
       state.interpreter = nullptr;
     }
@@ -98,7 +96,6 @@ inline sl_status_t ml_model_acquire(ml_model_id_t model_id,
       return SL_STATUS_ALLOCATION_FAILED;
     }
     if (state.interpreter->AllocateTensors() != kTfLiteOk) {
-      state.interpreter->~MicroInterpreter();
       delete state.interpreter;
       state.interpreter = nullptr;
       return SL_STATUS_FAIL;
@@ -121,7 +118,6 @@ inline void ml_model_release(ml_model_id_t model_id)
     return;
   }
   if (state.interpreter != nullptr) {
-    state.interpreter->~MicroInterpreter();
     delete state.interpreter;
     state.interpreter = nullptr;
   }
