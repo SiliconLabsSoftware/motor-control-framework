@@ -53,11 +53,27 @@ static void send_callback(uint8_t connection, const uint8_t *data, size_t len)
   }
 }
 
+/**
+ * Controls when buffered TX data is flushed as a BLE notification.
+ * Called after each byte is written to the TX buffer.
+ *
+ * Return true to send all buffered data immediately as a BLE notification.
+ *
+ * Replace this function body with custom logic if a different
+ * packetization strategy is needed.
+ */
+static bool ble_check_send_condition(size_t index, const uint8_t *buf, size_t size)
+{
+  return buf && index < size && (buf[index] == '\r' || buf[index] == '\n');
+}
+
 extern "C" void sl_bt_on_event(sl_bt_msg_t *evt)
 {
   switch (SL_BT_MSG_ID(evt->header)) {
     case sl_bt_evt_system_boot_id:
       bleStreamAdapter.setSendCallback(send_callback);
+      bleStreamAdapter.setMaxSendChunk(gattdb_spp_data_len);
+      bleStreamAdapter.onCheckSendCondition(ble_check_send_condition);
       ble_peer_manager_peripheral_create_connection();
       break;
 
