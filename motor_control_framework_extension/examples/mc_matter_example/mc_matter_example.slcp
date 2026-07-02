@@ -281,3 +281,6 @@ ui_hints:
     - path: config/btconf/gatt_configuration.btconf
     - path: readme.md
       focus: true
+
+other_file:
+  - path: ./image/qr_code_img.png
