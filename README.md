@@ -25,7 +25,7 @@ Projects are created and configured in Simplicity Studio 6. Build and flash the 
 
 | Item | Notes |
 |------|-------|
-| Radio board | [BRD4186C](https://www.silabs.com/development-tools/wireless/xg24-rb4186c-efr32xg24-wireless-gecko-radio-board) (EFR32xG24) or [BRD4401C](https://www.silabs.com/development-tools/wireless/xg28-rb4401c-efr32xg28-2-4-ghz-ble-and-20-dbm-radio-board) (EFR32xG28) |
+| Radio board | [BRD4186C](https://www.silabs.com/development-tools/wireless/xg24-rb4186c-efr32xg24-wireless-gecko-radio-board) (EFR32xG24), [BRD4120A](https://www.silabs.com/development-tools/wireless/xg26-rb4120a-efr32xg26-wireless-10-dbm-radio-board?tab=overview) (EFR32xG26) or [BRD4401C](https://www.silabs.com/development-tools/wireless/xg28-rb4401c-efr32xg28-2-4-ghz-ble-and-20-dbm-radio-board) (EFR32xG28) |
 | Motor driver | [TI BOOSTXL-DRV8305](https://www.ti.com/tool/BOOSTXL-DRV8305EVM) BoosterPack |
 | Motor | 3-phase BLDC — reference motor: [Nanotec DF45M024053-A2](https://www.nanotec.com/eu/en/products/1789-df45m024053-a2) |
 | Power | 24 V supply for the motor stage |
@@ -90,7 +90,7 @@ The examples and **Motor Control Framework** component appear after installation
    - Sensorless Example
    - Current Control Example
 4. Click **CREATE** on the example tile.
-5. In **Target Device**, select your radio board (**BRD4186C** or **BRD4401C**) or a compatible part. Use the **Board** filter if needed.
+5. In **Target Device**, select your radio board (**BRD4186C**, **BRD4120A** or **BRD4401C**) or a compatible part. Use the **Board** filter if needed.
 6. In **Project Configuration**, set the project name, location, and **Target IDE** (**Makefile**, **VS Code**, or **CMake**), then click **Finish**.
 
 Studio generates the project and opens the **Project Configurator** (`.slcp`). When a supported board is selected, the pin map in `config/motor_control_framework_config.h` is filled automatically from the board overlay.
@@ -115,6 +115,7 @@ Each example has its own readme with control-mode details and tuning notes:
 | Hall Sensor | [`mc_hall_sensor_example/readme.md`](motor_control_framework_extension/examples/mc_hall_sensor_example/readme.md) |
 | Sensorless | [`mc_sensorless_example/readme.md`](motor_control_framework_extension/examples/mc_sensorless_example/readme.md) |
 | Current Control | [`mc_current_control_example/readme.md`](motor_control_framework_extension/examples/mc_current_control_example/readme.md) |
+| Anomaly detection and Voice Control | [mc_anomaly_voice_example/readme.md](motor_control_framework_extension/examples/mc_anomaly_voice_example/readme.md)|
 
 ## Repository layout
 
@@ -125,11 +126,12 @@ motor_control_framework_extension/
 ├── motor_control_framework_extension_templates.xml
 ├── components/
 │   └── motor_control_framework.slcc      # Framework component definition
-├── examples/
+├── examples/         # Specific project templates
 │   ├── mc_open_loop_example/
 │   ├── mc_hall_sensor_example/
 │   ├── mc_sensorless_example/
-│   └── mc_current_control_example/
+│   ├── mc_current_control_example/
+|   └── mc_anomaly_voice_example/
 └── motor_control_framework/
     ├── config/                           # Generic config template
     ├── overlays/                         # Board-specific config overrides

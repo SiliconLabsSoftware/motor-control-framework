@@ -51,6 +51,7 @@ when you create the project for that board). The microphone I2S pins, IMU SPI
 
 ## Getting started
 
+0. Install the Motor Control Framework Extension in Simplicity Studio 6: [README.md](../../../README.md#2-install-the-extension-in-simplicity-studio-6)
 1. Create this example in Simplicity Studio and select the **BRD4120A** radio
    board so the pin overlay is applied.
 2. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
