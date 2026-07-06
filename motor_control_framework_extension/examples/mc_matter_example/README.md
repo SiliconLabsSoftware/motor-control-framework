@@ -1,6 +1,6 @@
-# Matter EFR32 Fan Control Example with Motor Control
+# Motor Control Framework - Matter Control Example
 
-This project is based on the EFR32 Fan Control example which provides a baseline demonstration of a Fan control
+This project is based on the Matter - Fan Control over Thread example which provides a baseline demonstration of a Fan control
 device, built using Matter and the Silicon Labs Simplicity SDK. It can be controlled by
 a Matter controller over OpenThread network.
 
@@ -8,8 +8,12 @@ The example is extended with the Simple FOC motor controller Arduino library, ho
 
 ## Building the example
 
-Clone the repository to a folder, then open it with Simplicity Studio 6.
-The solution can be built using Visual Studio Code, alternatively you can change the toolchain.
+0. Install the Motor Control Framework Extension in Simplicity Studio 6: [README.md](../../../README.md#2-install-the-extension-in-simplicity-studio-6)
+1. Create this example in Simplicity Studio and select the **BRD4118A** radio
+   board so the pin overlay is applied.
+2. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
+   sensors.
+3. Build, flash, and commission according to the **Provision and Control** section
 
 ## Fan Control Application User Interface
 
@@ -60,3 +64,41 @@ chip-tool fancontrol read fan-mode-sequence <Node-ID> 1
 
 Control of the Fan is achieved using the SimpleFOC Arduino Library.
 The motor-control is run hard real-time from an interrupt, while the commands and parameters are set from a separate motor-control task.
+
+### SystemView timestamp resolution (optional, higher-resolution traces)
+
+This example is compatible with the **SEGGER SystemView** component, if you wish to add it after project creation.
+By default it is configured to use the **sleeptimer** as its timestamp tick base
+(`SEGGER_SYSVIEW_TIMESTAMP_SOURCE_SLEEPTIMER`, set in the project `.slcp`).
+The only trade-off is timestamp resolution: SystemView timestamps tick at the sleeptimer frequency
+rather than the CPU clock.
+
+If you want **higher-resolution** SystemView logging, switch the timestamp
+source to the **DWT cycle counter**, which ticks at `SystemCoreClock`:
+
+1. In Project Configurator (or the project `.slcp` `configuration:` section) set:
+
+   ```
+   SEGGER_SYSVIEW_TIMESTAMP_SOURCE = SEGGER_SYSVIEW_TIMESTAMP_SOURCE_DWT
+   ```
+
+2. Add a CMSIS device-header include to the generated
+   `config/sl_systemview_config.h`, just inside the include guard, so `DWT` is
+   declared when `SEGGER_SYSVIEW.c` is compiled:
+
+   ```c
+   #ifndef SL_SYSTEMVIEW_CONFIG_H
+   #define SL_SYSTEMVIEW_CONFIG_H
+
+   #include "em_device.h"   // <-- add this line (declares DWT->CYCCNT)
+   ```
+
+   Without this include the DWT build fails with
+   `error: 'DWT' undeclared ... DWT->CYCCNT`.
+
+This second step can't be automated from the `.slcp`: the `segger_systemview`
+component declares `sl_systemview_config.h` **without a `file_id`**, so the
+project cannot register a `config_file` override for it (a plain `config_file`
+entry collides with the component and fails generation with *"file
+sl_systemview_config.h is defined for multiple components"*). Hence it's a
+one-time manual edit only needed when opting into the DWT source.
