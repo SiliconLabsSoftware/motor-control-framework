@@ -1,6 +1,6 @@
 /***************************************************************************//**
  * @file motor_control_framework_config.h
- * @brief Motor Control Framework configuration - BRD4186C overlay
+ * @brief Motor Control Framework configuration - BRD4118A overlay
  *******************************************************************************
  * # License
  * <b>Copyright 2025 Silicon Laboratories Inc. www.silabs.com</b>
@@ -68,7 +68,7 @@
 
 // </h>
 
-// <h> Pin map (BRD4186C wiring. Use 'NA' for not applicable.)
+// <h> Pin map (BRD4118A wiring. Use 'NA' for not applicable.)
 
 #define MC_PIN_UNSET    (-2)
 #define NA              (-1)
