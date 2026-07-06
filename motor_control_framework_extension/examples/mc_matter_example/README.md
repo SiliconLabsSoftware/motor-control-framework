@@ -8,7 +8,7 @@ The example is extended with the Simple FOC motor controller Arduino library, ho
 
 ## Building the example
 
-0. Install the Motor Control Framework Extension in Simplicity Studio 6: [README.md](../../../README.md#2-install-the-extension-in-simplicity-studio-6)
+0. Install the Motor Control Framework Extension in Simplicity Studio 6: [README.md](../../../README.md#2-install-the-extension-in-simplicity-studio-6), and the Matter Extension (using Simplicity Installer)
 1. Create this example in Simplicity Studio and select the **BRD4118A** radio
    board so the pin overlay is applied.
 2. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
