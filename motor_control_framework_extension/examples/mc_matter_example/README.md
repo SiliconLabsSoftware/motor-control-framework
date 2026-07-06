@@ -33,7 +33,7 @@ After 15 minutes, the advertisement stops. In addition, this button should also 
 
 ## Provision and Control
 
-![QR Code](qr_code_img.png)
+![QR Code](image/qr_code_img.png)
 
 Above QR Code can be used for commissioning with a smartphone, alternatively its URL can be found in the **RTT logs upon startup OR by pressing BTN0**
 
