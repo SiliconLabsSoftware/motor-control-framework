@@ -193,6 +193,22 @@ include:
 config_file:
   - path: config/motor_control_framework_config.h
     file_id: motor_control_framework_config
+  # Board-specific overlays for motor_control_framework_config.h.
+  # Each entry is gated by a board feature and overrides the framework's
+  # default config file when that board is selected. If none match, the
+  # generic motor_control_framework_config.h ships unchanged.
+  - override:
+      component: motor_control_framework
+      file_id: motor_control_framework_config
+    path: ../motor_control_framework/overlays/brd4186c/motor_control_framework_config.h
+    condition:
+      - brd4186c
+  - override:
+      component: motor_control_framework
+      file_id: motor_control_framework_config
+    path: ../motor_control_framework/overlays/brd4401c/motor_control_framework_config.h
+    condition:
+      - brd4401c
 source:
   - path: common/arduino_layer/arduino_layer_init.cpp
   - path: common/arduino_layer/generic/Interrupt.cpp
