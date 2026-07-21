@@ -52,19 +52,22 @@ when you create the project for that board). The microphone I2S pins, IMU SPI
 ## Getting started
 
 0. Install the Motor Control Framework Extension in Simplicity Studio 6: [README.md](../../../README.md#2-install-the-extension-in-simplicity-studio-6)
-1. Create this example in Simplicity Studio and select the **BRD4120A** radio
+1. Install the AIML extension with the Simplicity Installer/Package Manager: 
+  ![Package manager](image/package_manager_aiml.png)
+
+2. Create this example in Simplicity Studio and select the **BRD4120A** radio
    board so the pin overlay is applied.
-2. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
+3. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
    sensors.
-3. Build, flash, and open an RTT terminal or connect over BLE with web app: https://markwendler.github.io/motor-ble-controller/.
-4. On boot the **IMU-anomaly** model is active. Send a velocity target with the
+4. Build, flash, and open an RTT terminal or connect over BLE with web app: https://markwendler.github.io/motor-ble-controller/.
+5. On boot the **IMU-anomaly** model is active. Send a velocity target with the
    SimpleFOC `Commander` `M` command, e.g.:
 
    ```
    M30
    ```
 
-5. Press **BTN0** to switch to the **audio keyword** model; press again to
+6. Press **BTN0** to switch to the **audio keyword** model; press again to
    switch back to the IMU model.
 
 ### SystemView timestamp resolution (optional, higher-resolution traces)
