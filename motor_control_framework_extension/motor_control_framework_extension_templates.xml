@@ -7,7 +7,7 @@
     <properties key="projectFilePaths" value="examples/mc_open_loop_example/mc_open_loop_example.slcp"/>
     <properties key="readmeFiles" value="examples/mc_open_loop_example/readme.md"/>
     <properties key="boardCompatibility" value=".*"/>
-    <properties key="partCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*efr32[bfxmz]g28.* .*efr32[bfxmz]g24.* .*efr32[bfxmz]g26.* "/>
     <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc"/>
     <properties key="category" value="Motor Control Framework Examples"/>
@@ -24,7 +24,7 @@
     <properties key="projectFilePaths" value="examples/mc_sensorless_example/mc_sensorless_example.slcp"/>
     <properties key="readmeFiles" value="examples/mc_sensorless_example/readme.md"/>
     <properties key="boardCompatibility" value=".*"/>
-    <properties key="partCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*efr32[bfxmz]g28.* .*efr32[bfxmz]g24.* .*efr32[bfxmz]g26.* "/>
     <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc"/>
     <properties key="category" value="Motor Control Framework Examples"/>
@@ -41,7 +41,7 @@
     <properties key="projectFilePaths" value="examples/mc_hall_sensor_example/mc_hall_sensor_example.slcp"/>
     <properties key="readmeFiles" value="examples/mc_hall_sensor_example/readme.md"/>
     <properties key="boardCompatibility" value=".*"/>
-    <properties key="partCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*efr32[bfxmz]g28.* .*efr32[bfxmz]g24.* .*efr32[bfxmz]g26.* "/>
     <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc"/>
     <properties key="category" value="Motor Control Framework Examples"/>
@@ -58,7 +58,7 @@
     <properties key="projectFilePaths" value="examples/mc_current_control_example/mc_current_control_example.slcp"/>
     <properties key="readmeFiles" value="examples/mc_current_control_example/readme.md"/>
     <properties key="boardCompatibility" value=".*"/>
-    <properties key="partCompatibility" value=".*"/>
+    <properties key="partCompatibility" value=".*efr32[bfxmz]g28.* .*efr32[bfxmz]g24.* .*efr32[bfxmz]g26.* "/>
     <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc"/>
     <properties key="category" value="Motor Control Framework Examples"/>
