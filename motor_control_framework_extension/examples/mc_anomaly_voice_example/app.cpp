@@ -108,8 +108,15 @@ void app_select_model(app_model_t model)
 
 void app_request_model_switch(app_model_t model)
 {
+  BaseType_t woken = pdFALSE;
+
   if (xModelSwitchQueue != NULL && !model_switch_in_progress) {
-    xQueueSend(xModelSwitchQueue, &model, 0);
+    if (xPortIsInsideInterrupt()) {
+      xQueueSendFromISR(xModelSwitchQueue, &model, &woken);
+      portYIELD_FROM_ISR(woken);
+    } else {
+      xQueueSend(xModelSwitchQueue, &model, 0);
+    }
   }
 }
 /***************************************************************************//**

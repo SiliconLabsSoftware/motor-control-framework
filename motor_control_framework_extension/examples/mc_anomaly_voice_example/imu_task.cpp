@@ -54,7 +54,7 @@ static TaskHandle_t xImuTaskHandle = NULL;
 static sl_sleeptimer_timer_handle_t inference_timer;
 static int16_t head_ptr = -1;
 static bool data_ready = false;
-static bool inference_timeout = false;
+static volatile bool inference_timeout = false;
 static sl_lsm6dsm_data_t imu_data[SEQUENCE_LENGTH];
 static sl_lsm6dsm_data_t imu_data_prev;
 static float latestAnomalyScore;
