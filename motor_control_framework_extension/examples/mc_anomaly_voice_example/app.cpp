@@ -114,8 +114,7 @@ void app_request_model_switch(app_model_t model)
     if (xPortIsInsideInterrupt()) {
       xQueueSendFromISR(xModelSwitchQueue, &model, &woken);
       portYIELD_FROM_ISR(woken);
-    }
-    else {
+    } else {
       xQueueSend(xModelSwitchQueue, &model, 0);
     }
   }
