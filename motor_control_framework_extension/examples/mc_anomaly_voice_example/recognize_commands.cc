@@ -164,7 +164,7 @@ TfLiteStatus RecognizeCommands::ProcessLatestResults(
     *is_new_command = false;
   }
 
-#ifdef VERBOSE_MODEL_OUTPUT_LOGS
+#if VERBOSE_MODEL_OUTPUT_LOGS
   static int prev_time_ms = 0;
   char buffer[256];
   char *ptr = buffer;
