@@ -38,33 +38,24 @@ across Open Loop, Hall Sensor, Sensorless, and Current Control.
        file_id: motor_control_framework_config
    ```
 
-2. Each example `.slcp` declares one **conditional override** per supported
+2. It also declares one **conditional override** per supported
    board. If no condition matches, the blank template from step 1 is used and
    the build fails at the `#error` guard until the user fills in the pins.
 
    ```yaml
-   # in examples/mc_sensorless_example/mc_sensorless_example.slcp
-   config_file:
      - override:
          component: motor_control_framework
          file_id: motor_control_framework_config
-       path: ../../motor_control_framework/overlays/brd4186c/motor_control_framework_config.h
+       path: ../motor_control_framework/overlays/brd4186c/motor_control_framework_config.h
        condition:
          - brd4186c
      - override:
          component: motor_control_framework
          file_id: motor_control_framework_config
-       path: ../../motor_control_framework/overlays/brd4401c/motor_control_framework_config.h
+       path: ../motor_control_framework/overlays/brd4401c/motor_control_framework_config.h
        condition:
          - brd4401c
    ```
-
-   The same `config_file:` block appears in all four example projects:
-
-   - `examples/mc_open_loop_example/mc_open_loop_example.slcp`
-   - `examples/mc_hall_sensor_example/mc_hall_sensor_example.slcp`
-   - `examples/mc_sensorless_example/mc_sensorless_example.slcp`
-   - `examples/mc_current_control_example/mc_current_control_example.slcp`
 
 3. When the user picks **BRD4186C** in the project wizard, SS6 satisfies the
    `brd4186c` condition and copies that overlay header into the project. Same
@@ -83,14 +74,13 @@ Each board overlay pre-fills:
 
 1. Create `overlays/<board-feature>/motor_control_framework_config.h`
    (copy the nearest existing overlay and adjust the configuration to match the board).
-2. Add a conditional `config_file:` override to **each** of the four example
-   `.slcp` files:
+2. Add a conditional `config_file:` override to the `motor_control_framework.slcc` file:
 
    ```yaml
      - override:
          component: motor_control_framework
          file_id: motor_control_framework_config
-       path: ../../motor_control_framework/overlays/<board-feature>/motor_control_framework_config.h
+       path: ../motor_control_framework/overlays/<board-feature>/motor_control_framework_config.h
        condition:
          - <board-feature>
    ```
@@ -99,15 +89,12 @@ Each board overlay pre-fills:
    component (inspect its `.slcc` if unsure). Known values for the boards
    above: `brd4186c`, `brd4401c`.
 
-No separate `.slcc` overlay component is needed. Overrides must live in the
-project `.slcp` itself — SS6 does not apply `config_file:` overrides from
-secondary components.
 
 ## Conventions
 
 - **Overlay header path:** `overlays/<board-feature>/motor_control_framework_config.h`
-- **Path in `.slcp`:** relative to the `.slcp` directory →
-  `../../motor_control_framework/overlays/<board-feature>/motor_control_framework_config.h`
+- **Path in `.slcc`:** relative to the `.slcc` directory →
+  `../motor_control_framework/overlays/<board-feature>/motor_control_framework_config.h`
 - **Condition:** the board feature name from the Simplicity SDK (`brd4186c`,
   `brd4401c`, …).
 - **Unused pins:** set to `NA`. The `#error` guard at the
