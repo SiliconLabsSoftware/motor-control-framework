@@ -85,4 +85,21 @@
     <properties key="sltPackagePath" value="examples/mc_anomaly_voice_example/mc_anomaly_voice_example.slcp"/>
     <properties key="filters" value="Motor\ Control|Hall\ Sensor|Project\ Difficulty|Advanced Capability|Machine\ Learning"/>
   </descriptors>
+  <descriptors name="mc_matter_example" label="Motor Control Framework - Matter Control Example&#xA;" description="Motor Control Framework - Matter Control Example for SiSDK.&#xA;">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="examples.mc_matter_example.mc_matter_example.slcp"/>
+    <properties key="projectFilePaths" value="examples/mc_matter_example/mc_matter_example.slcp"/>
+    <properties key="readmeFiles" value="examples/mc_matter_example/README.md"/>
+    <properties key="boardCompatibility" value="brd4118a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg24.* .*efr32mg26.*"/>
+    <properties key="ideCompatibility" value="generic-template makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc"/>
+    <properties key="category" value="Motor Control Framework Examples"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="sltPackageIds" value="{&quot;simplicity-sdk&quot;:&quot;~2025.12.0&quot;}"/>
+    <properties key="sltPackagePath" value="examples/mc_matter_example/mc_matter_example.slcp"/>
+    <properties key="filters" value="Motor\ Control|Current\ Control|Project\ Difficulty|Advanced"/>
+  </descriptors>
 </model:MDescriptors>
