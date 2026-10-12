@@ -64,7 +64,7 @@ public:
   static void UpdateClusterState(intptr_t arg);
 
   FanModeEnum GetFanMode();
-  void UpdateFanControlLED();
+  void UpdateFanControl();
   void UpdateFanControlLCD();
   EndpointId GetEndPoint();
 

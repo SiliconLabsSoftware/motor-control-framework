@@ -4,7 +4,7 @@ This project is based on the Matter - Fan Control over Thread example which prov
 device, built using Matter and the Silicon Labs Simplicity SDK. It can be controlled by
 a Matter controller over OpenThread network.
 
-The example is extended with the Simple FOC motor controller Arduino library, however the Matter is not implemented with the Arduino Matter Library.
+The example is extended with the Simple FOC motor controller Arduino library, however the Matter is not implemented with the Arduino Matter Library, but the Matter Extension provided by Simplicity Studio.
 
 ## Building the example
 
@@ -14,6 +14,8 @@ The example is extended with the Simple FOC motor controller Arduino library, ho
 2. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
    sensors.
 3. Build, flash, and commission according to the **Provision and Control** section
+
+Note: the example requires a bootloader to function. In case of an UART bootloader, make sure the Activation GPIO is not used on the board (e.g. PB15 is the USR button, which is a good choice.)
 
 ## Fan Control Application User Interface
 
@@ -68,7 +70,9 @@ The motor-control is run hard real-time from an interrupt, while the commands an
 ### SystemView timestamp resolution (optional, higher-resolution traces)
 
 This example is compatible with the **SEGGER SystemView** component, if you wish to add it after project creation.
-By default it is configured to use the **sleeptimer** as its timestamp tick base
+Make sure to set the project's import mode to **Link sdk and copy project sources**.
+
+By default SystemView is configured to use the **sleeptimer** as its timestamp tick base
 (`SEGGER_SYSVIEW_TIMESTAMP_SOURCE_SLEEPTIMER`, set in the project `.slcp`).
 The only trade-off is timestamp resolution: SystemView timestamps tick at the sleeptimer frequency
 rather than the CPU clock.

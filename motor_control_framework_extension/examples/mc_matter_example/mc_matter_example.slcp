@@ -167,9 +167,6 @@ component:
   vendor: silabs
   id: rail_util_pti
 - package: simplicity_sdk
-  vendor: silabs
-  id: segger_systemview
-- package: simplicity_sdk
   instance:
   - btn0
   vendor: silabs

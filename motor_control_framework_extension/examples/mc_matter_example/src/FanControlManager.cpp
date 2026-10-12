@@ -150,20 +150,20 @@ void FanControlManager::HandleFanControlAttributeChange(AttributeId attributeId,
   switch (attributeId) {
     case Attributes::PercentSetting::Id: {
       PercentSettingWriteCallback(*value);
-      UpdateFanControlLED();
+      UpdateFanControl();
       break;
     }
 
     case Attributes::SpeedSetting::Id: {
       SpeedSettingWriteCallback(*value);
-      UpdateFanControlLED();
+      UpdateFanControl();
       break;
     }
 
     case Attributes::FanMode::Id: {
       mFanMode = *reinterpret_cast<FanModeEnum *>(value);
       FanModeWriteCallback(mFanMode);
-      UpdateFanControlLED();
+      UpdateFanControl();
 #if DISPLAY_ENABLED
       UpdateFanControlLCD();
 #endif
@@ -172,7 +172,7 @@ void FanControlManager::HandleFanControlAttributeChange(AttributeId attributeId,
 
     case Attributes::AirflowDirection::Id: {
       AirflowDirectionSettingWriteCallback(*value);
-      UpdateFanControlLED();
+      UpdateFanControl();
       break;
     }
 
@@ -360,7 +360,7 @@ FanModeEnum FanControlManager::GetFanMode()
   return mFanMode;
 }
 
-void FanControlManager::UpdateFanControlLED()
+void FanControlManager::UpdateFanControl()
 {
   sFanLED.Set(false);
   FanModeEnum fanState = FanControlMgr().GetFanMode();

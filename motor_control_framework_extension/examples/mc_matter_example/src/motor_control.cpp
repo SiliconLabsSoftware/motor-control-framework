@@ -22,10 +22,10 @@
  #include "sl_device_peripheral.h"
 
  #include "SimpleFOC.h"
-//Needs to be moved here to avoid build error?
+// These includes need to be moved here to avoid build error
  #include "FreeRTOS.h"
  #include "task.h"
-//End of move
+// End of move
  #include "MXLEMMINGObserverSensor.h"
  #include "app_properties_config.h"
 
@@ -60,7 +60,9 @@
  #define MOTOR_VOLTAGE_LIMIT_V           12.0f     // [V]: Global voltage limit. Limits Q-axis voltage.
  #define MOTOR_CURRENT_LIMIT_A           4.0f      // [A]: Global current limit. Limits Q-axis current.
 
-//#define SENSORLESS_MODE
+ // Uncomment to enable Sensorless Mode
+ //#define SENSORLESS_MODE
+ 
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
