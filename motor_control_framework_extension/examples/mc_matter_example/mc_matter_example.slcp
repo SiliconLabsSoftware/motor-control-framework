@@ -249,6 +249,23 @@ configuration:
 - name: SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE
   value: "SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE_HFRCODPLL"
 
+- name: SL_SIMPLE_BUTTON_BTN0_PORT
+  condition: 
+    - simple_button
+  value: "SL_GPIO_PORT_B"
+- name: SL_SIMPLE_BUTTON_BTN0_PIN
+  condition: 
+    - simple_button
+  value: "15"
+- name: SL_SIMPLE_LED_LED0_PORT
+  condition: 
+    - simple_led
+  value: "SL_GPIO_PORT_A"
+- name: SL_SIMPLE_LED_LED0_PIN
+  condition: 
+    - simple_led
+  value: "7"
+
 config_file:
   - path: config/fan-control-thread-app.zap
     directory: common
