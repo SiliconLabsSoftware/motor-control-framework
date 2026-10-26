@@ -13,7 +13,7 @@ static void telemetry_task(void *pvParameters)
   //wait for motor start
   vTaskDelay(pdMS_TO_TICKS(5000));
   while (motor_p == NULL) {
-    printf("Telemetry waitig for motor Init, motor init failed?")
+    printf("Telemetry waitig for motor Init, motor init failed?");
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
   while (1) {
