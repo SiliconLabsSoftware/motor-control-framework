@@ -9,7 +9,7 @@ be switched at runtime:
   an abnormal vibration signature raises the score.
 - **Audio keyword spotting** — an I2S microphone feeds a spectrogram front-end
   (`ml_audio_feature_generation`) into a small classifier that recognizes the
-  spoken keywords `on` / `off`.
+  spoken keywords `go` / `stop` / `left` / `right` / `up` / `down`.
 
 Both models share a single TFLite arena (see `ml_common.h`); only one is loaded
 at a time. The **user button (BTN0)** toggles between them, and the active model
@@ -58,7 +58,7 @@ when you create the project for that board). The microphone I2S pins, IMU SPI
    board so the pin overlay is applied.
 3. Connect the radio board to the DRV8305 BoosterPack and wire the motor + Hall
    sensors.
-4. Build, flash, and open an RTT terminal or connect over BLE with web app: https://markwendler.github.io/motor-ble-controller/.
+4. Build, flash, and open an RTT terminal (e.g. using Simplicity Commander) or connect over BLE with web app: https://markwendler.github.io/motor-ble-controller/.
 5. On boot the **IMU-anomaly** model is active. Send a velocity target with the
    SimpleFOC `Commander` `M` command, e.g.:
 
