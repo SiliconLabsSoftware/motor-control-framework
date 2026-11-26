@@ -1,0 +1,213 @@
+name: SonarCloud
+
+on:
+  workflow_run:
+    workflows: [Build firmware]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: sonarcloud-${{ github.event.workflow_run.head_repository.id }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+env:
+  SISDK_VERSION: 2025.12.0
+  AIML_VERSION: 2.2.0
+  SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY || 'SiliconLabsSoftware_motor-control-framework' }}
+  SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION || 'siliconlabssoftware' }}
+
+jobs:
+  scan:
+    name: Analyze project-owned source
+    if: >-
+      (github.repository == 'SiliconLabsSoftware/motor-control-framework' ||
+       github.repository == 'AndrasZiegler/motor-control-framework') &&
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' ||
+       github.event.workflow_run.event == 'pull_request' ||
+       github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Resolve analysis revision
+        id: metadata
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRIGGER_EVENT: ${{ github.event.workflow_run.event }}
+          TRIGGER_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          TRIGGER_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          TRIGGER_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$TRIGGER_HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Invalid triggering revision: $TRIGGER_HEAD_SHA"
+            exit 1
+          fi
+
+          if [[ "$TRIGGER_EVENT" == "pull_request" ]]; then
+            pr_number=$(jq -r '.workflow_run.pull_requests[0].number // empty' "$GITHUB_EVENT_PATH")
+            if [[ -z "$pr_number" ]]; then
+              pr_number=$(gh api \
+                "repos/$GITHUB_REPOSITORY/actions/runs/$TRIGGER_RUN_ID" \
+                --jq '.pull_requests[0].number // empty')
+            fi
+            if [[ -z "$pr_number" ]]; then
+              associated_pulls=$(gh api \
+                -H "Accept: application/vnd.github+json" \
+                "repos/$GITHUB_REPOSITORY/commits/$TRIGGER_HEAD_SHA/pulls")
+              pr_number=$(jq -r \
+                --arg head_sha "$TRIGGER_HEAD_SHA" \
+                --arg repository "$GITHUB_REPOSITORY" \
+                '[.[] | select(
+                  .head.sha == $head_sha and
+                  .base.repo.full_name == $repository
+                )] | if length == 1 then .[0].number else empty end' \
+                <<< "$associated_pulls")
+            fi
+
+            if [[ ! "$pr_number" =~ ^[0-9]+$ ]]; then
+              echo "Could not resolve the pull request for build run $TRIGGER_RUN_ID."
+              exit 1
+            fi
+
+            pr_json=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr_number")
+            current_pr_revision=$(jq -r '.head.sha' <<< "$pr_json")
+            if [[ "$current_pr_revision" != "$TRIGGER_HEAD_SHA" ]]; then
+              echo "Build run $TRIGGER_RUN_ID is stale; the pull request head has changed."
+              exit 1
+            fi
+
+            analysis_revision=$TRIGGER_HEAD_SHA
+            analysis_branch=$(jq -r '.head.ref' <<< "$pr_json")
+            analysis_base=$(jq -r '.base.ref' <<< "$pr_json")
+            checkout_ref=$TRIGGER_HEAD_SHA
+            analysis_type=pull_request
+          else
+            pr_number=
+            analysis_revision=$TRIGGER_HEAD_SHA
+            analysis_branch=$TRIGGER_HEAD_BRANCH
+            analysis_base=
+            checkout_ref=$TRIGGER_HEAD_SHA
+            analysis_type=branch
+          fi
+
+          if [[ ! "$analysis_revision" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Invalid analysis revision: $analysis_revision"
+            exit 1
+          fi
+          if [[ ! "$analysis_branch" =~ ^[A-Za-z0-9._/-]+$ ]]; then
+            echo "Unsupported analysis branch name: $analysis_branch"
+            exit 1
+          fi
+          if [[ -n "$analysis_base" && ! "$analysis_base" =~ ^[A-Za-z0-9._/-]+$ ]]; then
+            echo "Unsupported analysis base branch name: $analysis_base"
+            exit 1
+          fi
+
+          {
+            echo "analysis_type=$analysis_type"
+            echo "analysis_revision=$analysis_revision"
+            echo "analysis_branch=$analysis_branch"
+            echo "analysis_base=$analysis_base"
+            echo "checkout_ref=$checkout_ref"
+            echo "pr_number=$pr_number"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout trusted analysis configuration
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          path: .trusted-sonar-config
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: |
+            sonar-project.properties
+            .github/scripts/prepare_sonar_database.sh
+
+      - name: Preserve trusted analysis configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp .trusted-sonar-config/sonar-project.properties \
+            "$RUNNER_TEMP/sonar-project.properties"
+          cp .trusted-sonar-config/.github/scripts/prepare_sonar_database.sh \
+            "$RUNNER_TEMP/prepare_sonar_database.sh"
+
+      - name: Checkout analyzed revision
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ steps.metadata.outputs.checkout_ref }}
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Download firmware build data
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: firmware-build-${{ github.event.workflow_run.id }}
+          path: ${{ github.workspace }}
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Set up Silicon Labs Tool
+        uses: SiliconLabsSoftware/action-setup-slt@14333efe84887ae976acf1946feae2d180e4e7d9
+        with:
+          install-conan: true
+          use-unstable: false
+
+      - name: Restore build environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          slt install \
+            "simplicity-sdk/${SISDK_VERSION}@silabs" \
+            "aiml/${AIML_VERSION}@silabs" \
+            gcc-arm-none-eabi/12.2.rel1
+
+      - name: Prepare trusted SonarCloud inputs
+        shell: bash
+        env:
+          ANALYSIS_TYPE: ${{ steps.metadata.outputs.analysis_type }}
+          ANALYSIS_REVISION: ${{ steps.metadata.outputs.analysis_revision }}
+          ANALYSIS_BRANCH: ${{ steps.metadata.outputs.analysis_branch }}
+          ANALYSIS_BASE: ${{ steps.metadata.outputs.analysis_base }}
+          PR_NUMBER: ${{ steps.metadata.outputs.pr_number }}
+        run: |
+          set -euo pipefail
+
+          bash "$RUNNER_TEMP/prepare_sonar_database.sh" \
+            "$GITHUB_WORKSPACE/sonar-bw/compile_commands.json" \
+            "$GITHUB_WORKSPACE"
+
+          analysis_properties="$RUNNER_TEMP/sonar-analysis.properties"
+          cp "$RUNNER_TEMP/sonar-project.properties" "$analysis_properties"
+
+          if [[ "$ANALYSIS_TYPE" == "pull_request" ]]; then
+            {
+              echo "sonar.pullrequest.key=$PR_NUMBER"
+              echo "sonar.pullrequest.branch=$ANALYSIS_BRANCH"
+              echo "sonar.pullrequest.base=$ANALYSIS_BASE"
+              echo "sonar.scm.revision=$ANALYSIS_REVISION"
+            } >> "$analysis_properties"
+          else
+            echo "sonar.branch.name=$ANALYSIS_BRANCH" >> "$analysis_properties"
+            echo "sonar.scm.revision=$ANALYSIS_REVISION" >> "$analysis_properties"
+          fi
+
+          rm -f sonar-project.properties .sonarcloud.properties
+
+      - name: Run SonarCloud analysis
+        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
+        with:
+          args: >-
+            -Dproject.settings=${{ runner.temp }}/sonar-analysis.properties
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
