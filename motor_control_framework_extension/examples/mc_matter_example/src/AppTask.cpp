@@ -67,7 +67,6 @@ AppTask AppTask::sAppTask;
 
 CHIP_ERROR AppTask::AppInit()
 {
-
   // Motor framework has on-demand bluetooth, we need to enable it manually to allow BLE to advertise.
   sl_bt_system_start_bluetooth();
 

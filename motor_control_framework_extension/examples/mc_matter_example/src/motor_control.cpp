@@ -60,9 +60,9 @@
  #define MOTOR_VOLTAGE_LIMIT_V           12.0f     // [V]: Global voltage limit. Limits Q-axis voltage.
  #define MOTOR_CURRENT_LIMIT_A           4.0f      // [A]: Global current limit. Limits Q-axis current.
 
- // Uncomment to enable Sensorless Mode
- //#define SENSORLESS_MODE
- 
+// Uncomment to enable Sensorless Mode
+//#define SENSORLESS_MODE
+
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
